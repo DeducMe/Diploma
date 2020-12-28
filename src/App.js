@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import Nav from './components/Nav/Nav'
+import './global.css'
+import './style.css'
+import './normalize.css'
+import './fonts/Nunito/Nunito.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  
+  render() {
+    return (
+      <div>
+        <Nav></Nav>
+      </div>
+    )
+  }
 }
 
-export default App;
+export default connect(
+  state => ({
+    testStore: state.list
+  }),
+  dispatch => ({
+    onAddItem: (itemName) => {
+      dispatch({type : 'ADD_ITEM', payload: itemName})
+    },
+    onDeleteItem: (itemName) => {
+      dispatch({type : 'DELETE_ITEM', payload: itemName})
+    }
+  })
+)(App)
+
