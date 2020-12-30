@@ -5,6 +5,7 @@ import logo from '../../img/logo.svg'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
 import bell from '../../img/bell.svg'
+import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 
 const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate}) => {
@@ -36,13 +37,13 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
               <img src={logo} alt="logo"/>
             </a>
 
-            <a href="#" className="f-medium">Полезное</a>
+            <a href="#" className="f-medium semi">Полезное</a>
 
-            <a href="#" className="f-medium">Отклики</a>
+            <a href="#" className="f-medium semi">Отклики</a>
 
             <a href="#" className={"nav__search " + navState.searchActive} onClick={searchToggle}>
-              <span className="f-medium">Поиск</span> 
-              <img src={arrow} alt=""/>
+              <span className="f-medium semi">Поиск</span> 
+              <img src={arrow} alt="arrow"/>
             </a>
           </div>
 
@@ -55,7 +56,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
               <img src={star} alt="favourites"/>
             </a>
 
-            <a href="#" className="f-medium">Моя страница</a>
+            <a href="#" className="f-medium semi">Моя страница</a>
           </div>
           
         </nav>     
@@ -82,7 +83,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
   </div>
   )
   else return(
-  <div className="nav-block">
+  <div className={"nav-block "+navState.position}>
     <div className="nav-bar">
       <div className="container">
         <nav className="nav">
@@ -91,18 +92,18 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
               <img src={logo} alt="logo"/>
             </a>
 
-            <a href="#" className="f-medium">Полезное</a>
+            <a href="#" className="f-medium semi">Полезное</a>
 
             <a href="#" className={"nav__search " + navState.searchActive} onClick={searchToggle}>
-              <span className="f-medium" >Поиск</span> 
+              <span className="f-medium semi" >Поиск</span> 
               <img src={arrow} alt=""/>
             </a>
           </div>
 
           <div className="nav__right-side">
-            <a href="#" className="f-medium highlighted-btn" onClick={registartionPopupOpen}>Начать карьеру</a>
+            <a href="#" className="f-medium highlighted-btn semi" onClick={registartionPopupOpen}>Начать карьеру</a>
 
-            <a href="#" className="f-medium" onClick={loginPopupOpen}>Войти</a>
+            <a href="#" className="f-medium semi" onClick={loginPopupOpen}>Войти</a>
           </div>    
         </nav>     
       </div>  
@@ -111,7 +112,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
     <div className="search-panel">
       <div className="container">
         <div className={"search-panel__wrapper " + navState.searchActive}>
-
+          <SearchPanel></SearchPanel>
         </div>
       </div>
     </div>  

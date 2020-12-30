@@ -1,5 +1,6 @@
 const initialState = {
     searchActive: '',
+    position: '',
     popup:{
         state:'muted',
         type:'',
@@ -38,6 +39,18 @@ export default function navState(state = initialState, action){
         state.popup.subject = 'employer';
         state.popup.submitValue = 'Найти команду!';
         return {
+            ...state
+        }
+    }
+    else if (action.type === 'POPUP_CLOSE'){
+        state.popup.state = 'muted';
+        return{
+            ...state
+        }
+    }
+    else if (action.type === 'CHANGE_NAV_POSITION_TO_FIXED'){
+        state.position = 'fixed';
+        return{
             ...state
         }
     }

@@ -1,0 +1,12 @@
+.profile__main,
+.profile__side{
+    margin-top: 30px;
+}
+
+.profile__side{
+    margin-left: 40px;
+}
+
+.profile-wrapper{
+    display: flex;
+}

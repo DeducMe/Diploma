@@ -1,0 +1,109 @@
+.main{
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+.personal{
+    position: relative;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    background-image: url('../../../img/personal-background.png');
+    background-size: cover;
+}
+
+.personal__avatar{
+    width: 120px;
+    height: 120px;
+    margin-left: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.photo-redact-btn{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background:#000;
+    position: absolute;
+    bottom: -33px;
+    right: 40px;
+    transition: .5s;
+    border: 1px solid #000;
+}
+
+.photo-redact-btn img{
+    width: 45px;
+}
+
+.photo-redact-btn:hover{
+    filter: invert(1);
+    transition: .5s;
+    border: 1px solid #fff;
+}
+
+.info{
+    padding: 20px;
+}
+
+.info-head{
+    margin-right: 100px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.info__description{
+    margin-top: 10px;
+    word-break: break-all;
+    hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+}
+
+.info__education{
+    margin-top: 40px;
+}
+
+.info__education,
+.info__courses{
+    padding: 0 20px;
+}
+
+.info__description{
+    margin-bottom: 15px;
+}
+
+.education-block,
+.course-block{
+    margin-bottom: 15px;
+    margin-top: 0;
+    padding-top: 10px;
+    margin-left: 20px;
+    margin-right: 0px;
+}
+
+.education-block:not(:first-of-type),
+.course-block:not(:first-of-type){
+    border-top: 2px solid #d6d6d6;
+    margin-top: 10px;
+}
+
+.education-name,
+.course-name{
+    margin-bottom: 5px;
+}
+
+.education-place__institution,
+.education-place__grade{
+    display: inline-block;
+}
+
+.education-place__institution,
+.course-place__institution{
+    font-weight: bold;
+    color: #000;
+}

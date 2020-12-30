@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
+import '../../../css/style.css'
 import './popup.css'
-
-
 
 class Popup extends Component {
   
@@ -18,40 +17,71 @@ class Popup extends Component {
     console.log(this.props.popupState.submitValue)
   }
 
+  popupClose(e){
+    e.preventDefault()
+    this.props.onPopupClose();
+  }
+
   render() {
-    console.log(this.props.popupState.type)
     if (this.props.popupState.type === 'login')
       return (
 
         <div className={"user-id-popup " + this.props.popupState.state}>
-          <div className="popup-wrapper">
-            
+      <div className="popup-wrapper rounded">
+        <h2 className="popup-header">Вход</h2>
+
+        <form className="" action="" method="post">
+          <button className="close-popup-btn" onClick={this.popupClose.bind(this)}>x</button>
+          
+
+          <div className="input-field underline-anim">
+            <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
+            <label className="popup__text-label" htmlFor="loginInput">Логин</label>
           </div>
-        </div>
+          
+          <div className="input-field underline-anim">
+            <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
+            <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
+          </div>
+
+          <div className="checkbox">
+            <input className="inp-cbx" id="morning" type="checkbox"/>
+            <label className="cbx" htmlFor="morning"><span>
+            <svg width="12px" height="10px">
+              <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+            </svg></span><span>Запомните меня!</span></label>
+          </div>
+          
+
+          <input className="form-submit-btn f-large rounded" type="submit" value="Войти!"/>
+
+          
+        </form>
+      </div>
+    </div>
         )
     else return (
 
     <div className={"user-id-popup " + this.props.popupState.state}>
-      <div className="popup-wrapper">
-        <h2>Регистрация</h2>
+      <div className="popup-wrapper rounded">
+        <h2 className="popup-header">Регистрация</h2>
 
         <form className="" action="" method="post">
-          <div className="input-field">
-            <input className="popup__text-input" id="loginInput" name="loginInput" type="text"/>
-            <label htmlFor="loginInput">Логин</label>
+          <button className="close-popup-btn" onClick={this.popupClose.bind(this)}>x</button>
+          
+
+          <div className="input-field underline-anim">
+            <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
+            <label className="popup__text-label" htmlFor="loginInput">Логин</label>
           </div>
           
-          <div className="input-field">
-            <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password"/>
-            <label htmlFor="passwordInput">Пароль</label>
+          <div className="input-field underline-anim">
+            <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
+            <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
           </div>
 
-          <input className="popup__check-input" type="checkbox" name="remember-checkbox" id="remember-checkbox"/>
-          <label htmlFor="remember-checkbox">Запомните меня!</label>
-
-          <input type="submit" value={this.props.submitValue}/>
-
           <div className="togglebox" >
+            <span>Я - </span>
             <div className="main">
               <input type="checkbox" id="hidcheck" hidden onClick={this.changeSubject.bind(this)} />
               <label className="capsule" htmlFor="hidcheck" id="capsule-id" >
@@ -62,6 +92,19 @@ class Popup extends Component {
               </label>
             </div>
           </div>
+
+          <div className="checkbox">
+            <input className="inp-cbx" id="morning" type="checkbox"/>
+            <label className="cbx" htmlFor="morning"><span>
+            <svg width="12px" height="10px">
+              <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+            </svg></span><span>Запомните меня!</span></label>
+          </div>
+
+          <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
+
+          <p>
+Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомлены, полностью согласны и принимаете условия <a href="#">«Соглашения об оказании услуг по содействию в трудоустройстве (оферта)»</a></p>
         </form>
       </div>
     </div>
@@ -85,9 +128,9 @@ class Popup extends Component {
 // )(Popup)
 
 const mapStateToProps = (state, ownProps) =>{
-  console.log(ownProps)
   return {
     submitValue: state.nav.popup.submitValue,
+    popupActive: state.nav.popup.state,
     popupState: state.nav.popup
   }
 }
@@ -99,6 +142,9 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onSubjectChangeToEmployee: () => {
       dispatch({type : 'CHANGE_SUBJECT_TO_EMPLOYEE', payload:null})
+    },
+    onPopupClose: () => {
+      dispatch({type : 'POPUP_CLOSE', payload:null})
     }
   }
 }

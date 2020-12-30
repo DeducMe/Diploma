@@ -1,10 +1,19 @@
-
-
 .nav-bar{
     background-color:#253957;
+    position: relative;
+    z-index: 1;
+}
+
+.fixed .nav-bar{
+    background-color:transparent;
+}
+
+.nav-block{
+    width: 100%;
 }
 
 .nav{
+    width: 100%;
     display: flex;
     justify-content: space-between;
     color: #fff;
@@ -32,23 +41,26 @@ nav a:not(:first-of-type){
 
 }
 .search-panel{
-    background-color: #D4E4FF;
+    -webkit-box-shadow: 0px -10px 30px 0px #323232bf;
+    -moz-box-shadow:    0px -10px 30px 0px #323232bf;
+    box-shadow:         0px -10px 30px 0px #323232bf;
 }
 
 .search-panel__wrapper{
-    display: none;
+    height: 100px;
+    margin-top: -100px;
+    transition: .5s;
+    z-index: 0;
 }
 
 .search-panel__wrapper.active{
-    display: block;
+    margin-top: 0;
+    transition: .5s;
 }
 
 .nav__search.active img{
     transform: rotate(0);
 }
 
-.search-panel__wrapper{
-    height: 80px;
-}
 
 
