@@ -58,8 +58,43 @@ nav a:not(:first-of-type){
     transition: .5s;
 }
 
+.nav__search img{
+    transition: .5s;
+}
+
+.nav__search{
+    height: 40px;
+}
+
 .nav__search.active img{
     transform: rotate(0);
+    transition: .5s;
+}
+
+.nav__search img{
+    transition: .5s;
+}
+
+.nav__search:hover img{
+    margin-top: -5px;
+    transition: .5s;
+    animation-delay: .5s;
+    animation: swing .8s infinite ease;
+}
+
+@keyframes swing{
+    0% { 
+        margin-top: -5px;
+    }
+
+    50% { 
+        margin-top: 10px;
+    }
+
+    100% { 
+        margin-top: -5px;
+    }
+    
 }
 
 

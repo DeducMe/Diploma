@@ -14,6 +14,26 @@
     color: #FCDE26;
     padding: 5px 25px;
     border-radius: 20px;
+    transition: .5s;
+}
+
+.highlighted-btn:hover{
+    color: #253957;
+    background-color: #FCDE26;
+}
+
+.link-anim{
+    border: 5px transparent solid;
+    padding: 5px 25px;
+    border-radius: 20px;
+    transition: .5s;
+}
+
+.link-anim:hover{
+    border-color: #fff;
+    background-color: #fff;
+    color: #000;
+    transition: .5s;
 }
 
 .rounded{

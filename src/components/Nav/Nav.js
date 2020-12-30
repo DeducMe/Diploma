@@ -92,7 +92,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
               <img src={logo} alt="logo"/>
             </a>
 
-            <a href="#" className="f-medium semi">Полезное</a>
+            <a href="#" className="f-medium semi link-anim">Полезное</a>
 
             <a href="#" className={"nav__search " + navState.searchActive} onClick={searchToggle}>
               <span className="f-medium semi" >Поиск</span> 
@@ -103,7 +103,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
           <div className="nav__right-side">
             <a href="#" className="f-medium highlighted-btn semi" onClick={registartionPopupOpen}>Начать карьеру</a>
 
-            <a href="#" className="f-medium semi" onClick={loginPopupOpen}>Войти</a>
+            <a href="#" className="f-medium semi link-anim" onClick={loginPopupOpen}>Войти</a>
           </div>    
         </nav>     
       </div>  
