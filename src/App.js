@@ -4,6 +4,8 @@ import './css/global.css'
 import './css/style.css'
 import './css/normalize.css'
 import './fonts/Nunito/Nunito.css'
+import { connect } from 'react-redux'
+
 
 
 class App extends Component {
@@ -19,5 +21,17 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = (state, ownProps) =>{
+  return {
+    ownProps
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

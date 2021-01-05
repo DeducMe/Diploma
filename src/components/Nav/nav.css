@@ -29,9 +29,9 @@
     display: flex;
 }
 
-nav a:not(:first-of-type){
+
+nav .nav-el:not(:first-of-type){
     margin-left: 25px;
-    color: #fff;
 }
 
 .nav__search img{
@@ -48,14 +48,25 @@ nav a:not(:first-of-type){
 
 .search-panel__wrapper{
     height: 100px;
-    margin-top: -100px;
-    transition: .5s;
     z-index: 0;
 }
 
-.search-panel__wrapper.active{
-    margin-top: 0;
+
+.search-panel{
+    margin-top: -100px;
     transition: .5s;
+    z-index: -10;
+    opacity: 0;
+}
+
+.search-panel.active{
+    background-color: #EFF5FF;
+    display: block;
+    margin-top: 0;
+    z-index: -1;
+
+    transition: .5s;
+    opacity: 1;
 }
 
 .nav__search img{
@@ -63,6 +74,7 @@ nav a:not(:first-of-type){
 }
 
 .nav__search{
+    padding: 0 20px;
     height: 40px;
 }
 

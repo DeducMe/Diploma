@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../../../css/style.css'
 import './popup.css'
+import {getUserData} from '../../../actions/getUserData.js'
+import Loader from '../../Loader/Loader'
 
 class Popup extends Component {
   
@@ -22,27 +24,118 @@ class Popup extends Component {
     this.props.onPopupClose();
   }
 
+  registrateNewUser(login, password){
+    const data = fetch('new_worker.json')
+    .then((r) => r.json())
+    .then((data)=>{
+      fetch('http://localhost:3000/workers', {
+            mode:'no-cors',
+            method: 'POST',  
+            body: JSON.stringify(data),  
+
+            headers:{
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*"
+          }
+        })
+
+        .then(response => console.log(response))
+        .catch(error => console.error('Error:', error));
+      })
+  }
+
+  redirectUser = () =>{
+    this.props.onLoginUser();
+    this.props.history.push("/profile");
+    this.props.onDeactivateLoader()
+  }
+
+  loginUser(login, password){
+    let userId = 1 // server response here
+    this.props.fetchUserData(userId, this.redirectUser)
+    this.props.onActivateLoader()
+  }
+
+  validateEmail(email){
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
+
+  validatePassword(password){
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}/;   // 4 or more characters
+                                                      // a digit
+                                                      // a lower-case letter
+                                                      // an upper-case letter
+    return re.test(password);
+  }
+
+
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    let login = e.target.loginInput.value
+    let password = e.target.passwordInput.value
+    let validateInputs = [this.validateEmail(login), this.validatePassword(password)]
+    this.props.onResetValidation()
+    setTimeout(()=>{
+      if (validateInputs.includes(false)){
+        if (!this.validateEmail(login)){
+          this.props.onWrongEmailInput()
+        }
+        if (!this.validatePassword(password)){
+          this.props.onWrongPasswordInput()
+        }
+      }
+      else{
+        if (this.props.popupState.type === 'login'){
+          this.loginUser(login, password)
+        }
+        else if (this.props.popupState.type === 'registration'){
+          this.registrateNewUser(login, password)
+        }
+      }
+    },0)
+
+
+    
+  } 
+
+  handleEsc = (e) => {
+    if (e.keyCode === 27) {
+      this.props.onPopupClose();
+    }
+  }
+
+  componentDidMount(){
+    window.addEventListener('keydown', this.handleEsc)
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('keydown', this.handleEsc)
+  }
+
   render() {
     if (this.props.popupState.type === 'login')
       return (
 
-        <div className={"user-id-popup " + this.props.popupState.state}>
+    <div className={"user-id-popup " + this.props.popupState.state}>
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Вход</h2>
 
-        <form className="" action="" method="post">
-          <button className="close-popup-btn" onClick={this.popupClose.bind(this)}>x</button>
+        <form className="" action="" method="post" onSubmit={this.handleFormSubmit}>
           
 
-          <div className="input-field underline-anim">
+          <div className={"input-field underline-anim wrong-" + this.props.wrongEmail}>
             <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
             <label className="popup__text-label" htmlFor="loginInput">Логин</label>
           </div>
           
-          <div className="input-field underline-anim">
+          <div className={"input-field underline-anim wrong-" + this.props.wrongPassword}>
             <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
             <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
           </div>
+
+          <p className={"input-hint " + this.props.wrongPassword}>*В пароле должно содержаться не менее 4 символов, как минимум 1 цифра, 1 заглавная буква и 1 прописная буква</p>
 
           <div className="checkbox">
             <input className="inp-cbx" id="morning" type="checkbox"/>
@@ -51,9 +144,10 @@ class Popup extends Component {
               <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
             </svg></span><span>Запомните меня!</span></label>
           </div>
-          
+          <Loader active={this.props.loaderActive}></Loader>
 
           <input className="form-submit-btn f-large rounded" type="submit" value="Войти!"/>
+          <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
 
           
         </form>
@@ -66,19 +160,21 @@ class Popup extends Component {
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Регистрация</h2>
 
-        <form className="" action="" method="post">
-          <button className="close-popup-btn" onClick={this.popupClose.bind(this)}>x</button>
-          
+        <form method="post" onSubmit={this.handleFormSubmit}>         
 
-          <div className="input-field underline-anim">
+          <div className={"input-field underline-anim wrong-" + this.props.wrongEmail}>
             <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
             <label className="popup__text-label" htmlFor="loginInput">Логин</label>
           </div>
           
-          <div className="input-field underline-anim">
+          <div className={"input-field underline-anim wrong-" + this.props.wrongPassword}>
             <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
             <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
           </div>
+
+          <p className={"input-hint " + this.props.wrongPassword}>*В пароле должно содержаться не менее 4 символов, как минимум 1 цифра, 1 заглавная буква и 1 прописная буква</p>
+
+
 
           <div className="togglebox" >
             <span>Я - </span>
@@ -101,7 +197,11 @@ class Popup extends Component {
             </svg></span><span>Запомните меня!</span></label>
           </div>
 
+          <Loader></Loader>
+
           <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
+
+          <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
 
           <p>
 Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомлены, полностью согласны и принимаете условия <a href="#">«Соглашения об оказании услуг по содействию в трудоустройстве (оферта)»</a></p>
@@ -130,8 +230,11 @@ class Popup extends Component {
 const mapStateToProps = (state, ownProps) =>{
   return {
     submitValue: state.nav.popup.submitValue,
+    wrongEmail:state.nav.popup.wrongEmail,
+    wrongPassword:state.nav.popup.wrongPassword,
     popupActive: state.nav.popup.state,
-    popupState: state.nav.popup
+    popupState: state.nav.popup,
+    loaderActive: state.nav.popup.loaderActive
   }
 }
 
@@ -145,6 +248,28 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onPopupClose: () => {
       dispatch({type : 'POPUP_CLOSE', payload:null})
+    },
+    onWrongEmailInput: () => {
+      dispatch({type : 'WRONG_EMAIL_INPUT', payload:null})
+    },
+    onWrongPasswordInput: () => {
+      dispatch({type : 'WRONG_PASSWORD_INPUT', payload:null})
+    },
+    onResetValidation: ()=>{
+      dispatch({type : 'RESET_VALIDATION', payload:null})
+    },
+    onLoginUser: () => {
+      dispatch({type : 'USER_LOGIN', payload:null})
+    },
+    fetchUserData: (userId, redirectUser)=> {
+      dispatch({type : 'WAITING_FOR_FETCH', payload:null})
+      dispatch(getUserData(userId, redirectUser)).then(data=>redirectUser())
+    },
+    onActivateLoader: ()=>{
+      dispatch({type : 'ACTIVATE_LOADER', payload:null})
+    },
+    onDeactivateLoader: ()=>{
+      dispatch({type : 'DEACTIVATE_LOADER', payload:null})
     }
   }
 }

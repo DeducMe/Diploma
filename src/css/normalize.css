@@ -10,7 +10,6 @@
 
 html
 {
-    line-height: 1.15; /* 1 */
 
     -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -186,7 +185,6 @@ textarea
 {
     font-family: inherit; /* 1 */
     font-size: 100%; /* 1 */
-    line-height: 1.15; /* 1 */
 
     margin: 0; /* 2 */
 }

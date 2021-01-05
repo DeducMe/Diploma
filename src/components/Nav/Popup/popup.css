@@ -49,7 +49,6 @@
     
     display: block;
     margin: 30px auto;
-    margin-top: 150px;
     padding: 10px 20px;
     cursor: pointer;
     border: 3px solid #000;
@@ -65,7 +64,7 @@
 /*    Слайдер    */
 
 .togglebox{
-    
+    position: relative;
     padding: 10px 0;
 }
 
@@ -317,7 +316,10 @@ label.capsule{
     border-radius: .5rem;
     outline: none;
     background: none;
+    
 }
+
+
 .popup__text-label{
     position: absolute;
     top: 1rem;
@@ -384,6 +386,50 @@ label.capsule{
     left: 0;
     top: 0;
     position: absolute;
+}
+
+.input-field.wrong-active .popup__text-label{
+    color: #ff0000;
+    animation: wrong ease .3s;
+}
+
+@keyframes wrong{
+    0% { 
+        margin-left: 0px;
+    }
+
+    25%{
+        margin-left: 3px;
+    }
+
+
+    75%{
+        margin-left: -3px;
+    }
+
+    100% { 
+        margin-left: 0px;
+    }
+    
+}
+
+.input-hint{
+    height: 0;
+    opacity: 0;
+    color: #ff0000;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: .5s;
+    cursor: default;
+    display: flex;
+    align-items: center;
+}
+
+.input-hint.active{
+    cursor: text;
+    height: 60px;
+    opacity: 1;
+    transition: .5s;
 }
 
 /*    ****Инпуты****    */

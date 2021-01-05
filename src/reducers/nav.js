@@ -5,7 +5,10 @@ const initialState = {
         state:'muted',
         type:'',
         subject:'employee',
-        submitValue:'Начать карьеру!'
+        submitValue:'Начать карьеру!',
+        wrongEmail:'muted',
+        wrongPassword:'muted',
+        loaderActive:false
     }
 };
   
@@ -54,6 +57,42 @@ export default function navState(state = initialState, action){
             ...state
         }
     }
-    
+    else if (action.type === 'CHANGE_NAV_POSITION_TO_NONE'){
+        state.position = '';
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'WRONG_EMAIL_INPUT'){
+        state.popup.wrongEmail = 'active';
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'WRONG_PASSWORD_INPUT'){
+        state.popup.wrongPassword = 'active';
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'RESET_VALIDATION'){
+        state.popup.wrongPassword = 'muted';
+        state.popup.wrongEmail = 'muted';
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'ACTIVATE_LOADER'){
+        state.popup.loaderActive = true;
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'DEACTIVATE_LOADER'){
+        state.popup.loaderActive = false;
+        return{
+            ...state
+        }
+    }
     return state;
 }

@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+
 import Popup from './Popup/Popup'
 import { connect } from 'react-redux'
 import logo from '../../img/logo.svg'
@@ -7,8 +8,9 @@ import star from '../../img/star.svg'
 import bell from '../../img/bell.svg'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
+import {Link} from 'react-router-dom'
 
-const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate}) => {
+const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
   function searchToggle(){
     if (navState.searchActive){
       onSearchDeactivate();
@@ -25,61 +27,63 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
   function loginPopupOpen(){
     onLoginPopupActivate();
   }
+
+  
+  useEffect(() => {
+    if (location === '/landing')
+      onNavPositionChangeToFixed()
+    else {
+      onNavPositionChangeToNone()
+      if (!logged){
+        history.push('/landing')
+      }
+    }
+  }, [location]);
   
   if (logged)
       return (
-  <div className="nav-block">
+  <div className={"nav-block "+navState.position}>
     <div className="nav-bar">
       <div className="container">
         <nav className="nav">
           <div className="nav__left-side">
-            <a href="#">
+            <Link to="/landing" className="nav-el" >
               <img src={logo} alt="logo"/>
-            </a>
+            </Link>
 
-            <a href="#" className="f-medium semi">Полезное</a>
+            <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link>
 
-            <a href="#" className="f-medium semi">Отклики</a>
+            <Link to="/responses" className="f-medium semi link-anim nav-el">Отклики</Link>
 
-            <a href="#" className={"nav__search " + navState.searchActive} onClick={searchToggle}>
+            <button  className={"nav-el nav__search " + navState.searchActive} onClick={searchToggle}>
               <span className="f-medium semi">Поиск</span> 
               <img src={arrow} alt="arrow"/>
-            </a>
+            </button>
           </div>
 
           <div className="nav__right-side">
-            <a href="#">
+            <button  className="icon-anim nav-el">
               <img src={bell} alt="notifications"/>
-            </a>
+            </button>
 
-            <a href="#">
+            <button  className="icon-anim nav-el">
               <img src={star} alt="favourites"/>
-            </a>
+            </button>
 
-            <a href="#" className="f-medium semi">Моя страница</a>
+            <Link to="/profile" className="f-medium semi link-anim nav-el">Моя страница</Link>
           </div>
           
         </nav>     
       </div> 
     </div>
 
-    <div className="search-panel">
+    <div className={"search-panel " + navState.searchActive}>
       <div className="container">
-        <div className={"search-panel__wrapper " + navState.searchActive}>
-          <form action="#">
-            <input type="text"/>
-
-            <div className="more-filters">
-              <a href="#" className="more-filters__link"></a>
-
-              <div className="more-filters__popup"></div>
-            </div>
-
-            <input type="submit" value="Поиск"/>
-          </form>
+        <div className="search-panel__wrapper">
+          <SearchPanel></SearchPanel>
         </div>
       </div>
-    </div>
+    </div>  
   </div>
   )
   else return(
@@ -88,56 +92,72 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
       <div className="container">
         <nav className="nav">
           <div className="nav__left-side">
-            <a href="#">
+            <Link to="/landing" className="nav-el" >
               <img src={logo} alt="logo"/>
-            </a>
+            </Link>
 
-            <a href="#" className="f-medium semi link-anim">Полезное</a>
+            <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link>
 
-            <a href="#" className={"nav__search " + navState.searchActive} onClick={searchToggle}>
+            <button  className={"nav-el nav__search " + navState.searchActive} onClick={searchToggle}>
               <span className="f-medium semi" >Поиск</span> 
               <img src={arrow} alt=""/>
-            </a>
+            </button>
           </div>
 
           <div className="nav__right-side">
-            <a href="#" className="f-medium highlighted-btn semi" onClick={registartionPopupOpen}>Начать карьеру</a>
+            <button className="f-medium highlighted-btn semi nav-el" onClick={registartionPopupOpen}>Начать карьеру</button>
 
-            <a href="#" className="f-medium semi link-anim" onClick={loginPopupOpen}>Войти</a>
+            <button className="f-medium semi link-anim nav-el" onClick={loginPopupOpen}>Войти</button>
           </div>    
         </nav>     
       </div>  
     </div>
 
-    <div className="search-panel">
+    <div className={"search-panel " + navState.searchActive}>
       <div className="container">
-        <div className={"search-panel__wrapper " + navState.searchActive}>
+        <div className= "search-panel__wrapper">
           <SearchPanel></SearchPanel>
         </div>
       </div>
     </div>  
 
-    <Popup></Popup>
+    <Popup history={history}></Popup>
   </div>
   )
 }
 
-export default connect(
-    state => ({
-      navState: state.nav
-    }),
-    dispatch => ({
-      onSearchActivate: () => {
-        dispatch({type : 'SEARCH_ACTIVATE', payload:null})
-      },
-      onSearchDeactivate: () => {
-        dispatch({type : 'SEARCH_DEACTIVATE', payload:null})
-      },
-      onLoginPopupActivate: () => {
-        dispatch({type : 'POPUP_ACTIVATE', payload:'login'})
-      },
-      onRegistrationPopupActivate: () => {
-        dispatch({type : 'POPUP_ACTIVATE', payload:'registration'})
-      }
-    })
-  )(Nav)
+
+
+const mapStateToProps = (state, ownProps) =>{
+  return {
+    navState: state.nav,
+    logged:state.user.logged,
+    location:ownProps.location.pathname,
+    history:ownProps.history
+  }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+  return{
+    onSearchActivate: () => {
+      dispatch({type : 'SEARCH_ACTIVATE', payload:null})
+    },
+    onSearchDeactivate: () => {
+      dispatch({type : 'SEARCH_DEACTIVATE', payload:null})
+    },
+    onLoginPopupActivate: () => {
+      dispatch({type : 'POPUP_ACTIVATE', payload:'login'})
+    },
+    onRegistrationPopupActivate: () => {
+      dispatch({type : 'POPUP_ACTIVATE', payload:'registration'})
+    },
+    onNavPositionChangeToNone: () => {
+      dispatch({type : 'CHANGE_NAV_POSITION_TO_NONE', payload:null})
+    },
+    onNavPositionChangeToFixed: () => {
+      dispatch({type : 'CHANGE_NAV_POSITION_TO_FIXED', payload:null})
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);

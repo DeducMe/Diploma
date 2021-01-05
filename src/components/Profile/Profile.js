@@ -5,7 +5,9 @@ import './profile.css'
 
 
 export default class Profile extends Component {
+    
     render() {
+        
         return (
             <div className="small-container profile-wrapper">
                 <div className="profile__main">

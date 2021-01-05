@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { applyMiddleware, createStore, compose } from 'redux';
 import reducer from './reducers/reducer'
 import { BrowserRouter as Router } from 'react-router-dom'
 import {createBrowserHistory} from 'history'
@@ -11,22 +11,31 @@ import {
   Switch,
   Redirect
 } from "react-router-dom"
-
+import thunk from 'redux-thunk';
 import App from './App';
+import Nav from './components/Nav/Nav'
 import { syncHistoryWithStore } from 'react-router-redux';
 import Landing from './components/Landing/Landing';
 
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());   // reducer
+const store = createStore(
+  reducer,
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+  ));   // reducer
 const hashHistory = createBrowserHistory();
 const history = syncHistoryWithStore(hashHistory, store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history}>      
-      <Route path="/" component={App}/>
-      <Route path="/landing" component={Landing}/>
-      <Route path="/profile" component={Profile}/>
+    <Router history={history}>  
+      <Route path="/" component={Nav}/>
+        <Switch>
+          <Route path="/landing" component={Landing}/>
+          <Route exact path="/profile" component={Profile}/>
+          <Redirect to="/landing"></Redirect>
+        </Switch>
     </Router>
   </Provider>,
 
