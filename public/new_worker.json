@@ -1,40 +1,38 @@
 {
-    "email": "dsgsdghshsdh@example.com",
-    "name": "string",
-    "password": "string",
-    "mailing": true,
-    "language": [
-      {
-        "language": "string",
-        "grade": "string"
-      }
-    ],
-    "birthday": "string",
-    "city": "string",
-    "phone": [
-      "string"
-    ],
-    "about": "string",
-    "social_links": [
-      "string"
-    ],
-    "education": [
-      {
-        "years": 0,
-        "profession": "string",
-        "university": "string"
-      }
-    ],
-    "exp": [
-      {
-        "years": 0,
-        "position": "string",
-        "company": "string",
-        "type": "string"
-      }
-    ],
-    "cz": "string",
-    "profile_link": "string",
-    "photo_url": "string",
-    "profile_background": "string"
-  }
+  "user_id": 0,
+  "mailing": true,
+  "language": [
+    {
+      "language": "",
+      "grade": ""
+    }
+  ],
+  "birthday": "",
+  "city": "",
+  "phone": [
+    ""
+  ],
+  "about": "",
+  "social_links": [
+    ""
+  ],
+  "education": [
+    {
+      "years": 0,
+      "profession": "",
+      "university": ""
+    }
+  ],
+  "exp": [
+    {
+      "years": 0,
+      "position": "",
+      "company": "",
+      "type": ""
+    }
+  ],
+  "cz": "",
+  "profile_link": "",
+  "photo_url": "",
+  "profile_background": ""
+}

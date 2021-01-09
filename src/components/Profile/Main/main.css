@@ -1,5 +1,5 @@
 .main{
-    max-width: 700px;
+    width: 700px;
     display: flex;
     flex-direction: column;
     background-color: #fff;
@@ -22,6 +22,7 @@
 }
 
 .photo-redact-btn{
+    z-index: 1;
     width: 75px;
     height: 75px;
     border-radius: 50%;
@@ -43,8 +44,41 @@
     border: 1px solid #fff;
 }
 
+.profile-redact-btn{
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    
+    transition: .5s;
+    border: 1px solid #000;
+    background:#fff;
+}
+
+.profile-redact-btn img{
+    width: 35px;
+}
+
+.profile-redact-btn:hover{
+    filter: invert(1);
+    transition: .5s;
+    
+    border: 1px solid #fff;
+
+}
+
+.info__go-phrase{
+    margin-top: 40px;
+    text-align: center;
+}
+
 .info{
     padding: 20px;
+    position: relative;
+    padding-bottom: 50px;
 }
 
 .info-head{
@@ -57,7 +91,7 @@
 
 .info__description{
     margin-top: 10px;
-    word-break: break-all;
+    word-break: break-word;
     hyphens: auto;
     -moz-hyphens: auto;
     -webkit-hyphens: auto;
@@ -106,4 +140,20 @@
 .course-place__institution{
     font-weight: bold;
     color: #000;
+}
+
+.info__common-info__gender.female{
+    background-image: url('../../../img/female.svg');
+}
+
+.info__common-info__gender.male{
+  background-image: url('../../../img/male.svg');
+}
+
+.info__common-info__gender.male::after{
+  content: 'Мужчина';
+}
+
+.info__common-info__gender.female::after{
+  content: 'Женщина';
 }

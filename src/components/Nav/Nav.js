@@ -120,7 +120,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
         </div>
       </div>
     </div>  
-
+    
     <Popup history={history}></Popup>
   </div>
   )

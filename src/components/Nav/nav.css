@@ -30,7 +30,7 @@
 }
 
 
-nav .nav-el:not(:first-of-type){
+nav .nav-el:not(:first-child){
     margin-left: 25px;
 }
 

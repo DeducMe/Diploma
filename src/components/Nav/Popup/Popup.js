@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import '../../../css/style.css'
 import './popup.css'
-import {getUserData} from '../../../actions/getUserData.js'
+import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
 import Loader from '../../Loader/Loader'
 
 class Popup extends Component {
@@ -20,29 +20,27 @@ class Popup extends Component {
   }
 
   popupClose(e){
+    this.props.onResetValidation()
+
     e.preventDefault()
     this.props.onPopupClose();
   }
 
-  registrateNewUser(login, password){
-    const data = fetch('new_worker.json')
-    .then((r) => r.json())
-    .then((data)=>{
-      fetch('http://localhost:3000/workers', {
-            mode:'no-cors',
-            method: 'POST',  
-            body: JSON.stringify(data),  
+  fetchError = (type) =>{
+    if (type === 'wrong-data'){
+      this.props.onWrongPasswordInput('*Неверный логин или пароль')
+    }
+    else if(type === 'wrong-email'){
+      this.props.onWrongEmailInput('*Такой э-мэйл не зарегестрирован')
+    }
+    else if(type === 'wrong-password'){
+      this.props.onWrongPasswordInput('*Пароль неверен')
+    }
+    else if(type === 'email-occupied'){
+      this.props.onWrongEmailInput('*Такой э-мэйл уже занят')
+    }
+    this.props.onDeactivateLoader()
 
-            headers:{
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "*"
-          }
-        })
-
-        .then(response => console.log(response))
-        .catch(error => console.error('Error:', error));
-      })
   }
 
   redirectUser = () =>{
@@ -52,14 +50,18 @@ class Popup extends Component {
   }
 
   loginUser(login, password){
-    let userId = 1 // server response here
-    this.props.fetchUserData(userId, this.redirectUser)
+    this.props.onLoginUserCheck({"email":login, "password":password}, this.redirectUser, this.fetchError) // server response here
+    this.props.onActivateLoader()
+  }
+
+  registrateUser(data){
+    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError)
     this.props.onActivateLoader()
   }
 
   validateEmail(email){
-    var re = /\S+@\S+\.\S+/;
-    return re.test(email);
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
   }
 
   validatePassword(password){
@@ -68,6 +70,15 @@ class Popup extends Component {
                                                       // a lower-case letter
                                                       // an upper-case letter
     return re.test(password);
+  }
+
+  registrationJsonCreate(login, password, username, type){
+    return {
+      "name": username,
+      "email": login,
+      "password": password,
+      "user_type": type
+    }
   }
 
 
@@ -80,10 +91,10 @@ class Popup extends Component {
     setTimeout(()=>{
       if (validateInputs.includes(false)){
         if (!this.validateEmail(login)){
-          this.props.onWrongEmailInput()
+          this.props.onWrongEmailInput('*Неверный формат э-мэйл')
         }
         if (!this.validatePassword(password)){
-          this.props.onWrongPasswordInput()
+          this.props.onWrongPasswordInput('*В пароле должно содержаться не менее 4 символов, как минимум 1 цифра, 1 заглавная буква и 1 прописная буква')
         }
       }
       else{
@@ -91,13 +102,13 @@ class Popup extends Component {
           this.loginUser(login, password)
         }
         else if (this.props.popupState.type === 'registration'){
-          this.registrateNewUser(login, password)
+          let username = e.target.nameInput.value
+
+          const data = this.registrationJsonCreate(login, password, username, this.props.popupState.subject)
+          this.registrateUser(data)
         }
       }
     },0)
-
-
-    
   } 
 
   handleEsc = (e) => {
@@ -123,20 +134,20 @@ class Popup extends Component {
         <h2 className="popup-header">Вход</h2>
 
         <form className="" action="" method="post" onSubmit={this.handleFormSubmit}>
-          
-
           <div className={"input-field underline-anim wrong-" + this.props.wrongEmail}>
             <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
             <label className="popup__text-label" htmlFor="loginInput">Логин</label>
           </div>
+
+          <p className={"email-input-hint " + this.props.wrongEmail}>{this.props.wrongEmailError}</p>
           
           <div className={"input-field underline-anim wrong-" + this.props.wrongPassword}>
             <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
             <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
           </div>
 
-          <p className={"input-hint " + this.props.wrongPassword}>*В пароле должно содержаться не менее 4 символов, как минимум 1 цифра, 1 заглавная буква и 1 прописная буква</p>
-
+          <p className={"password-input-hint " + this.props.wrongPassword}>{this.props.wrongPasswordError}</p>
+          
           <div className="checkbox">
             <input className="inp-cbx" id="morning" type="checkbox"/>
             <label className="cbx" htmlFor="morning"><span>
@@ -164,21 +175,28 @@ class Popup extends Component {
 
           <div className={"input-field underline-anim wrong-" + this.props.wrongEmail}>
             <input className="popup__text-input" id="loginInput" name="loginInput" type="text" placeholder=" "/>
-            <label className="popup__text-label" htmlFor="loginInput">Логин</label>
+            <label className="popup__text-label" htmlFor="loginInput">Логин (почта)</label>
           </div>
+
+          <p className={"email-input-hint " + this.props.wrongEmail}>{this.props.wrongEmailError}</p>
           
           <div className={"input-field underline-anim wrong-" + this.props.wrongPassword}>
             <input className="popup__text-input" id="passwordInput" name="passwordInput" type="password" placeholder=" "/>
             <label className="popup__text-label" htmlFor="passwordInput">Пароль</label>
           </div>
 
-          <p className={"input-hint " + this.props.wrongPassword}>*В пароле должно содержаться не менее 4 символов, как минимум 1 цифра, 1 заглавная буква и 1 прописная буква</p>
+          <div className="input-field underline-anim">
+            <input className="popup__text-input" id="nameInput" name="nameInput" type="text" placeholder=" "/>
+            <label className="popup__text-label" htmlFor="nameInput">Имя</label>
+          </div>
+
+          <p className={"password-input-hint " + this.props.wrongPassword}>{this.props.wrongPasswordError}</p>
 
 
 
           <div className="togglebox" >
             <span>Я - </span>
-            <div className="main">
+            <div className="main-capsule">
               <input type="checkbox" id="hidcheck" hidden onClick={this.changeSubject.bind(this)} />
               <label className="capsule" htmlFor="hidcheck" id="capsule-id" >
                 <div className="circle"></div>
@@ -197,7 +215,7 @@ class Popup extends Component {
             </svg></span><span>Запомните меня!</span></label>
           </div>
 
-          <Loader></Loader>
+          <Loader active={this.props.loaderActive}></Loader>
 
           <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
 
@@ -234,7 +252,11 @@ const mapStateToProps = (state, ownProps) =>{
     wrongPassword:state.nav.popup.wrongPassword,
     popupActive: state.nav.popup.state,
     popupState: state.nav.popup,
-    loaderActive: state.nav.popup.loaderActive
+    loaderActive: state.nav.popup.loaderActive,
+    wrongEmailError:state.nav.popup.wrongEmailError,
+    wrongPasswordError:state.nav.popup.wrongPasswordError,
+
+
   }
 }
 
@@ -249,11 +271,11 @@ const mapDispatchToProps = (dispatch) =>{
     onPopupClose: () => {
       dispatch({type : 'POPUP_CLOSE', payload:null})
     },
-    onWrongEmailInput: () => {
-      dispatch({type : 'WRONG_EMAIL_INPUT', payload:null})
+    onWrongEmailInput: (errorMsg) => {
+      dispatch({type : 'WRONG_EMAIL_INPUT', payload:errorMsg})
     },
-    onWrongPasswordInput: () => {
-      dispatch({type : 'WRONG_PASSWORD_INPUT', payload:null})
+    onWrongPasswordInput: (errorMsg) => {
+      dispatch({type : 'WRONG_PASSWORD_INPUT', payload:errorMsg})
     },
     onResetValidation: ()=>{
       dispatch({type : 'RESET_VALIDATION', payload:null})
@@ -261,9 +283,31 @@ const mapDispatchToProps = (dispatch) =>{
     onLoginUser: () => {
       dispatch({type : 'USER_LOGIN', payload:null})
     },
-    fetchUserData: (userId, redirectUser)=> {
+    onLoginUserCheck: (data, redirectUser, fetchError) =>{
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-      dispatch(getUserData(userId, redirectUser)).then(data=>redirectUser())
+      dispatch(loginUser(data))
+      .then(data => {
+        console.log(data)
+        if (data.data != 0){
+          redirectUser()
+        }
+        else{
+          fetchError('wrong-data')
+        }
+      })
+    },
+    onRegistrationUserFetch: (data, redirectUser, fetchError)=> {
+      dispatch({type : 'WAITING_FOR_FETCH', payload:null})
+      dispatch(registrateNewUser(data))
+      .then(data => {
+        console.log(data)
+        if (data.data != 0){
+          redirectUser()
+        }
+        else{
+          fetchError('email-occupied')
+        }
+      })
     },
     onActivateLoader: ()=>{
       dispatch({type : 'ACTIVATE_LOADER', payload:null})

@@ -9,4 +9,5 @@
 
 .profile-wrapper{
     display: flex;
+    position: relative;
 }

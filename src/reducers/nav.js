@@ -7,6 +7,7 @@ const initialState = {
         subject:'employee',
         submitValue:'Начать карьеру!',
         wrongEmail:'muted',
+        wrongEmailError: '',
         wrongPassword:'muted',
         loaderActive:false
     }
@@ -65,12 +66,14 @@ export default function navState(state = initialState, action){
     }
     else if(action.type === 'WRONG_EMAIL_INPUT'){
         state.popup.wrongEmail = 'active';
+        state.popup.wrongEmailError = action.payload
         return{
             ...state
         }
     }
     else if(action.type === 'WRONG_PASSWORD_INPUT'){
         state.popup.wrongPassword = 'active';
+        state.popup.wrongPasswordError = action.payload
         return{
             ...state
         }

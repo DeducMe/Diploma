@@ -68,7 +68,7 @@
     padding: 10px 0;
 }
 
-.togglebox .main{
+.togglebox .main-capsule{
     display: inline-block;
 }
 
@@ -413,7 +413,7 @@ label.capsule{
     
 }
 
-.input-hint{
+.password-input-hint{
     height: 0;
     opacity: 0;
     color: #ff0000;
@@ -422,10 +422,28 @@ label.capsule{
     transition: .5s;
     cursor: default;
     display: flex;
-    align-items: center;
 }
 
-.input-hint.active{
+.email-input-hint{
+    height: 0;
+    opacity: 0;
+    margin-top: -10px;
+    color: #ff0000;
+    font-size: 14px;
+    line-height: 1.4;
+    transition: .5s;
+    cursor: default;
+    display: flex;
+}
+
+.email-input-hint.active{
+    cursor: text;
+    height: 30px;
+    opacity: 1;
+    transition: .5s;
+}
+
+.password-input-hint.active{
     cursor: text;
     height: 60px;
     opacity: 1;
