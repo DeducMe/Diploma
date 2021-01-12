@@ -1,9 +1,11 @@
 /*    Placeholder      */
 
 .main-placeholder{
-    background-color: #EFF5FF;
+    min-width: 640px;
+    max-width: 640px;
     padding: 20px;
-    min-width: 660px;
+
+    background-color: #eff5ff;
 }
 
 .main-placeholder__info{
@@ -12,9 +14,12 @@
 
 .main-placeholder__personal{
     position: relative;
-    height: 160px;
+
     display: flex;
     align-items: center;
+
+    height: 160px;
+
     background-image: url('../../../img/personal-background.png');
     background-size: cover;
 }
@@ -23,41 +28,19 @@
     width: 120px;
     height: 120px;
     margin-left: 50px;
-    object-fit: cover;
+
     border-radius: 50%;
+
+    object-fit: cover;
 }
 
 .main-placeholder__info{
-    padding: 20px;
     position: relative;
+
+    padding: 20px;
     padding-bottom: 50px;
 }
 
-.info__common-info__gender{
-    display: inline-block;
-    height: 22px;
-    width: 100px;
-    background-size: 22px;
-    background-repeat: no-repeat;
-    background-position:right;
-    margin-left: 20px;
-}
-
-.info__common-info__gender.female{
-    background-image: url('../../../img/female.svg');
-}
-
-.info__common-info__gender.male{
-  background-image: url('../../../img/male.svg');
-}
-
-.info__common-info__gender.male::after{
-  content: 'Мужчина';
-}
-
-.info__common-info__gender.female::after{
-  content: 'Женщина';
-}
 /*    Placeholder-end      */
 
 .profile-redact{
@@ -84,9 +67,9 @@
 }
 
 .profile-redact__popup-wrapper{
-    display: flex;
-
     position: relative;
+
+    display: flex;
 
     width: 100%;
     margin-top: 30px;
@@ -115,59 +98,91 @@
 
 .textarea-field{
     margin: 30px 0;
-
 }
 
 .popup__textarea-input{
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #000;
     width: 100%;
+    min-height: 120px;
+    max-height: 240px;
+    padding: 10px;
+
     resize: vertical;
+
+    border: 1px solid #000;
+    border-radius: 10px;
 }
 
 /* RadioBox */
 .gender-radio-box{
     display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.gender-input {
+.gender-input{
     display: none;
-  }
-.gender-input +  div {
+}
+.gender-input + div{
     width: 280px;
     margin-top: 10px;
-  }
-  .gender-input + div label {
+}
+.gender-input + div label{
     display: block;
-    padding: 20px 10px;
-    text-align: center;
-    transition: all 0.15s ease-in-out;
-    background: #fff;
-    border-radius: 10px;
+
     box-sizing: border-box;
     width: 48%;
+    padding: 20px 10px;
+
     cursor: pointer;
-  }
-  .gender-input + div label:first-child {
+    transition: all .15s ease-in-out;
+    text-align: center;
+
+    border-radius: 10px;
+    background: #fff;
+}
+.gender-input + div label:first-child{
     float: left;
-    box-shadow: inset 0 0 0 4px #1597ff, 0 15px 15px -10px rgba(0, 125, 225, 0.375);
-  }
-  .gender-input + div label:last-child {
+}
+.gender-input + div label:last-child{
     float: right;
-  }
-  .gender-input#gender-male:checked + div label:first-child {
-    box-shadow: inset 0 0 0 4px #1597ff, 0 15px 15px -10px rgba(0, 125, 225, 0.375);
-  }
-  .gender-input#gender-male:checked + div label:last-child {
-    box-shadow: inset 0 0 0 0px #1597ff, 0 10px 15px -20px rgba(21, 151, 255, 0);
-  }
-  .gender-input#gender-female:checked + div label:first-child {
-    box-shadow: inset 0 0 0 0px #1597ff, 0 10px 15px -20px rgba(21, 151, 255, 0);
-  }
-  .gender-input#gender-female:checked + div label:last-child {
-    box-shadow: inset 0 0 0 4px #1597ff, 0 15px 15px -10px rgba(0, 125, 225, 0.375);
-  }
+}
+.gender-input#gender-male:checked + input + div label:first-child{
+    box-shadow: inset 0 0 0 4px #1597ff, 0 15px 15px -10px rgba(0, 125, 225, .375);
+}
+.gender-input#gender-male:checked + input + div label:last-child{
+    box-shadow: inset 0 0 0 0 #1597ff, 0 10px 15px -20px rgba(21, 151, 255, 0);
+}
+.gender-input#gender-female:checked + div label:first-child{
+    box-shadow: inset 0 0 0 0 #1597ff, 0 10px 15px -20px rgba(21, 151, 255, 0);
+}
+.gender-input#gender-female:checked + div label:last-child{
+    box-shadow: inset 0 0 0 4px #1597ff, 0 15px 15px -10px rgba(0, 125, 225, .375);
+}
+
+/* radio-box end */
+
+.list-input-field{
+    position: relative;
+}
+
+.list-input-field__el-block{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #000;
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.el-block__delete-el{
+    font-size: 30px;
+    line-height: 1;
+    color: #ff0000;
+}
+
+
+/* .popup__text-input:not(:focus)::placeholder{
+    opacity: 0;
+} */

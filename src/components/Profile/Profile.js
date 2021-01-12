@@ -19,25 +19,35 @@ class Profile extends Component {
 
     initPlaceholder = () => {
         if (this.props.userState.hasProfile)
-        this.props.onInitializePlaceholderData(
-            {
-                userName: this.props.userState.user.name,
-                description: this.checkIfNotNull(this.props.userState.userData.about, ''),
-                avatar: '',
-                gender: this.checkIfNotNull(this.props.userState.userData.gender, 'male'),
-                personalBackground: '',
-                birthday: this.checkIfNotNull(this.props.userState.userData.birthday, '')
+        this.props.onInitializeProfileData({
+                state: this.props.profileState.state,
+                    placeholder: {
+                    userName: this.props.userState.user.name,
+                    description: this.checkIfNotNull(this.props.userState.userData.about, ''),
+                    avatar: '',
+                    gender: this.checkIfNotNull(this.props.userState.userData.gender, ''),
+                    personalBackground: '',
+                    birthday: this.checkIfNotNull(this.props.userState.userData.birthday, ''),
+                    cz: this.checkIfNotNull(this.props.userState.userData.cz, ''),
+                    city: this.checkIfNotNull(this.props.userState.userData.city, '')
+                },
+                userPhones: this.checkIfNotNull(this.props.userState.userData.phone, [])
             }
         )
         else 
-        this.props.onInitializePlaceholderData(
-            {
-                userName: this.props.userState.user.name,
-                description: '',
-                avatar: '',
-                gender: 'male',
-                personalBackground: '',
-                birthday: ''
+        this.props.onInitializeProfileData({
+                state: this.props.profileState.state,
+                placeholder: {
+                    userName: '',
+                    description: '',
+                    avatar: '',
+                    gender: '',
+                    personalBackground: '',
+                    birthday: '',
+                    cz:'',
+                    city: '',
+                },
+                userPhones: []
             }
         )
     }
@@ -82,8 +92,8 @@ const mapDispatchToProps = (dispatch) =>{
         onHasProfile: () => {
             dispatch({type : 'USER_HAS_PROFILE', payload:null})
         },
-        onInitializePlaceholderData: (data)=>{
-            dispatch({type : 'POPUP_REDACT_INITIALIZE_PLACEHOLDER', payload:data}) 
+        onInitializeProfileData: (data)=>{
+            dispatch({type : 'POPUP_REDACT_INITIALIZE_PROFILE', payload:data}) 
         },
         onGetUserFetch: (userId, onHasProfile, initPlaceholder)=> {
             dispatch(getUserData(userId))

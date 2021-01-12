@@ -13,33 +13,79 @@ class ProfileRedactPopup extends Component {
     }
 
     changeUserNameValue(e){
-        console.log(e.target.value)
         this.props.onUsernameChange(e.target.value)
     }
 
     changeUserDescriptionValue(e){
-        console.log(e.target.value)
         this.props.onDescriptionChange(e.target.value)
     }
 
     changeUserBDay(e){
-        console.log(e.target.value)
         this.props.onBDayChange(e.target.value)
     }
 
-    changeGender = () => {
-        if (this.props.placeholderData.gender === 'female'){
+    changeCzValue(e){
+        this.props.onCzChange(e.target.value)
+    }
+
+    changeCityValue(e){
+        this.props.onCityChange(e.target.value)
+    }
+
+    changeGender = (e) => {
+        if (e.target.value === 'male'){
           this.props.onChangeGenderToMale();
         }
-        else if (this.props.placeholderData.gender === 'male'){
+        else if (e.target.value === 'female'){
           this.props.onChangeGenderToFemale();
         }
-      }
+    }
+    
+    // deleteTag = (e) =>{
+    //     e.preventDefault()
+    //     console.log(e.target.parentElement.dataset.key)
+    //     this.props.onTagDelete(e.target.parentElement.dataset.key)
+    // }
 
+    // tagInput = (e) =>{
+    //     console.log(e.keyCode, this.props.placeholderData.activeTags.indexOf(e.target.value) === -1)
+    //     const value = e.target.value.split(' ').join('')
+    //     if (e.keyCode === 9 || e.keyCode === 32){
+    //         e.preventDefault()
+    //         if(this.props.placeholderData.activeTags.indexOf(value) === -1 ){
+    //             this.props.onTagAdd(value)
+    //             e.target.value = ''
+    //         }
+    //     }
+        
+    // }
+
+    deletePhone = (e) =>{
+        e.preventDefault()
+        console.log(e.target.parentElement.dataset.key)
+        this.props.onTagDelete(this.props.profileState.userPhones[e.target.parentElement.dataset.key])
+    }
+
+    phoneInput = (e) =>{
+        const value = e.target.value.split(' ').join('')
+        if (e.keyCode === 9 || e.keyCode === 32){
+            e.preventDefault()
+            if(this.props.profileState.userPhones.length > 1){
+
+            }
+            else if(this.props.profileState.userPhones.indexOf(value) === -1){
+                this.props.onTagAdd(value)
+                e.target.value = ''
+            }
+        }
+        
+    }
+
+    
 
     saveRedactProfileFormChanges = (e) =>{
         e.preventDefault();
-        let name = this.props.placeholderData.userName
+        let userName = this.props.placeholderData.userName
 
         let data = {
             "user_id": this.props.userState.user.id,
@@ -52,10 +98,8 @@ class ProfileRedactPopup extends Component {
               }
             ],
             "birthday": this.props.placeholderData.birthday,
-            "city": "",
-            "phone": [
-              ""
-            ],
+            "city": this.props.placeholderData.city,
+            "phone": this.props.profileState.userPhones,
             "about": this.props.placeholderData.description,
             "social_links": [
               ""
@@ -79,7 +123,7 @@ class ProfileRedactPopup extends Component {
                 "type": "sdf"
               }
             ],
-            "cz": "",
+            "cz": this.props.placeholderData.cz,
             "profile_link": "",
             "photo_url": "",
             "profile_background": ""
@@ -98,15 +142,15 @@ class ProfileRedactPopup extends Component {
             else this.props.onCreateNewEmployer(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
         }
 
+        if (userName !== this.props.userState.user.name){
+            // this.props.OnChangeNickname()
+        }
+
         this.props.onPopupRedactProfileDeactivate();
-        
     }
 
     componentDidMount(){
         console.log(this.props.userState.hasProfile)
-        console.log(this.props.userState.userData.about)
-        
-
     }
 
     render() {
@@ -122,8 +166,8 @@ class ProfileRedactPopup extends Component {
 
                         <div className="gender-radio-box">
                             <p>Пол:</p>
-                            <input className="gender-input" type="radio" id="gender-male" name="gender-radio"  onChange={this.changeGender}/>
-                            <input className="gender-input" type="radio" id="gender-female" name="gender-radio"  onChange={this.changeGender}/>
+                            <input className="gender-input" type="radio" id="gender-male" name="gender-radio" value="male" onChange={this.changeGender}/>
+                            <input className="gender-input" type="radio" id="gender-female" name="gender-radio" value="female" onChange={this.changeGender}/>
 
                             <div>
                                 <label htmlFor="gender-male">Мужской</label>
@@ -139,6 +183,31 @@ class ProfileRedactPopup extends Component {
                         <div className="input-field">
                             <input className="popup__text-input" id="birthdayInput" name="birthdayInput" type="date" placeholder=" " onChange={this.changeUserBDay.bind(this)} value={this.props.placeholderData.birthday}/>
                             <label className="popup__text-label" htmlFor="birthdayInput">Дата рождения</label>
+                        </div>
+
+                        <div className="input-field underline-anim">
+                            <input className="popup__text-input" id="czInput" name="czInput" type="text" placeholder=" " onChange={this.changeCzValue.bind(this)} value={this.props.placeholderData.cz}/>
+                            <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
+                        </div>
+
+                        <div className="input-field underline-anim">
+                            <input className="popup__text-input" id="addressInput" name="addressInput" type="text" placeholder=" " onChange={this.changeCityValue.bind(this)} value={this.props.placeholderData.city}/>
+                            <label className="popup__text-label" htmlFor="addressInput">Адрес</label>
+                        </div>
+
+                        <div className="list-input-field">
+                            <p>Телефоны</p>
+
+                            {this.props.profileState.userPhones.map((tag, index)=>{
+                                return (
+                                    <div key={index} className="list-input-field__el-block" data-key={index}>
+                                        <span>{tag}</span>
+                                        <button className="el-block__delete-el" onClick={this.deletePhone}>x</button>
+                                    </div>
+                                )
+                            })}
+
+                            <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={this.phoneInput.bind(this)} maxLength="12"/>
                         </div>
                         
                         <Loader active={this.props.loaderActive}></Loader>
@@ -182,12 +251,23 @@ const mapDispatchToProps = (dispatch) =>{
         onBDayChange: (text)=>{
             dispatch({type : 'POPUP_REDACT_BIRTHDAY_CHANGE', payload:text})
         },
-        
+        onCzChange: (text)=>{
+            dispatch({type : 'POPUP_REDACT_CITIZENSHIP_CHANGE', payload:text})
+        },
+        onCityChange: (text)=>{
+            dispatch({type : 'POPUP_REDACT_CITY_CHANGE', payload:text})
+        },        
         onChangeGenderToMale: () => {
             dispatch({type : 'CHANGE_GENDER_TO_MALE', payload:null})
         },
         onChangeGenderToFemale: () => {
             dispatch({type : 'CHANGE_GENDER_TO_FEMALE', payload:null})
+        },
+        onTagAdd: (phone)=>{
+            dispatch({type : 'POPUP_REDACT_ADD_PHONE', payload:phone})
+        },
+        onTagDelete: (phoneId)=>{
+            dispatch({type : 'POPUP_REDACT_DELETE_PHONE', payload:phoneId})
         },
         onCreateNewEmployee:(data, userId, onGetUserFetch, onHasProfile)=>{
             dispatch({type : 'WAITING_FOR_FETCH', payload:null})
@@ -211,7 +291,6 @@ const mapDispatchToProps = (dispatch) =>{
         onGetUserFetch: (userId, onHasProfile)=> {
           dispatch(getUserData(userId))
           .then((data)=>{
-              console.log(data.userData)
               if (data.userData !== null){
                   console.log(data.userData)
                   onHasProfile()

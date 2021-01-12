@@ -4,12 +4,6 @@ import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 
 
 export class MainPlaceholder extends Component {
-    constructor(props) {
-        super(props)
-     
-        this.userName = React.createRef()
-    }
-
     checkAvatar(){
         if (this.props.userState.hasProfile){
             if (this.props.userData.photo_url !== ""){
@@ -20,6 +14,14 @@ export class MainPlaceholder extends Component {
         return placeholderAvatar
     }
 
+    // componentDidMount(){
+    //     this.props.store.subscribe(() => {
+    //       this.setState({reduxState: this.props.store.getState()});
+    //     });
+    //   }
+    componentDidUpdate(){
+        console.log(this.props.userPhones)
+    }
     render() {
         return (
             <div className="main-placeholder rounded">
@@ -34,12 +36,18 @@ export class MainPlaceholder extends Component {
                         
                         <p className="info__description">{this.props.userDescription}</p>
                         <div className="info__common-info">
-                            <p>
-                                <span>19 лет</span>
-                                <span className={'info__common-info__gender ' + this.props.userGender}></span>
-                            </p>
-    
-                            <p>{this.props.userBirthday}</p>
+                            
+                            <p className={'info__common-info__birthday ' + this.props.userBirthday}>{this.props.userBirthday}</p>
+                            <p className={'info__common-info__gender ' + this.props.userGender}></p>
+                            <div className="info__common-info__living">
+                                <p className="living__place">{this.props.userCity}</p>
+                                <p className="living__cz">{this.props.userCz}</p>
+                            </div>
+                            
+                        </div>
+                        
+                        <div className="info__contacts__phones">
+                            {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                         </div>
                     </div>
                 </section>
@@ -56,7 +64,10 @@ const mapStateToProps = (state) => {
         userName: state.profile.placeholder.userName,
         userDescription: state.profile.placeholder.description,
         userBirthday: state.profile.placeholder.birthday,
-        userGender:state.profile.placeholder.gender
+        userGender:state.profile.placeholder.gender,
+        userCity:state.profile.placeholder.city,
+        userCz:state.profile.placeholder.cz,
+        userPhones:state.profile.userPhones
     }
 }
 

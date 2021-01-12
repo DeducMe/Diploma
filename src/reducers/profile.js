@@ -1,13 +1,16 @@
 const initialState = {
     state:'muted',
     placeholder: {
-        userName: '',
-        avatar: '',
-        personalBackground: '',
-        description:'',
-        gender: '',
-        birthday: ''
-    }
+      userName: '',
+      description: '',
+      avatar: '',
+      gender: '',
+      personalBackground: '',
+      birthday: '',
+      cz:'',
+      city: '',
+    },
+    userPhones: []
 };
   
   
@@ -36,6 +39,28 @@ export default function profileState(state = initialState, action){
     //         ...state
     //     }
     // }
+    else if (action.type === 'POPUP_REDACT_ADD_PHONE'){
+      state.userPhones.push(action.payload);
+      state.userPhones = Object.assign([], state.userPhones, [...state.userPhones]);
+
+      return {
+        ...state,
+        // userPhones: state.userPhones.map(n => n.id === action.payload
+        //   ? { ...n, done: !n.done }
+        //   : n
+        // ),
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_DELETE_PHONE'){
+      state.userPhones.splice(state.userPhones.indexOf(action.payload), 1);
+      return {
+        ...state,
+        userPhones: state.userPhones.map(n => n.id === action.payload
+          ? { ...n, done: !n.done }
+          : n
+        ),
+      };
+    }
     else if (action.type === 'POPUP_REDACT_USERNAME_CHANGE'){
         state.placeholder.userName = action.payload;
         return {
@@ -54,8 +79,20 @@ export default function profileState(state = initialState, action){
         ...state
       };
     }
-    else if (action.type === 'POPUP_REDACT_INITIALIZE_PLACEHOLDER'){
-        state.placeholder = action.payload;
+    else if (action.type === 'POPUP_REDACT_CITIZENSHIP_CHANGE'){
+      state.placeholder.cz = action.payload;
+      return {
+        ...state
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_CITY_CHANGE'){
+      state.placeholder.city = action.payload;
+      return {
+        ...state
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_INITIALIZE_PROFILE'){
+        state = action.payload;
         return {
           ...state
         };
@@ -73,6 +110,7 @@ export default function profileState(state = initialState, action){
         ...state
       };
     }
+    
     
     
     return state;

@@ -142,6 +142,20 @@
     color: #000;
 }
 
+.info__common-info__birthday,
+.info__common-info__gender{
+    display: block;
+    width: 140px;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position:right;
+}
+
+.info__common-info__birthday:not(:empty){
+    background-image: url('../../../img/birthday-cake.svg');
+    margin-bottom: 5px;
+}
+
 .info__common-info__gender.female{
     background-image: url('../../../img/female.svg');
 }
@@ -156,4 +170,17 @@
 
 .info__common-info__gender.female::after{
   content: 'Женщина';
+}
+
+.info__common-info__living{
+    margin-top: 20px;
+}
+
+.info__contacts{
+    margin-top: 20px;
+}
+
+.contacts__phones-el{
+    display: block;
+    width: fit-content;
 }

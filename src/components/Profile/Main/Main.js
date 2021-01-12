@@ -20,6 +20,35 @@ class Main extends Component {
         this.props.onPopupRedactProfileActivate()
     }
 
+    checkContacts(){
+        if (this.props.userData.phone.length !== 0) return (
+        <div className="info__contacts">
+            <div className="contacts__phones">
+                {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+            </div>
+        </div>)
+    }
+
+    checkEducation(){
+        if (this.props.userData.education.length!== 0) return(
+        <div className="info__education">
+            <h3 className="education-head bold headed">Образование:</h3>
+            {this.props.userData.education.map((el, index)=>{
+                if (!el.course)
+                return (
+                    <div className="education-block" key={index}>
+                        <p className="education-name highlighted">{el.profession}</p>
+                        <div className="education-place">
+                            <p className="education-place__institution">{el.university},</p>
+                            <p className="education-place__grade">&nbsp;{el.type}</p>     
+                            <p className="education-place__longing">{el.startYear + ' - ' + el.endYear}</p>
+                        </div>
+                    </div>
+                )
+            })}
+        </div>)
+    }
+
     render() {
         if (this.props.userState.hasProfile){
             return (
@@ -39,44 +68,29 @@ class Main extends Component {
                         <p className="info__description">{this.props.userData.about}</p>
 
                         <div className="info__common-info">
-                            <p>
-                                <span>19 лет</span>
-                                <span className={"info__common-info__gender " + this.props.userData.gender}></span>
+                            <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
+                            <p className={"info__common-info__gender " + this.props.userData.gender}></p>
 
-                            </p>
-    
-                            <p>{this.props.userData.birthday}</p>
-                        </div>
-    
-                        <p className="info__place">{this.props.userData.city}</p>
-    
-                        {()=>{
-                            if (this.props.userData.education.length!== 0) return
-                            <div className="info__education">
-                                <h3 className="education-head bold headed">Образование:</h3>
-                                {this.props.userData.education.map((el, index)=>{
-                                    if (!el.course)
-                                    return (
-                                        <div className="education-block" key={index}>
-                                            <p className="education-name highlighted">{el.profession}</p>
-                                            <div className="education-place">
-                                                <p className="education-place__institution">{el.university},</p>
-                                                <p className="education-place__grade">&nbsp;{el.type}</p>     
-                                                <p className="education-place__longing">{el.startYear + ' - ' + el.endYear}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                    //{el.type}
-                                    //{el.startYear - el.endYear}
-                                })}
+                            <div className="info__common-info__living">
+                                <p className="living__place">{this.props.userData.city}</p>
+                                <p className="living__cz">{this.props.userData.cz}</p>
                             </div>
-                        }}
+                        </div>
+                        
+                        {this.checkContacts()}
+                        
+    
+                        {this.checkEducation()}
                         
                         {()=>{
                             if (this.props.userData.education.filter(el => el.course === true).length !== 0) return
                             <div className="info__courses">
                                 <h3 className="courses-head bold headed">Курсы:</h3>
                                 {this.props.userData.education.map((el, index)=>{
+                                    var d = new Date();
+
+                                    alert( d.toISOString() );
+                                    // if (el.endYear > d)
                                     // if (el.course)
                                     return (
                                         <div className="education-block" key={index}>

@@ -37,6 +37,7 @@ export default function userState(state = initialState, action){
         ...state
       };
     }
+  
     else if (action.type === 'LOGIN_USER_FETCH_SUCCES'){
       state.user = action.data;
       state.waitingFetch = false;
