@@ -10,7 +10,7 @@ import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 import {Link} from 'react-router-dom'
 
-const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
+const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
   function searchToggle(){
     if (navState.searchActive){
       onSearchDeactivate();
@@ -21,11 +21,11 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
   }
 
   function registartionPopupOpen(){
-    onRegistrationPopupActivate();
+    onRegistrationPopupActivate(history);
   }
 
   function loginPopupOpen(){
-    onLoginPopupActivate();
+    onLoginPopupActivate(history);
   }
 
   
@@ -35,7 +35,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
     else {
       onNavPositionChangeToNone()
       if (!logged){
-        history.push('/landing')
+        // history.push('/landing')
       }
     }
   }, [location]);
@@ -70,7 +70,7 @@ const Nav = ({logged, navState, onSearchActivate, onSearchDeactivate, onRegistra
               <img src={star} alt="favourites"/>
             </button>
 
-            <Link to="/profile" className="f-medium semi link-anim nav-el">Моя страница</Link>
+            <Link to={"/profile/"+userState.user.id} className="f-medium semi link-anim nav-el">Моя страница</Link>
           </div>
           
         </nav>     
@@ -132,6 +132,7 @@ const mapStateToProps = (state, ownProps) =>{
   return {
     navState: state.nav,
     logged:state.user.logged,
+    userState:state.user,
     location:ownProps.location.pathname,
     history:ownProps.history
   }
@@ -145,11 +146,15 @@ const mapDispatchToProps = (dispatch) =>{
     onSearchDeactivate: () => {
       dispatch({type : 'SEARCH_DEACTIVATE', payload:null})
     },
-    onLoginPopupActivate: () => {
+    onLoginPopupActivate: (history) => {
+      history.push('/landing')
       dispatch({type : 'POPUP_ACTIVATE', payload:'login'})
     },
-    onRegistrationPopupActivate: () => {
+    onRegistrationPopupActivate: (history) => {
+      history.push('/landing')
+
       dispatch({type : 'POPUP_ACTIVATE', payload:'registration'})
+
     },
     onNavPositionChangeToNone: () => {
       dispatch({type : 'CHANGE_NAV_POSITION_TO_NONE', payload:null})

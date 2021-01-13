@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import '../../../css/style.css'
 import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
+import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
+
 import Loader from '../../Loader/Loader'
 
 class Popup extends Component {
@@ -43,9 +45,9 @@ class Popup extends Component {
 
   }
 
-  redirectUser = () =>{
+  redirectUser = (userId) =>{
     this.props.onLoginUser();
-    this.props.history.push("/profile");
+    this.props.history.push("/profile/"+userId);
     this.props.onDeactivateLoader()
   }
 
@@ -283,13 +285,14 @@ const mapDispatchToProps = (dispatch) =>{
     onLoginUser: () => {
       dispatch({type : 'USER_LOGIN', payload:null})
     },
+
     onLoginUserCheck: (data, redirectUser, fetchError) =>{
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
-        if (data.data != 0){
-          redirectUser()
+        if (data.data !== null && data.data !== 0){
+          redirectUser(data.data.id)
         }
         else{
           fetchError('wrong-data')
@@ -301,14 +304,33 @@ const mapDispatchToProps = (dispatch) =>{
       dispatch(registrateNewUser(data))
       .then(data => {
         console.log(data)
-        if (data.data != 0){
-          redirectUser()
+        if (data.data !== null && data.data !== 0){
+          let userId = data.data.id
+          let name = data.data.name
+          fetch('new_worker.json', {
+            headers : { 
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          })
+          .then(response => {
+            console.log(response)
+            return response.json()
+          })
+          .then(data => {
+            data["user_id"] = userId
+            data["name"] = name
+            return dispatch(createNewEmployee(data))
+          })
+          .then(data => redirectUser(userId))
         }
         else{
           fetchError('email-occupied')
         }
       })
+      
     },
+    
     onActivateLoader: ()=>{
       dispatch({type : 'ACTIVATE_LOADER', payload:null})
     },

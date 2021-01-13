@@ -24,7 +24,6 @@ export default function userState(state = initialState, action){
         };
     }
     else if (action.type === 'GET_USER_DATA_FETCH_SUCCES'){
-        state.userData = action.userData;
         state.waitingFetch = false;
         return {
           ...state
@@ -59,6 +58,11 @@ export default function userState(state = initialState, action){
     }
     else if(action.type === 'USER_HAS_PROFILE'){
       state.hasProfile = true;
+      return {
+        ...state
+      };
+    }
+    else if(action.type === '404_ERROR'){
       return {
         ...state
       };

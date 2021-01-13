@@ -31,11 +31,12 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>  
       <Route path="/" component={Nav}/>
-        <Switch>
+
+      <Switch>
           <Route path="/landing" component={Landing}/>
-          <Route exact path="/profile" component={Profile}/>
-          <Redirect to="/landing"></Redirect>
-        </Switch>
+          <Route path="/profile/:id" component={Profile}/>
+          <Redirect from="*" to="/landing"/>
+      </Switch>
     </Router>
   </Provider>,
 

@@ -2,10 +2,7 @@
   "user_id": 0,
   "mailing": true,
   "language": [
-    {
-      "language": "",
-      "grade": ""
-    }
+
   ],
   "birthday": "",
   "city": "",
@@ -17,22 +14,13 @@
     ""
   ],
   "education": [
-    {
-      "years": 0,
-      "profession": "",
-      "university": ""
-    }
+
   ],
   "exp": [
-    {
-      "years": 0,
-      "position": "",
-      "company": "",
-      "type": ""
-    }
+
   ],
   "cz": "",
-  "profile_link": "",
+  "profile_link": "empty",
   "photo_url": "",
   "profile_background": ""
 }

@@ -5,6 +5,8 @@ import ProfileRedactPopup from './ProfileRedactPopup/ProfileRedactPopup'
 import { connect } from 'react-redux'
 import {getUserData} from '../../actions/serverConnections'
 import './profile.css'
+import userData from '../../reducers/userData'
+import Loader from '../Loader/Loader'
 
 
 class Profile extends Component {
@@ -23,22 +25,33 @@ class Profile extends Component {
                 state: this.props.profileState.state,
                     placeholder: {
                     userName: this.props.userState.user.name,
-                    description: this.checkIfNotNull(this.props.userState.userData.about, ''),
+                    description: this.checkIfNotNull(this.props.userData.about, ''),
                     avatar: '',
-                    gender: this.checkIfNotNull(this.props.userState.userData.gender, ''),
+                    gender: this.checkIfNotNull(this.props.userData.gender, ''),
                     personalBackground: '',
-                    birthday: this.checkIfNotNull(this.props.userState.userData.birthday, ''),
-                    cz: this.checkIfNotNull(this.props.userState.userData.cz, ''),
-                    city: this.checkIfNotNull(this.props.userState.userData.city, '')
+                    birthday: this.checkIfNotNull(this.props.userData.birthday, ''),
+                    cz: this.checkIfNotNull(this.props.userData.cz, ''),
+                    city: this.checkIfNotNull(this.props.userData.city, ''),
+                    profile_link: '',
+                    photo_url: '',
+                    profile_background: ''
                 },
-                userPhones: this.checkIfNotNull(this.props.userState.userData.phone, [])
+                userPhones: this.checkIfNotNull(this.props.userData.phone, []),
+                userPhones: [],
+                language:[],
+                education: [],
+                workExp: [],
+                social_links: [],
+                buf:{
+                    languageGrade:'A1'
+                }
             }
         )
         else 
         this.props.onInitializeProfileData({
                 state: this.props.profileState.state,
                 placeholder: {
-                    userName: '',
+                    userName: this.props.userState.user.name,
                     description: '',
                     avatar: '',
                     gender: '',
@@ -46,24 +59,35 @@ class Profile extends Component {
                     birthday: '',
                     cz:'',
                     city: '',
+                    profile_link: '',
+                    photo_url: '',
+                    profile_background: ''
                 },
-                userPhones: []
+                userPhones: [],
+                language:[],
+                education: [],
+                workExp: [],
+                social_links: [],
+                buf:{
+                    languageGrade:'A1'
+                }
+
             }
         )
     }
 
     componentDidMount(){
-        if (this.props.userState.logged){
+        if (this.props.userState.logged && this.props.userFetchId === String(this.props.userState.user.id)){
             console.log(this.props.userState.user)
-            this.props.onGetUserFetch(this.props.userState.user.id, this.props.onHasProfile, this.initPlaceholder)
+            this.props.onGetLoggedUserFetch(this.props.userFetchId,this.props.onHasProfile, this.initPlaceholder, this.props.history)
         }
-
-        
-        
+        else{
+            this.props.onGetUserFetch(this.props.userFetchId, this.props.history)
+        }        
     }
     
     render() {
-        
+        if (Object.keys(this.props.userData).length !== 0)
         return (
             <div className="small-container profile-wrapper">
                 <div className="profile__main">
@@ -76,35 +100,53 @@ class Profile extends Component {
                 <ProfileRedactPopup></ProfileRedactPopup>
             </div>
         )
+
+        else return <Loader active={true}></Loader>
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
+        userFetchId: ownProps.match.params.id,
+        history: ownProps.history,
         profileState: state.profile,
         userState: state.user,
+        userData: state.userData,
         placeholderData: state.profile.placeholder,
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        onHasProfile: () => {
-            dispatch({type : 'USER_HAS_PROFILE', payload:null})
-        },
+
         onInitializeProfileData: (data)=>{
             dispatch({type : 'POPUP_REDACT_INITIALIZE_PROFILE', payload:data}) 
         },
-        onGetUserFetch: (userId, onHasProfile, initPlaceholder)=> {
+        onHasProfile: (data)=>{
+            dispatch({type : 'USER_HAS_PROFILE', payload:null}) 
+        },
+        onGetLoggedUserFetch: (userId, onHasProfile, initPlaceholder, history)=> {
             dispatch(getUserData(userId))
             .then((data)=>{
-
-                if (data.userData !== null){
+                if (data.userData !== null && data.userData!=='404'){
                     console.log(data.userData)
-                    return onHasProfile()
+                    initPlaceholder()
+                    if (data.userData.profile_link !== "empty"){
+                        onHasProfile()
+                    }
                 }
+                else history.push('/landing')           
             })
-            .then(data => initPlaceholder())
+        },
+
+        onGetUserFetch: (userId, history)=> {
+            dispatch(getUserData(userId))
+            .then((data)=>{
+                if (data.userData !== null && data.userData!=='404'){
+                    console.log(data.userData)
+                }
+                else history.push('/landing')           
+            })
         },
     }
 }

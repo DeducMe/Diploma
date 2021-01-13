@@ -9,8 +9,18 @@ const initialState = {
       birthday: '',
       cz:'',
       city: '',
+      profile_link: '',
+      photo_url: '',
+      profile_background: ''
     },
-    userPhones: []
+    userPhones: [],
+    language:[],
+    education: [],
+    workExp: [],
+    social_links: [],
+    buf:{
+      languageGrade:'A1'
+  }
 };
   
   
@@ -39,16 +49,34 @@ export default function profileState(state = initialState, action){
     //         ...state
     //     }
     // }
+    else if (action.type === 'POPUP_REDACT_ADD_LANGUAGE'){
+      state.language.push(action.payload);
+      state.language = Object.assign([], state.language, [...state.language]);
+
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_LANGUAGE_GRADE_CHANGE'){
+      state.buf.languageGrade = action.payload;
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_DELETE_LANGUAGE'){
+      state.language.splice(state.language.indexOf(action.payload), 1);
+      state.language = Object.assign([], state.language, [...state.language]);
+      return {
+        ...state,
+
+      };
+    }
     else if (action.type === 'POPUP_REDACT_ADD_PHONE'){
       state.userPhones.push(action.payload);
       state.userPhones = Object.assign([], state.userPhones, [...state.userPhones]);
 
       return {
         ...state,
-        // userPhones: state.userPhones.map(n => n.id === action.payload
-        //   ? { ...n, done: !n.done }
-        //   : n
-        // ),
       };
     }
     else if (action.type === 'POPUP_REDACT_DELETE_PHONE'){

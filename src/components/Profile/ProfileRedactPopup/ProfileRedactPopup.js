@@ -60,6 +60,34 @@ class ProfileRedactPopup extends Component {
         
     // }
 
+
+    deleteLanguage = (e) =>{
+        e.preventDefault()
+        console.log(e.target.parentElement.dataset.key)
+        this.props.onLanguageDelete(this.props.profileState.language[e.target.parentElement.dataset.key])
+    }
+
+    languageGradeChange = (e) =>{
+        this.props.onLanguageGradeChange(e.target.value)
+    }
+
+    languageInput = (e) =>{
+        const value = e.target.value.split(' ').join('')
+        if (e.keyCode === 9 || e.keyCode === 32){
+            e.preventDefault()
+            let newLanguage = {
+                "grade": this.props.profileState.buf.languageGrade,
+                "language": value
+            }
+            console.log(this.props.profileState.language.filter((el) => el.language === newLanguage.language))
+            if(this.props.profileState.language.filter((el) => el.language === newLanguage.language).length === 0){
+                this.props.onLanguageAdd(newLanguage)
+                e.target.value = ''
+            }
+        }
+        
+    }
+
     deletePhone = (e) =>{
         e.preventDefault()
         console.log(e.target.parentElement.dataset.key)
@@ -90,13 +118,9 @@ class ProfileRedactPopup extends Component {
         let data = {
             "user_id": this.props.userState.user.id,
             "gender":this.props.placeholderData.gender,
+            "name":this.props.placeholderData.userName,
             "mailing": true,
-            "language": [
-              {
-                "language": "",
-                "grade": ""
-              }
-            ],
+            "language": this.props.profileState.language.length !== 0 ? (this.props.placeholderData.language) : ([]),
             "birthday": this.props.placeholderData.birthday,
             "city": this.props.placeholderData.city,
             "phone": this.props.profileState.userPhones,
@@ -105,23 +129,23 @@ class ProfileRedactPopup extends Component {
               ""
             ],
             "education": [
-              {
-                "proffession": "geniy",
-                "university": "123",
-                "type": "dfsd",
-                "start_year": "sdf",
-                "end_year": "sdfs",
-                "course": false
-              }
+            //   {
+            //     "proffession": "",
+            //     "university": "",
+            //     "type": "",
+            //     "start_year": "",
+            //     "end_year": "",
+            //     "course": false
+            //   }
             ],
             "exp": [
-              {
-                "start_year": "sdf",
-                "end_year": "sdf",
-                "position": "sdf",
-                "company": "sdf",
-                "type": "sdf"
-              }
+            //   {
+            //     "start_year": "sdf",
+            //     "end_year": "sdf",
+            //     "position": "sdf",
+            //     "company": "sdf",
+            //     "type": "sdf"
+            //   }
             ],
             "cz": this.props.placeholderData.cz,
             "profile_link": "",
@@ -129,22 +153,10 @@ class ProfileRedactPopup extends Component {
             "profile_background": ""
         }
 
-        if (this.props.userState.hasProfile){
-            if (this.props.userState.user.user_type === 'employee'){
-                this.props.onUpdateEmployee(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
-            }
-            else this.props.onUpdateEmployer(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
+        if (this.props.userState.user.user_type === 'employee'){
+            this.props.onUpdateEmployee(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
         }
-        else {
-            if (this.props.userState.user.user_type === 'employee'){
-                this.props.onCreateNewEmployee(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
-            }
-            else this.props.onCreateNewEmployer(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
-        }
-
-        if (userName !== this.props.userState.user.name){
-            // this.props.OnChangeNickname()
-        }
+        else this.props.onUpdateEmployer(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
 
         this.props.onPopupRedactProfileDeactivate();
     }
@@ -209,6 +221,29 @@ class ProfileRedactPopup extends Component {
 
                             <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={this.phoneInput.bind(this)} maxLength="12"/>
                         </div>
+
+                        <div className="list-input-field">
+                            <p>Владение языками</p>
+
+                            {this.props.profileState.language.map((el, index)=>{
+                                return (
+                                    <div key={index} className="list-input-field__el-block" data-key={index}>
+                                        <span>{el.language + ' - ' + el.grade}</span>
+                                        <button className="el-block__delete-el" onClick={this.deleteLanguage}>x</button>
+                                    </div>
+                                )
+                            })}
+
+                            <input className="popup__text-input" type="text" id="languageInput" name="languageInput" placeholder="Нажмите пробел после введения языка..." onKeyDown={this.languageInput.bind(this)}/>
+                            <select name="languageGradeInput" id="languageGradeInput" onChange={this.languageGradeChange} value={this.props.profileState.buf.languageGrade}>
+                                <option value="A1">A1 - начинающий (Beginner)</option>
+                                <option value="A2">A2 - предпродвинутый (Pre-Intermediate)</option>
+                                <option value="B1">B1 - продвинутый (Intermediate)</option>
+                                <option value="B2">B2 - предпрофессиональный (Upper-Intermediate)</option>
+                                <option value="C1">C1 - Профессиональный (Advanced)</option>
+                                <option value="C2">C2 - Владение в совершенстве (Mastery)</option>
+                            </select>
+                        </div>  
                         
                         <Loader active={this.props.loaderActive}></Loader>
 
@@ -262,6 +297,15 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onChangeGenderToFemale: () => {
             dispatch({type : 'CHANGE_GENDER_TO_FEMALE', payload:null})
+        },
+        onLanguageAdd: (language)=>{
+            dispatch({type : 'POPUP_REDACT_ADD_LANGUAGE', payload:language})
+        },
+        onLanguageGradeChange: (grade)=>{
+            dispatch({type : 'POPUP_REDACT_LANGUAGE_GRADE_CHANGE', payload:grade})
+        },
+        onLanguageDelete: (languageId)=>{
+            dispatch({type : 'POPUP_REDACT_DELETE_LANGUAGE', payload:languageId})
         },
         onTagAdd: (phone)=>{
             dispatch({type : 'POPUP_REDACT_ADD_PHONE', payload:phone})

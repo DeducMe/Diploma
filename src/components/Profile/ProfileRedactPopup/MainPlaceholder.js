@@ -60,7 +60,7 @@ const mapStateToProps = (state) => {
     return {
         placeholderData: state.profile.placeholder,
         userState: state.user,
-        userData: state.user.userData,
+        userData: state.userData,
         userName: state.profile.placeholder.userName,
         userDescription: state.profile.placeholder.description,
         userBirthday: state.profile.placeholder.birthday,

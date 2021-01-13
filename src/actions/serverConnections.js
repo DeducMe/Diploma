@@ -39,12 +39,22 @@ function createNewEmployeeFetchSucces(){
     }
 }
 
+function notFoundError(userData){
+    return{
+        type:'404_ERROR',
+        userData
+    }
+}
+
 export const getUserData = (userId) => (dispatch) => {
     console.log(userId)
     return fetch(url + '/workers/' + userId)  //userId
     .then(response => response.json())
-    .then(data => dispatch(getUserDataFetchSucces(data)))
-    .catch(err => dispatch({ type: 'FETCH_ERROR', err }))
+    .then(data => {
+        if (data !== '404')
+        return dispatch(getUserDataFetchSucces(data))
+        else return dispatch(notFoundError(data))
+    })
 }
 
 export const loginUser = (data) => (dispatch) => {
@@ -84,7 +94,7 @@ export const registrateNewUser = (data) => (dispatch) => {
 }
 
 export const createNewEmployee = (data) => (dispatch) => {
-    console.log(JSON.stringify(data))
+    
     return fetch(url + '/workers',{
         method: 'POST',  
         body: JSON.stringify(data),  
