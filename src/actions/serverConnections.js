@@ -14,6 +14,13 @@ function registarteUserFetchSucces(data){
     }
 }
 
+function logoutUserFetchSucces(data){
+    return{
+        type:'LOGOUT_USER_FETCH_SUCCES',
+        data
+    }
+}
+
 function loginUserFetchSucces(data){
     return{
         type:'LOGIN_USER_FETCH_SUCCES',
@@ -48,9 +55,21 @@ function notFoundError(userData){
 
 export const getUserData = (userId) => (dispatch) => {
     console.log(userId)
-    return fetch(url + '/workers/' + userId)  //userId
-    .then(response => response.json())
+    return fetch(url + '/workers/'+userId,{
+        method: 'GET',
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    })  //userId
+    .then(response => {
+        let a = response.json()
+        console.log(a)
+        return a
+    })
     .then(data => {
+        console.log(data)
         if (data !== '404')
         return dispatch(getUserDataFetchSucces(data))
         else return dispatch(notFoundError(data))
@@ -71,6 +90,7 @@ export const loginUser = (data) => (dispatch) => {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data)
         return dispatch(loginUserFetchSucces(data))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
@@ -90,6 +110,31 @@ export const registrateNewUser = (data) => (dispatch) => {
     })
     .then(response => response.json())
     .then(data => dispatch(registarteUserFetchSucces(data)))
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const logout = () => (dispatch) => {
+    return fetch(url + '/logout',{
+        method: 'DELETE',  
+        body: '',  
+
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        'XSRF-TOKEN':'xjk2kzjn4',
+        "X-XSRF-TOKEN":'xjk2kzjn4',
+        "X-CSRF-TOKEN":'xjk2kzjn4'
+      }
+    })
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        return dispatch(logoutUserFetchSucces(data))
+    })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 

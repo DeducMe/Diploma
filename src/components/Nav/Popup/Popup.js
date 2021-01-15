@@ -5,7 +5,6 @@ import '../../../css/style.css'
 import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
 import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
-
 import Loader from '../../Loader/Loader'
 
 class Popup extends Component {
@@ -52,7 +51,10 @@ class Popup extends Component {
   }
 
   loginUser(login, password){
-    this.props.onLoginUserCheck({"email":login, "password":password}, this.redirectUser, this.fetchError) // server response here
+    this.props.onLoginUserCheck({
+      "email": "user@example.com",
+      "password": "string"
+    }, this.redirectUser, this.fetchError) // server response here
     this.props.onActivateLoader()
   }
 
@@ -158,7 +160,6 @@ class Popup extends Component {
             </svg></span><span>Запомните меня!</span></label>
           </div>
           <Loader active={this.props.loaderActive}></Loader>
-
           <input className="form-submit-btn f-large rounded" type="submit" value="Войти!"/>
           <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
 

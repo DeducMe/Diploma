@@ -9,8 +9,11 @@ import bell from '../../img/bell.svg'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 import {Link} from 'react-router-dom'
+import Cookies from 'universal-cookie';
+import {logout} from '../../actions/serverConnections'
 
-const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
+
+const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,onLogout, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
   function searchToggle(){
     if (navState.searchActive){
       onSearchDeactivate();
@@ -28,6 +31,10 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate, 
     onLoginPopupActivate(history);
   }
 
+  function logoutHandleFormSubmit(e){
+    e.preventDefault();
+    onLogout()
+  }
   
   useEffect(() => {
     if (location === '/landing')
@@ -71,6 +78,9 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate, 
             </button>
 
             <Link to={"/profile/"+userState.user.id} className="f-medium semi link-anim nav-el">Моя страница</Link>
+            <form onSubmit={logoutHandleFormSubmit}>
+              <button type="submit">Logout</button>
+            </form>
           </div>
           
         </nav>     
@@ -161,6 +171,10 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onNavPositionChangeToFixed: () => {
       dispatch({type : 'CHANGE_NAV_POSITION_TO_FIXED', payload:null})
+    },
+    onLogout: (token)=>{
+      dispatch(logout(token))
+
     }
   }
 }
