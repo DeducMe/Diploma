@@ -76,13 +76,32 @@ class Popup extends Component {
     return re.test(password);
   }
 
-  registrationJsonCreate(login, password, username, type){
-    return {
+  async registrationJsonCreate(login, password, username, type){
+    const user = {
       "name": username,
       "email": login,
       "password": password,
       "user_type": type
     }
+
+    return fetch('new_worker.json', {
+      headers : { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return data
+    })
+    .then(data =>{
+      return {
+        "user":user,
+        "profile":data
+      }
+    })
+    
   }
 
 
@@ -108,8 +127,8 @@ class Popup extends Component {
         else if (this.props.popupState.type === 'registration'){
           let username = e.target.nameInput.value
 
-          const data = this.registrationJsonCreate(login, password, username, this.props.popupState.subject)
-          this.registrateUser(data)
+          this.registrationJsonCreate(login, password, username, this.props.popupState.subject)
+          .then(data => this.registrateUser(data))
         }
       }
     },0)
@@ -308,22 +327,7 @@ const mapDispatchToProps = (dispatch) =>{
         if (data.data !== null && data.data !== 0){
           let userId = data.data.id
           let name = data.data.name
-          fetch('new_worker.json', {
-            headers : { 
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            }
-          })
-          .then(response => {
-            console.log(response)
-            return response.json()
-          })
-          .then(data => {
-            data["user_id"] = userId
-            data["name"] = name
-            return dispatch(createNewEmployee(data))
-          })
-          .then(data => redirectUser(userId))
+          redirectUser(userId)
         }
         else{
           fetchError('email-occupied')
