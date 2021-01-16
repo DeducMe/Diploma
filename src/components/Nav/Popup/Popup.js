@@ -83,7 +83,7 @@ class Popup extends Component {
       "password": password,
       "user_type": type
     }
-
+    // if (user["user_type"] == 'worker')
     return fetch('new_worker.json', {
       headers : { 
         'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ class Popup extends Component {
     .then(data =>{
       return {
         "user":user,
-        "profile":data
+        "worker":data
       }
     })
     
