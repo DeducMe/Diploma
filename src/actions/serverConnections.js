@@ -1,4 +1,4 @@
-const url = 'http://3.22.99.254'  //http://localhost:3000
+const url = 'http://job-flow.ru/api'  //http://localhost:3000
 
 function getUserDataFetchSucces(userData){
     return{
