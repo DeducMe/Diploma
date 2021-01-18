@@ -20,54 +20,6 @@ class Main extends Component {
         this.props.onPopupRedactProfileActivate()
     }
 
-    checkContacts(){
-        if (this.props.userData.phone.length !== 0) return (
-        <div className="info__contacts">
-            <div className="contacts__phones">
-                {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
-            </div>
-        </div>)
-    }
-
-    checkEducation(){
-        if (this.props.userData.education.length!== 0) return(
-        <div className="info__education">
-            <h3 className="education-head bold headed">Образование:</h3>
-            {this.props.userData.education.map((el, index)=>{
-                return (
-                    <div className="education-block" key={index}>
-                        <p className="education-name highlighted">{el.proffession}</p>
-                        <div className="education-place">
-                            <p className="education-place__institution">{el.university},</p>
-                            <p className="education-place__grade">&nbsp;{el.type}</p>     
-                            <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                        </div>
-                    </div>
-                )
-            })}
-        </div>)
-    }
-
-    checkWorkExperience(){
-        if (this.props.userData.education.length!== 0) return (
-        <div className="info__work-experience">
-            <h3 className="courses-head bold headed">Опыт Работы:</h3>
-            {this.props.userData.exp.map((el, index)=>{
-                return (
-                    <div className="education-block" key={index}>
-                        <p className="education-name highlighted">{el.position}</p>
-                        <div className="education-place">
-                            <p className="education-place__institution">{el.company},</p>
-                            <p className="education-place__grade">&nbsp;{el.type},</p>     
-    
-                            <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                        </div>
-                    </div>
-                )
-            })}
-        </div>)
-    }
-
     render() {
         if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user_id){
             return (
@@ -97,11 +49,46 @@ class Main extends Component {
                             </div>
                         </div>
                         
-                        {this.checkContacts()}
+                        {this.props.userData.phone.length !== 0 ? (
+                            <div className="info__contacts">
+                                <div className="contacts__phones">
+                                    {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                </div>
+                            </div>):('')}
                         
-                        {this.checkEducation()}
+                        {this.props.userData.education.length!== 0 ?(
+                            <div className="info__education">
+                                <h3 className="education-head bold headed">Образование:</h3>
+                                {this.props.userData.education.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.proffession}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.university},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type}</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
                                                
-                        {this.checkWorkExperience()}
+                        {this.props.userData.education.length!== 0 ? (
+                            <div className="info__work-experience">
+                                <h3 className="courses-head bold headed">Опыт Работы:</h3>
+                                {this.props.userData.exp.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.position}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.company},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type},</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
                         
                     </section>
                 </div>
@@ -119,21 +106,6 @@ class Main extends Component {
                     <div className="info-head">
                         <h2 className="info__name bold">{this.props.userData.name}</h2>
                     </div>
-                    {/* {
-                        this.props.userState.user.id === this.props.userData.user_id ? (
-                            <div>
-                                <p className="info__description">Чтобы создать профиль нажмите на кнопку и введите информацию о себе!</p>
-                                {this.goPhrase()}
-
-                                <button className="profile-redact-btn" onClick={this.redactProfile}>
-                                    <img src={plusIcon} alt="plusIcon"/>
-                                </button> 
-                            </div>
-                            
-                        ):(
-                            <p className="info__description">Профиль пуст</p>
-                        )
-                    } */}
                     <div>
                         <p className="info__description">Чтобы создать профиль нажмите на кнопку и введите информацию о себе!</p>
                         {this.goPhrase()}
@@ -170,11 +142,46 @@ class Main extends Component {
                             </div>
                         </div>
                         
-                        {this.checkContacts()}
-    
-                        {this.checkEducation()}
-
-                        {this.checkWorkExperience()}
+                        {this.props.userData.phone.length !== 0 ? (
+                            <div className="info__contacts">
+                                <div className="contacts__phones">
+                                    {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                </div>
+                            </div>):('')}
+                        
+                        {this.props.userData.education.length!== 0 ?(
+                            <div className="info__education">
+                                <h3 className="education-head bold headed">Образование:</h3>
+                                {this.props.userData.education.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.proffession}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.university},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type}</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
+                                               
+                        {this.props.userData.education.length!== 0 ? (
+                            <div className="info__work-experience">
+                                <h3 className="courses-head bold headed">Опыт Работы:</h3>
+                                {this.props.userData.exp.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.position}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.company},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type},</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
                     </section>
                 </div>
         )

@@ -109,7 +109,10 @@ class ProfileRedactPopup extends Component {
         
     }
 
-    
+    educationFormSubmit = (e) =>{
+        e.preventDefault();
+
+    }
 
     saveRedactProfileFormChanges = (e) =>{
         e.preventDefault();
@@ -125,28 +128,9 @@ class ProfileRedactPopup extends Component {
             "city": this.props.placeholderData.city,
             "phone": this.props.profileState.userPhones,
             "about": this.props.placeholderData.description,
-            "social_links": [
-              ""
-            ],
-            "education": [
-            //   {
-            //     "proffession": "",
-            //     "university": "",
-            //     "type": "",
-            //     "start_year": "",
-            //     "end_year": "",
-            //     "course": false
-            //   }
-            ],
-            "exp": [
-            //   {
-            //     "start_year": "sdf",
-            //     "end_year": "sdf",
-            //     "position": "sdf",
-            //     "company": "sdf",
-            //     "type": "sdf"
-            //   }
-            ],
+            "social_links": [],
+            "education": [],
+            "exp": [],
             "cz": this.props.placeholderData.cz,
             "profile_link": "",
             "photo_url": "",
@@ -244,6 +228,10 @@ class ProfileRedactPopup extends Component {
                                 <option value="C2">C2 - Владение в совершенстве (Mastery)</option>
                             </select>
                         </div>  
+
+                        <form className="popup__education-form" onSubmit={this.educationFormSubmit}>
+
+                        </form>
                         
                         <Loader active={this.props.loaderActive}></Loader>
 

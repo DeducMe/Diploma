@@ -52,8 +52,8 @@ class Popup extends Component {
 
   loginUser(login, password){
     this.props.onLoginUserCheck({
-      "email": "user@example.com",
-      "password": "string"
+      "email": login,
+      "password": password
     }, this.redirectUser, this.fetchError) // server response here
     this.props.onActivateLoader()
   }
@@ -83,24 +83,45 @@ class Popup extends Component {
       "password": password,
       "user_type": type
     }
-    // if (user["user_type"] == 'worker')
-    return fetch('new_worker.json', {
-      headers : { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        return data
-    })
-    .then(data =>{
-      return {
-        "user":user,
-        "worker":data
-      }
-    })
+    if (user["user_type"] === 'employee'){
+      return fetch('new_worker.json', {
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+          data.name = user.name
+          return data
+      })
+      .then(data =>{
+        return {
+          "user":user,
+          "worker":data
+        }
+      })
+    }
+    else{
+      return fetch('new_employer.json', {
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data)
+          return data
+      })
+      .then(data =>{
+        return {
+          "user":user,
+          "employer":data
+        }
+      })
+    }
+    
     
   }
 

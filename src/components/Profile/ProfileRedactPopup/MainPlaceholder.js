@@ -14,11 +14,6 @@ export class MainPlaceholder extends Component {
         return placeholderAvatar
     }
 
-    // componentDidMount(){
-    //     this.props.store.subscribe(() => {
-    //       this.setState({reduxState: this.props.store.getState()});
-    //     });
-    //   }
     componentDidUpdate(){
         console.log(this.props.userPhones)
     }
@@ -49,8 +44,50 @@ export class MainPlaceholder extends Component {
                         <div className="info__contacts__phones">
                             {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                         </div>
+
+                        {this.props.userData.phone.length !== 0 ? (
+                            <div className="info__contacts">
+                                <div className="contacts__phones">
+                                    {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                </div>
+                            </div>):('')}
+                        
+                        {this.props.userData.education.length!== 0 ?(
+                            <div className="info__education">
+                                <h3 className="education-head bold headed">Образование:</h3>
+                                {this.props.userData.education.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.proffession}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.university},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type}</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
+                                               
+                        {this.props.userData.education.length!== 0 ? (
+                            <div className="info__work-experience">
+                                <h3 className="courses-head bold headed">Опыт Работы:</h3>
+                                {this.props.userData.exp.map((el, index)=>{
+                                    return (
+                                        <div className="education-block" key={index}>
+                                            <p className="education-name highlighted">{el.position}</p>
+                                            <div className="education-place">
+                                                <p className="education-place__institution">{el.company},</p>
+                                                <p className="education-place__grade">&nbsp;{el.type},</p>     
+                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>):('')}
                     </div>
                 </section>
+
             </div>
         )
     }

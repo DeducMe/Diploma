@@ -20,11 +20,12 @@ class Profile extends Component {
     }
 
     initPlaceholder = () => {
+        console.log(this.props.userState.hasProfile)
         if (this.props.userState.hasProfile)
         this.props.onInitializeProfileData({
                 state: this.props.profileState.state,
                     placeholder: {
-                    userName: this.props.userState.user.name,
+                    userName: this.props.userData.name,
                     description: this.checkIfNotNull(this.props.userData.about, ''),
                     avatar: '',
                     gender: this.checkIfNotNull(this.props.userData.gender, ''),
@@ -51,7 +52,7 @@ class Profile extends Component {
         this.props.onInitializeProfileData({
                 state: this.props.profileState.state,
                 placeholder: {
-                    userName: this.props.userState.user.name,
+                    userName: this.props.userData.name,
                     description: '',
                     avatar: '',
                     gender: '',
@@ -130,10 +131,12 @@ const mapDispatchToProps = (dispatch) =>{
             .then((data)=>{
                 if (data.userData !== null && data.userData!=='404'){
                     console.log(data.userData)
-                    initPlaceholder()
                     if (data.userData.profile_link !== "empty"){
                         onHasProfile()
+                        console.log('profile')
                     }
+                    initPlaceholder()
+
                 }
                 else history.push('/landing')           
             })
