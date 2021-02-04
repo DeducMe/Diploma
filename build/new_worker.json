@@ -1,24 +1,15 @@
 {
   "user_id": 0,
+  "name": "string",
   "mailing": true,
-  "language": [
-
-  ],
+  "language": [],
   "birthday": "",
   "city": "",
-  "phone": [
-    ""
-  ],
+  "phone": [],
   "about": "",
-  "social_links": [
-    ""
-  ],
-  "education": [
-
-  ],
-  "exp": [
-
-  ],
+  "social_links": [],
+  "education": [],
+  "exp": [],
   "cz": "",
   "profile_link": "empty",
   "photo_url": "",
