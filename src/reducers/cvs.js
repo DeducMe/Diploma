@@ -27,7 +27,7 @@ export default function profileState(state = initialState, action){
     else if(action.type === 'POPUP_REDACT_RESUME_ADD_TAG'){
         console.log(action.payload)
         if (action.payload.index !== state.cvs.length){
-            state.placeholder[0].tags.push(action.payload.tag)
+            state.placeholder[action.payload.index].tags.push(action.payload.tag)
             console.log(state.placeholder[action.payload.index], state.cvs[action.payload.index])
             Object.assign([], state.placeholder[action.payload.index].tags, [...state.placeholder[action.payload.index].tags]);
         }
@@ -158,7 +158,7 @@ export default function profileState(state = initialState, action){
     }
     else if (action.type === 'POPUP_REDACT_RESUME_DEACTIVATE'){
         console.log(state.cvs.length, action.payload)
-        if (action.payload !== state.cvs.length && state.cvs.length === 0 && action.payload!==-1){
+        if (action.payload !== state.cvs.length && state.cvs.length !== 0 && action.payload!==-1){
             state.cvs[action.payload].state = '';
             state.placeholder[action.payload].state = '';
         }

@@ -65,6 +65,8 @@ class ResumeRedactPopup extends Component {
             this.props.onSaveResumeFormChanges(data, -1, this.props.userData.id, this.props.resumePlaceholder.vacancy_name)
         }
         else this.props.onSaveResumeFormChanges(data, this.props.resumeIndex, this.props.userData.id, this.props.cvPlaceholder.id)
+
+        console.log(data)
     }
 
     tagDelete = (e) =>{
