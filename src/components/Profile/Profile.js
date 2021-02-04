@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Main from './Main/Main'
 import Side from './Side/Side'
+import Resumes from './Resumes/Resumes'
 import ProfileRedactPopup from './ProfileRedactPopup/ProfileRedactPopup'
 import { connect } from 'react-redux'
-import {getUserData} from '../../actions/serverConnections'
+import {getUserResumes, getUserData} from '../../actions/serverConnections'
 import './profile.css'
 import userData from '../../reducers/userData'
 import Loader from '../Loader/Loader'
@@ -12,12 +13,13 @@ import Loader from '../Loader/Loader'
 class Profile extends Component {
     checkIfNotNull(variable, def){
         if(typeof(variable) !== "undefined") {
-            if(variable !== null) {
+            if(variable !== null && variable !== '') {
                 return variable
             }
         }
         return def
     }
+
 
     initPlaceholder = () => {
         console.log(this.props.userState.hasProfile)
@@ -34,14 +36,14 @@ class Profile extends Component {
                     cz: this.checkIfNotNull(this.props.userData.cz, ''),
                     city: this.checkIfNotNull(this.props.userData.city, ''),
                     profile_link: '',
-                    photo_url: '',
+                    photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
                     profile_background: ''
                 },
                 userPhones: this.checkIfNotNull(this.props.userData.phone, []),
                 userPhones: [],
                 language:[],
-                education: [],
-                workExp: [],
+                education: this.checkIfNotNull(this.props.userData.education, []),
+                exp: this.checkIfNotNull(this.props.userData.exp, []),
                 social_links: [],
                 buf:{
                     languageGrade:'A1'
@@ -61,13 +63,13 @@ class Profile extends Component {
                     cz:'',
                     city: '',
                     profile_link: '',
-                    photo_url: '',
+                    photo_url: 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',
                     profile_background: ''
                 },
                 userPhones: [],
                 language:[],
                 education: [],
-                workExp: [],
+                exp: [],
                 social_links: [],
                 buf:{
                     languageGrade:'A1'
@@ -75,6 +77,7 @@ class Profile extends Component {
 
             }
         )
+
     }
 
     componentDidMount(){
@@ -85,6 +88,9 @@ class Profile extends Component {
         else{
             this.props.onGetUserFetch(this.props.userFetchId, this.props.history)
         }        
+        console.log(this.props.userFetchId)
+        this.props.onGetResumes(this.props.userFetchId)
+
     }
     
     render() {
@@ -93,11 +99,14 @@ class Profile extends Component {
             <div className="small-container profile-wrapper">
                 <div className="profile__main">
                     <Main></Main>
+                    
+                    
+                    {/* {Object.keys(this.props.resumeData.placeholder).length !== 0 ? (<Resumes></Resumes>):('')} */}
+                    <Resumes></Resumes>
                 </div>
                 <div className="profile__side">
                     <Side></Side>
                 </div>
-
                 <ProfileRedactPopup></ProfileRedactPopup>
             </div>
         )
@@ -114,14 +123,17 @@ const mapStateToProps = (state, ownProps) => {
         userState: state.user,
         userData: state.userData,
         placeholderData: state.profile.placeholder,
+        resumeData:state.cvs
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-
         onInitializeProfileData: (data)=>{
             dispatch({type : 'POPUP_REDACT_INITIALIZE_PROFILE', payload:data}) 
+        },
+        onInitializeResumePlaceholder: (data)=>{
+            
         },
         onHasProfile: (data)=>{
             dispatch({type : 'USER_HAS_PROFILE', payload:null}) 
@@ -141,7 +153,6 @@ const mapDispatchToProps = (dispatch) =>{
                 else history.push('/landing')           
             })
         },
-
         onGetUserFetch: (userId, history)=> {
             dispatch(getUserData(userId))
             .then((data)=>{
@@ -151,6 +162,17 @@ const mapDispatchToProps = (dispatch) =>{
                 else history.push('/landing')           
             })
         },
+        onGetResumes: (fetchId) => {
+            console.log(fetchId)
+            dispatch(getUserResumes(fetchId))
+            .then((data)=>{
+                if (data.data !== null && data.data!=='404'){
+                    
+                    data.data.map(el=>el.state = '')
+                    dispatch({type : 'INITIALIZE_RESUME_PLACEHOLDER', payload:data.data}) 
+                }
+            })
+        }
     }
 }
 

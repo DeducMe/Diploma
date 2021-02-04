@@ -16,7 +16,7 @@ const initialState = {
     userPhones: [],
     language:[],
     education: [],
-    workExp: [],
+    exp : [],
     social_links: [],
     buf:{
       languageGrade:'A1'
@@ -49,6 +49,12 @@ export default function profileState(state = initialState, action){
     //         ...state
     //     }
     // }
+    else if (action.type === 'POPUP_REDACT_AVATAR_CHANGE'){
+      state.placeholder.photo_url = action.payload;
+      return {
+        ...state,
+      };
+    }
     else if (action.type === 'POPUP_REDACT_ADD_LANGUAGE'){
       state.language.push(action.payload);
       state.language = Object.assign([], state.language, [...state.language]);
@@ -71,6 +77,7 @@ export default function profileState(state = initialState, action){
 
       };
     }
+    
     else if (action.type === 'POPUP_REDACT_ADD_PHONE'){
       state.userPhones.push(action.payload);
       state.userPhones = Object.assign([], state.userPhones, [...state.userPhones]);
@@ -89,6 +96,39 @@ export default function profileState(state = initialState, action){
         ),
       };
     }
+
+    else if (action.type === 'POPUP_REDACT_DELETE_EDUCATION'){
+      state.education.splice(state.education.indexOf(action.payload), 1);
+      state.education = Object.assign([], state.education, [...state.education]);
+      return {
+        ...state,
+
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_ADD_EDUCATION'){
+      state.education.push(action.payload);
+      state.education = Object.assign([], state.education, [...state.education]);
+      return {
+        ...state
+      }
+    }
+    else if (action.type === 'POPUP_REDACT_DELETE_EXPERIENCE'){
+      state.exp.splice(state.exp.indexOf(action.payload), 1);
+      state.exp = Object.assign([], state.exp, [...state.exp]);
+      return {
+        ...state,
+
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_ADD_EXPERIENCE'){
+      state.exp.push(action.payload);
+      state.exp = Object.assign([], state.exp, [...state.exp]);
+
+      return {
+        ...state,
+      };
+    }
+    
     else if (action.type === 'POPUP_REDACT_USERNAME_CHANGE'){
         state.placeholder.userName = action.payload;
         return {
@@ -138,8 +178,5 @@ export default function profileState(state = initialState, action){
         ...state
       };
     }
-    
-    
-    
     return state;
 }

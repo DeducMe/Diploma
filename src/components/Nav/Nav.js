@@ -78,9 +78,9 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,o
             </button>
 
             <Link to={"/profile/"+userState.user.id} className="f-medium semi link-anim nav-el">Моя страница</Link>
-            <form onSubmit={logoutHandleFormSubmit}>
+            {/* <form onSubmit={logoutHandleFormSubmit}>
               <button type="submit">Logout</button>
-            </form>
+            </form> */}
           </div>
           
         </nav>     

@@ -25,9 +25,9 @@ class Main extends Component {
             return (
                 <div className="main rounded">
                     <section className="personal top-rounded">
-                        <img className="personal__avatar" src={placeholderAvatar} alt="аватар"/>
+                        <img className="personal__avatar" src={this.props.userData.photo_url} alt="аватар"/>
 
-                        <button className="photo-redact-btn"  onClick={this.redactProfile}>
+                        <button className="profile-redact-btn"  onClick={this.redactProfile}>
                             <img src={editIcon} alt="editIcon"/>
                         </button>
                     </section>
@@ -73,7 +73,7 @@ class Main extends Component {
                                 })}
                             </div>):('')}
                                                
-                        {this.props.userData.education.length!== 0 ? (
+                        {this.props.userData.exp.length!== 0 ? (
                             <div className="info__work-experience">
                                 <h3 className="courses-head bold headed">Опыт Работы:</h3>
                                 {this.props.userData.exp.map((el, index)=>{
@@ -100,7 +100,7 @@ class Main extends Component {
         return(
             <div className="main rounded">
                 <section className="personal top-rounded">
-                    <img className="personal__avatar" src={placeholderAvatar} alt="аватар"/>
+                    <img className="personal__avatar" src='https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54' alt="аватар"/>
                 </section>
                 <section className="info">
                     <div className="info-head">
@@ -110,7 +110,7 @@ class Main extends Component {
                         <p className="info__description">Чтобы создать профиль нажмите на кнопку и введите информацию о себе!</p>
                         {this.goPhrase()}
 
-                        <button className="profile-redact-btn" onClick={this.redactProfile}>
+                        <button className="profile-add-btn" onClick={this.redactProfile}>
                             <img src={plusIcon} alt="plusIcon"/>
                         </button> 
                     </div>
@@ -121,7 +121,7 @@ class Main extends Component {
         return(
                 <div className="main rounded">
                     <section className="personal top-rounded">
-                        <img className="personal__avatar" src={placeholderAvatar} alt="аватар"/>
+                        <img className="personal__avatar" src={this.props.userData.photo_url} alt="аватар"/>
 
                     </section>
     
@@ -166,7 +166,7 @@ class Main extends Component {
                                 })}
                             </div>):('')}
                                                
-                        {this.props.userData.education.length!== 0 ? (
+                        {this.props.userData.exp.length!== 0 ? (
                             <div className="info__work-experience">
                                 <h3 className="courses-head bold headed">Опыт Работы:</h3>
                                 {this.props.userData.exp.map((el, index)=>{

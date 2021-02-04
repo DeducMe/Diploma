@@ -21,7 +21,7 @@
     border-radius: 50%;
 }
 
-.photo-redact-btn{
+.profile-redact-btn{
     z-index: 1;
     width: 75px;
     height: 75px;
@@ -34,17 +34,17 @@
     border: 1px solid #000;
 }
 
-.photo-redact-btn img{
+.profile-redact-btn img{
     width: 45px;
 }
 
-.photo-redact-btn:hover{
+.profile-redact-btn:hover{
     filter: invert(1);
     transition: .5s;
     border: 1px solid #fff;
 }
 
-.profile-redact-btn{
+.profile-add-btn{
     position: absolute;
     bottom: -40px;
     left: 50%;
@@ -58,11 +58,11 @@
     background:#fff;
 }
 
-.profile-redact-btn img{
+.profile-add-btn img{
     width: 35px;
 }
 
-.profile-redact-btn:hover{
+.profile-add-btn:hover{
     filter: invert(1);
     transition: .5s;
     

@@ -14,6 +14,13 @@ function registarteUserFetchSucces(data){
     }
 }
 
+function getUserResumesFetchSuccess(data){
+    return{
+        type:'GET_USER_RESUMES_FETCH_SUCCES',
+        data
+    }
+}
+
 function logoutUserFetchSucces(data){
     return{
         type:'LOGOUT_USER_FETCH_SUCCES',
@@ -46,6 +53,18 @@ function createNewEmployeeFetchSucces(){
     }
 }
 
+function addResumeFetchSucces(){
+    return{
+        type:'ADD_RESUME_FETCH_SUCCES'
+    }
+}
+
+function redactResumeFetchSucces(){
+    return{
+        type:'REDACT_RESUME_FETCH_SUCCES'
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -72,6 +91,77 @@ export const getUserData = (userId) => (dispatch) => {
         console.log(data)
         if (data !== '404')
         return dispatch(getUserDataFetchSucces(data))
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const getUserResumes = (userId) => (dispatch) => {
+    console.log(userId)
+    return fetch(url + '/cv/'+userId,{
+        method: 'GET',
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    })  //userId
+    .then(response => {
+        let a = response.json()
+        console.log(a)
+        return a
+    })
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(getUserResumesFetchSuccess(data))
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const addResume = (data) => (dispatch) => {
+    console.log(data)
+    return fetch(url + '/cv',{
+        method: 'POST',
+        body: JSON.stringify(data),  
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    })  
+    .then(response => {
+        let a = response.json()
+        console.log(a)
+        return a
+    })
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(addResumeFetchSucces(data.new_cv_id))
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const redactResume = (data, cvId, userId) => (dispatch) => {
+    console.log(data)
+    return fetch(url + '/cv/'+userId+'/'+cvId,{
+        method: 'PUT',
+        body: JSON.stringify(data),  
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*"
+      }
+    })  
+    .then(response => {
+        let a = response.json()
+        console.log(a)
+        return a
+    })
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(redactResumeFetchSucces())
         else return dispatch(notFoundError(data))
     })
 }

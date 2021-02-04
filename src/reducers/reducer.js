@@ -3,6 +3,8 @@ import { routerReducer } from 'react-router-redux';
 
 import user from './user'
 import nav from './nav'
+import cvs from './cvs'
+
 import profile from './profile'
 import userData from './userData'
 
@@ -11,5 +13,6 @@ export default combineReducers({
     user,
     profile,
     nav,
+    cvs,
     userData
 })

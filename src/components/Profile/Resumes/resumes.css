@@ -1,0 +1,195 @@
+.resumes-list-el{
+    position: relative;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.resume__main-info{
+    min-height: 100px;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.resume-main.muted{
+    z-index: 0;
+    visibility: hidden;
+
+
+    opacity: 0;
+}
+
+.resume__header{
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    padding: 20px;
+
+    background-color: #1e1f26;
+}
+
+.resume__header-top,
+.resume__header-bottom{
+    display: flex;
+    justify-content: space-between;
+}
+
+.resume__header-right{
+    text-align: right;
+    vertical-align: auto;
+}
+
+.resume-redact-btn,
+.resume-delete-btn{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background:#000;
+    position: absolute;
+    top: 110px;
+    right: 40px;
+    transition: .5s;
+    border: 1px solid #000;
+}
+
+.resume-redact-btn img,
+.resume-delete-btn img{
+    width: 45px;
+}
+
+.resume-redact-btn:hover,
+.resume-delete-btn:hover{
+    filter: invert(1);
+    transition: .5s;
+    border: 1px solid #fff;
+}
+
+.resume-delete-btn{
+    z-index: 1;
+}
+
+.resume__industry{
+    color: #254e8f;
+}
+
+.resume__tags-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.resume__experience{
+    width: 80%;
+    padding: 15px 10px;
+}
+
+.resume__experience__header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.resume__about{
+    margin: 10px 0;
+}
+
+.resume__portfolio{
+    display: flex;
+
+    margin: 10px 0;
+}
+
+.resume__portfolio-el{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+
+    background: #000;
+}
+
+
+.resume__tags-list-el{
+    font-weight: 600;
+
+    margin-right: 5px;
+    padding: 3px 6px;
+
+    border: 2px solid #254e8f;
+    border-radius: 10px;
+}
+
+.resume-add-btn{
+    align-self: center;
+    margin-top: 20px;
+
+    width: 80px;
+    height: 80px;
+
+    transition: .5s;
+
+    border: 1px solid #000;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.resume-add-btn img{
+    width: 35px;
+}
+
+.resume-add-btn:hover{
+    transition: .5s;
+
+    border: 1px solid #fff;
+
+    filter: invert(1);
+}
+
+.resumes-block{
+    margin-top: 50px;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.resume-redact-block{
+    position: relative;
+    background-color: #fff;
+    z-index: 0;
+
+    visibility: hidden;
+
+    width: 700px;
+
+    height: 100%;
+
+
+    opacity: 0;
+}
+
+.resume-redact-block.active{
+    z-index: 1;
+    visibility: visible;
+
+
+    opacity: 1;
+}
+
+.resume__header__salary-input{
+    text-align: right;
+}
+
+.resume__header__salary-input::-webkit-outer-spin-button,
+.resume__header__salary-input::-webkit-inner-spin-button{
+    margin: 0;
+
+    -webkit-appearance: none;
+}
+
+.resume__about-input{
+    width: 100%;
+    min-height: 50px;
+    max-height: 100px;
+
+    resize: vertical;
+}

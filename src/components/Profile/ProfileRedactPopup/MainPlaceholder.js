@@ -21,7 +21,7 @@ export class MainPlaceholder extends Component {
         return (
             <div className="main-placeholder rounded">
                 <section className="main-placeholder__personal top-rounded">
-                    <img className="main-placeholder__personal__avatar" src={this.checkAvatar()} alt="аватар"/>
+                    <img className="main-placeholder__personal__avatar" src={this.props.avatarPhoto} alt="аватар"/>
                 </section>
                 <section className="main-placeholder__info">
                     <div className="main-placeholder__info-wrapper">
@@ -35,8 +35,8 @@ export class MainPlaceholder extends Component {
                             <p className={'info__common-info__birthday ' + this.props.userBirthday}>{this.props.userBirthday}</p>
                             <p className={'info__common-info__gender ' + this.props.userGender}></p>
                             <div className="info__common-info__living">
-                                <p className="living__place">{this.props.userCity}</p>
                                 <p className="living__cz">{this.props.userCz}</p>
+                                <p className="living__place">{this.props.userCity}</p>
                             </div>
                             
                         </div>
@@ -45,17 +45,12 @@ export class MainPlaceholder extends Component {
                             {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                         </div>
 
-                        {this.props.userData.phone.length !== 0 ? (
-                            <div className="info__contacts">
-                                <div className="contacts__phones">
-                                    {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
-                                </div>
-                            </div>):('')}
                         
-                        {this.props.userData.education.length!== 0 ?(
+                        {this.props.userEducation.length!== 0 ?(
                             <div className="info__education">
                                 <h3 className="education-head bold headed">Образование:</h3>
-                                {this.props.userData.education.map((el, index)=>{
+                                {this.props.userEducation.map((el, index)=>{
+                                    console.log('education', el)
                                     return (
                                         <div className="education-block" key={index}>
                                             <p className="education-name highlighted">{el.proffession}</p>
@@ -69,10 +64,11 @@ export class MainPlaceholder extends Component {
                                 })}
                             </div>):('')}
                                                
-                        {this.props.userData.education.length!== 0 ? (
+                        {this.props.userExperience.length!== 0 ? (
                             <div className="info__work-experience">
                                 <h3 className="courses-head bold headed">Опыт Работы:</h3>
-                                {this.props.userData.exp.map((el, index)=>{
+                                {this.props.userExperience.map((el, index)=>{
+                                    console.log('education', el)
                                     return (
                                         <div className="education-block" key={index}>
                                             <p className="education-name highlighted">{el.position}</p>
@@ -99,12 +95,15 @@ const mapStateToProps = (state) => {
         userState: state.user,
         userData: state.userData,
         userName: state.profile.placeholder.userName,
+        avatarPhoto:state.profile.placeholder.photo_url,
         userDescription: state.profile.placeholder.description,
         userBirthday: state.profile.placeholder.birthday,
         userGender:state.profile.placeholder.gender,
         userCity:state.profile.placeholder.city,
         userCz:state.profile.placeholder.cz,
-        userPhones:state.profile.userPhones
+        userPhones:state.profile.userPhones,
+        userEducation:state.profile.education,
+        userExperience:state.profile.exp
     }
 }
 
