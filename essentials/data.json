@@ -1,0 +1,64 @@
+{
+    "vacancies":[
+        {
+            "id":           "int",
+            "name":         "str",
+            "company":      "str",
+            "description":  "LONGTEXT(TEXT) || null",
+            "responses":[
+                {
+                    "name":     "str",
+                    "CVName":   "str",
+                    "letter":   "LONGTEXT(TEXT) || null" 
+                },
+                "..."
+            ],
+
+            "salary":{
+                "amount":       "int || null",
+                "currency":     "str || null",
+                "salaryType":   "str"
+            },
+
+            "contacts":{
+                "e-mail":       "str || null",
+                "address":      "str || null",
+                "additional":   "str || null",
+                "phones":[
+                    "str",
+                    "..."
+                ]
+            }
+        },
+        "..."
+    ],
+    "employers":[
+        {
+            "sequre":{
+                "login":        "str",
+                "password":     "str",
+                "e-mail":       "str || null",
+                "phone":        "str || null"
+            },
+
+            "name":         "str",
+            "surname":      "str",
+            "fatherName":   "str || null",
+            "gender":       "str",
+            "birtdayDate":  "str (xx/mm/yyyy)",
+            "age":          "int",
+
+            "hidden":[
+                "fatherName",
+                "birtdayDate",
+                "..."
+            ]
+            
+
+        }
+    ],
+    "employees":[
+
+    ]
+
+}
