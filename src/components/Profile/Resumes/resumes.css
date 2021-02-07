@@ -1,29 +1,33 @@
 .resumes-list-el{
     position: relative;
+
     margin-top: 20px;
+
     background-color: #fff;
 }
 
 .resume__main-info{
     min-height: 100px;
     padding: 20px;
+
     background-color: #fff;
 }
 
 .resume-main.muted{
     z-index: 0;
-    visibility: hidden;
 
+    display: none;
+    visibility: hidden;
 
     opacity: 0;
 }
 
 .resume__header{
-    height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
+    height: 100px;
     padding: 20px;
 
     background-color: #1e1f26;
@@ -35,34 +39,54 @@
     justify-content: space-between;
 }
 
-.resume__header-right{
+.resume__header__name{
+    width: 76%;
+}
+
+.resume__header__salary{
     text-align: right;
-    vertical-align: auto;
+    width: 24%;
+}
+
+.resume__header__grade{
+    width: 70%;
+}
+
+.resume__header__grade-input{
+    width: 100%;
 }
 
 .resume-redact-btn,
 .resume-delete-btn{
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    background:#000;
+    display: flex;
     position: absolute;
+    align-items: center;
+    justify-content: center;
     top: 110px;
     right: 40px;
+
+    width: 55px;
+    height: 55px;
+
     transition: .5s;
+
     border: 1px solid #000;
+    border-radius: 50%;
+    background: #000;
 }
 
 .resume-redact-btn img,
 .resume-delete-btn img{
-    width: 45px;
+    width: 30px;
 }
 
 .resume-redact-btn:hover,
 .resume-delete-btn:hover{
-    filter: invert(1);
     transition: .5s;
+
     border: 1px solid #fff;
+
+    filter: invert(1);
 }
 
 .resume-delete-btn{
@@ -100,6 +124,7 @@
 
 .resume__portfolio-el{
     position: relative;
+
     width: 100px;
     height: 100px;
     margin-right: 10px;
@@ -120,10 +145,10 @@
 
 .resume-add-btn{
     align-self: center;
-    margin-top: 20px;
 
     width: 80px;
     height: 80px;
+    margin-top: 20px;
 
     transition: .5s;
 
@@ -145,38 +170,38 @@
 }
 
 .resumes-block{
-    margin-top: 50px;
     position: relative;
 
     display: flex;
     flex-direction: column;
+
+    margin-top: 50px;
 }
 
 .resume-redact-block{
     position: relative;
-    background-color: #fff;
     z-index: 0;
 
     visibility: hidden;
 
     width: 700px;
-
     height: 100%;
 
-
     opacity: 0;
+    background-color: #fff;
 }
 
 .resume-redact-block.active{
     z-index: 1;
-    visibility: visible;
 
+    visibility: visible;
 
     opacity: 1;
 }
 
 .resume__header__salary-input{
     text-align: right;
+    width: 110px;
 }
 
 .resume__header__salary-input::-webkit-outer-spin-button,

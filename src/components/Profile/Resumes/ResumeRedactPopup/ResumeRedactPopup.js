@@ -2,19 +2,37 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addResume, redactResume, getUserResumes } from '../../../../actions/serverConnections'
 import closeIcon from '../../../../img/close.svg'
+import {checkStringInput, checkIntInput} from '../../../../scripts/commonScripts.js'
 
 
 class ResumeRedactPopup extends Component {
     changeVacancyName = (e) =>{
-        this.props.onVacancyNameChange(e.target.value, this.props.resumeIndex)
+        const check = checkStringInput(e.target.value, 35, 0, /^[a-zA-Z]*^$/);
+
+        check === "pass" ? 
+        this.props.onVacancyNameChange(e.target.value, this.props.resumeIndex) : 
+        (this.props.onInputMistake(check, e.target));
     }
 
     changeGradeValue = (e) =>{
-        this.props.onGradeValueChange(e.target.value, this.props.resumeIndex)
+        const check = checkStringInput(e.target.value, 40, 0, /^[a-zA-Z]*^$/);
+
+        check === "pass" ? 
+        this.props.onGradeValueChange(e.target.value, this.props.resumeIndex):
+        (this.props.onInputMistake(check, e.target))
     }
 
     changeSalary = (e) =>{
-        this.props.onSalaryValueChange(parseInt(e.target.value), this.props.resumeIndex)
+        console.log(e.target.value)
+        if (e.target.value !== ''){
+            const check = checkIntInput(e.target.value, 9999999, null);
+            check === "pass" ? 
+            this.props.onSalaryValueChange(parseInt(e.target.value), this.props.resumeIndex):
+            (this.props.onInputMistake(check, e.target))
+        }
+        else this.props.onSalaryValueChange(0, this.props.resumeIndex)
+
+        
     }
 
     changeIndustryValue = (e) =>{
@@ -96,14 +114,16 @@ class ResumeRedactPopup extends Component {
 
     render() {
         return (
-            <div className={"rounded resume-redact-block "+this.props.resumeState} style={this.props.addStyle}>
+            <form className={"rounded resume-redact-block "+this.props.resumeState} style={this.props.addStyle}>
                 <div className="resume__header white top-rounded">
                     <div className="resume__header-top">
-                        <input type="text" className="bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.resumePlaceholder.vacancy_name}/>
-                        <p><input type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
+                        <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.resumePlaceholder.vacancy_name}/>
+                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
                     </div>
                     <div className="resume__header-bottom">
-                        <p><input type="text" className="white" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} placeholder="Уровень знаний" onChange={this.changeGradeValue.bind(this)} value={this.props.resumePlaceholder.grade}/></p>
+                        <p className="resume__header__grade">
+                            <input required type="text" className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} placeholder="Уровень знаний" onChange={this.changeGradeValue.bind(this)} value={this.props.resumePlaceholder.grade}/>
+                        </p>
                         <p className="resume__publication-date sup">{this.props.resumePlaceholder.pub_date}</p>
                     </div>
                 </div>
@@ -158,9 +178,9 @@ class ResumeRedactPopup extends Component {
                         <input className="resume__tags-input input-list__input-block" type="text" onKeyDown={this.tagInput.bind(this)} placeholder="Введите тег и нажмите пробел..."/>
                     </div>
                     
-                    <button className="form-submit-btn f-large rounded bold" onClick={this.saveResumeFormChanges}>Сохранить изменения</button>
+                    <input type="submit" className="form-submit-btn f-large rounded bold" onClick={this.saveResumeFormChanges} value="Сохранить изменения"/>
                 </div>
-            </div>
+            </form>
         )
     }
 }
@@ -169,7 +189,6 @@ const mapStateToProps = (state, ownProps) =>{
     let cvPlaceholder
     if (ownProps.index === state.cvs.cvs.length) {cvPlaceholder = state.cvs.newCv}
     else {cvPlaceholder = state.cvs.placeholder[ownProps.index]}
-    console.log(ownProps.index)
     return {
         userData: state.user.user,
         resumeData: state.cvs,
@@ -221,7 +240,7 @@ const mapDispatchToProps = (dispatch) =>{
         onSalaryValueChange: (text, resumeIndex) => {
             dispatch({type : 'POPUP_REDACT_RESUME_CHANGE_SALARY_VALUE', payload:{'text': text, 'index': resumeIndex}})
         },
-        onSaveResumeFormChanges:(data, resumeIndex, userId, resumeId)=>{
+        onSaveResumeFormChanges:(data, resumeIndex, userId, resumeId) => {
             dispatch(resumeIndex===-1?(addResume(data)):(redactResume(data, resumeId, userId)))
             .then(data => dispatch({type : 'POPUP_REDACT_RESUME_DEACTIVATE', payload:resumeIndex}))
             .then(data => {
@@ -233,7 +252,9 @@ const mapDispatchToProps = (dispatch) =>{
                     }
                 })
             })
-            
+        },
+        onInputMistake:(mistakeStr, el) => {
+            console.log(mistakeStr)
         }
     }
     }

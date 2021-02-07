@@ -42,8 +42,10 @@ export default function profileState(state = initialState, action){
     }
     else if(action.type === 'POPUP_REDACT_RESUME_DELETE_TAG'){
         if (action.payload.index !== state.cvs.length){
-            state.placeholder[action.payload.index].tags.splice(state.placeholder[action.payload.index].tags.indexOf(action.payload.tagId),1)
-            Object.assign([], state.placeholder[action.payload.index].tags, [...state.placeholder[action.index].tags]);
+            console.log(state.placeholder[action.payload.index])
+            state.placeholder[action.payload.index].tags.splice(state.placeholder[action.payload.index].tags.indexOf(action.payload.index),1)
+            
+            Object.assign([], state.placeholder[action.payload.index].tags, [...state.placeholder[action.payload.index].tags]);
         }
         else {
             state.newCv.tags.splice(state.newCv.tags.indexOf(action.payload.tagId),1)
@@ -71,7 +73,6 @@ export default function profileState(state = initialState, action){
     else if(action.type === 'POPUP_REDACT_RESUME_DELETE_WORK_TYPE'){
         if (action.payload.index !== state.cvs.length){
             state.placeholder[action.payload.index].work_type.splice(state.placeholder[action.payload.index].work_type.indexOf(action.payload.workTypeId),1)
-            console.log(state.placeholder[action.payload.index])
             Object.assign([], state.placeholder[action.payload.index].work_type, [...state.placeholder[action.payload.index].work_type]);
         }
         else {

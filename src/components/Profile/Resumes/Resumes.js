@@ -36,7 +36,7 @@ class Resumes extends Component {
         }
         return (
             <div className="resumes-block">
-                <h2>Ваши Резюме:</h2>
+                {this.props.userState.logged ? (this.props.cvData.cvs.length !== 0 ?(<h2>Ваши Резюме:</h2>):('')):(this.props.cvData.cvs.length !== 0 ?(<h2>Резюме:</h2>):(''))}
                 <ul className="resumes-list">
                     {this.props.cvData.cvs.length !== 0 ? 
                     (this.props.cvData.cvs.map((el, index)=>
@@ -50,7 +50,7 @@ class Resumes extends Component {
                                             <p><span className="resume__header__salary bold f-medium">{el.salary}</span><span className="bold f-medium"> руб.</span></p>
                                         </div>
                                         <div className="resume__header-bottom">
-                                            <p>{el.grade}</p>
+                                            <p className="resume__header__grade">{el.grade}</p>
                                             <p className="resume__publication-date sup">{el.pub_date}</p>
                                         </div>
                                     </div>

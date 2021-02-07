@@ -55,6 +55,12 @@ export default function profileState(state = initialState, action){
         ...state,
       };
     }
+    else if (action.type === 'POPUP_REDACT_PERSONAL_BACKGROUND_CHANGE'){
+      state.placeholder.profile_background = action.payload;
+      return {
+        ...state,
+      };
+    }
     else if (action.type === 'POPUP_REDACT_ADD_LANGUAGE'){
       state.language.push(action.payload);
       state.language = Object.assign([], state.language, [...state.language]);

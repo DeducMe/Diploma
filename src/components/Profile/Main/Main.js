@@ -5,6 +5,8 @@ import plusIcon from '../../../img/plusIcon.svg'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import './main.css'
 import photoRedactIcon from '../../../img/photovector.svg'
+import personalBackground from'../../../img/personal-background.png'
+
 import editIcon from '../../../img/edit.svg'
 
 
@@ -16,16 +18,27 @@ class Main extends Component {
         return <p className="info__go-phrase highlighted">Пора найти команду!</p>
     }
 
+    checkOnEmpty(el, returnValue){
+        console.log(el, returnValue)
+        if (el !== ""){
+            return el
+        }
+
+        return returnValue
+    }
+
     redactProfile = () =>{
         this.props.onPopupRedactProfileActivate()
     }
 
+    
     render() {
+
         if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user_id){
             return (
                 <div className="main rounded">
-                    <section className="personal top-rounded">
-                        <img className="personal__avatar" src={this.props.userData.photo_url} alt="аватар"/>
+                    <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
+                        <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
 
                         <button className="profile-redact-btn"  onClick={this.redactProfile}>
                             <img src={editIcon} alt="editIcon"/>
@@ -99,8 +112,8 @@ class Main extends Component {
         else if (this.props.userState.user.id === this.props.userData.user_id)
         return(
             <div className="main rounded">
-                <section className="personal top-rounded">
-                    <img className="personal__avatar" src='https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54' alt="аватар"/>
+                <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
+                    <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
                 </section>
                 <section className="info">
                     <div className="info-head">
@@ -120,7 +133,7 @@ class Main extends Component {
         else
         return(
                 <div className="main rounded">
-                    <section className="personal top-rounded">
+                    <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
                         <img className="personal__avatar" src={this.props.userData.photo_url} alt="аватар"/>
 
                     </section>

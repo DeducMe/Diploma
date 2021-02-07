@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
+import personalBackground from'../../../img/personal-background.png'
 
 
 export class MainPlaceholder extends Component {
-    checkAvatar(){
-        if (this.props.userState.hasProfile){
-            if (this.props.userData.photo_url !== ""){
-                return this.props.userData.avatar
-            }
+    checkOnEmpty(el, returnValue){
+        console.log(el, returnValue)
+        if (el !== ""){
+            return el
+        }
 
-        }   
-        return placeholderAvatar
+        return returnValue
     }
 
     componentDidUpdate(){
         console.log(this.props.userPhones)
     }
     render() {
+
         return (
             <div className="main-placeholder rounded">
-                <section className="main-placeholder__personal top-rounded">
-                    <img className="main-placeholder__personal__avatar" src={this.props.avatarPhoto} alt="аватар"/>
+                <section className="main-placeholder__personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.personalBackground, personalBackground)})`}}>
+                    <img className="main-placeholder__personal__avatar" src={this.checkOnEmpty(this.props.avatarPhoto, placeholderAvatar)} alt="аватар"/>
                 </section>
                 <section className="main-placeholder__info">
                     <div className="main-placeholder__info-wrapper">
@@ -96,6 +97,7 @@ const mapStateToProps = (state) => {
         userData: state.userData,
         userName: state.profile.placeholder.userName,
         avatarPhoto:state.profile.placeholder.photo_url,
+        personalBackground:state.profile.placeholder.profile_background,
         userDescription: state.profile.placeholder.description,
         userBirthday: state.profile.placeholder.birthday,
         userGender:state.profile.placeholder.gender,

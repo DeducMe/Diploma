@@ -13,16 +13,22 @@ class ProfileRedactPopup extends Component {
         this.props.onPopupRedactProfileDeactivate();
     }
 
-    loadUserAvatar = (e) =>{
+    loadUserImage = (e, imageType) =>{
+        console.log(imageType)
         console.log(e.target.files[0])
         const file = e.target.files[0];
-        console.log(file)
         const storageRef = fileUploader.storage().ref()
-        const fileRef = storageRef.child('userAvatarInput-' + file.name)
+        const fileRef = storageRef.child('userImage-' + file.name)
         fileRef.put(file).then((response)=>{
-            console.log(fileRef.getDownloadURL())
             fileRef.getDownloadURL()
-            .then((response) => this.props.onChangeAvatar(response))
+            .then((response) => {
+                if (imageType === 'avatar'){
+                    this.props.onChangeAvatar(response)
+                }
+                else if(imageType === 'personal-background'){
+                    this.props.onChangePersonalBackground(response)
+                }
+            })
         })
     }
 
@@ -55,26 +61,6 @@ class ProfileRedactPopup extends Component {
           this.props.onChangeGenderToFemale();
         }
     }
-    
-    // deleteTag = (e) =>{
-    //     e.preventDefault()
-    //     console.log(e.target.parentElement.dataset.key)
-    //     this.props.onTagDelete(e.target.parentElement.dataset.key)
-    // }
-
-    // tagInput = (e) =>{
-    //     console.log(e.keyCode, this.props.placeholderData.activeTags.indexOf(e.target.value) === -1)
-    //     const value = e.target.value.split(' ').join('')
-    //     if (e.keyCode === 9 || e.keyCode === 32){
-    //         e.preventDefault()
-    //         if(this.props.placeholderData.activeTags.indexOf(value) === -1 ){
-    //             this.props.onTagAdd(value)
-    //             e.target.value = ''
-    //         }
-    //     }
-        
-    // }
-
 
     deleteLanguage = (e) =>{
         e.preventDefault()
@@ -182,7 +168,7 @@ class ProfileRedactPopup extends Component {
             "cz": this.props.placeholderData.cz,
             "profile_link": "",
             "photo_url": this.props.placeholderData.photo_url,
-            "profile_background": ""
+            "profile_background": this.props.placeholderData.profile_background
         }
 
         if (this.props.userState.user.user_type === 'employee'){
@@ -373,7 +359,8 @@ class ProfileRedactPopup extends Component {
                         </form>
                         <Loader active={this.props.loaderActive}></Loader>
                             
-                        <input type="file" name="userAvatarInput" onChange={this.loadUserAvatar}/>
+                        <input type="file" name="userAvatarInput" onChange={(event) => {this.loadUserImage(event, 'avatar')}}/>
+                        <input type="file" name="userBackgroundInput" onChange={(event) => {this.loadUserImage(event, 'personal-background')}}/>
 
                         <button className="form-submit-btn f-large rounded bold" onClick={this.saveRedactProfileFormChanges}>Сохранить изменения</button>
                         <button className="profile-redact__close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
@@ -409,6 +396,9 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onChangeAvatar: (fileUrl)=>{
             dispatch({type : 'POPUP_REDACT_AVATAR_CHANGE', payload:fileUrl})
+        },
+        onChangePersonalBackground: (fileUrl)=>{
+            dispatch({type : 'POPUP_REDACT_PERSONAL_BACKGROUND_CHANGE', payload:fileUrl})
         },
         onDescriptionChange: (text)=>{
             dispatch({type : 'POPUP_REDACT_DESCRIPTION_CHANGE', payload:text})
