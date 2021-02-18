@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import '../../../css/style.css'
 import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
-import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
 import Loader from '../../Loader/Loader'
 
 class Popup extends Component {

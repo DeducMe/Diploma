@@ -4,8 +4,13 @@ import { connect } from 'react-redux'
 import './profileRedactPopup.css'
 import MainPlaceholder from './MainPlaceholder'
 import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 import firebase from "firebase";
 import fileUploader from '../../../actions/fileUploader'
+import RedactPopupSectionBaseInfo from './redactPopupSections/RedactPopupSectionBaseInfo'
+import RedactPopupSectionExperience from './redactPopupSections/RedactPopupSectionExperience'
+import RedactPopupSectionImages from './redactPopupSections/RedactPopupSectionImages'
 
 class ProfileRedactPopup extends Component {
     popupClose(e){
@@ -13,23 +18,41 @@ class ProfileRedactPopup extends Component {
         this.props.onPopupRedactProfileDeactivate();
     }
 
-    loadUserImage = (e, imageType) =>{
-        console.log(imageType)
-        console.log(e.target.files[0])
-        const file = e.target.files[0];
-        const storageRef = fileUploader.storage().ref()
-        const fileRef = storageRef.child('userImage-' + file.name)
-        fileRef.put(file).then((response)=>{
-            fileRef.getDownloadURL()
-            .then((response) => {
-                if (imageType === 'avatar'){
-                    this.props.onChangeAvatar(response)
-                }
-                else if(imageType === 'personal-background'){
-                    this.props.onChangePersonalBackground(response)
-                }
+    cropUserImage = (file, maxWidth, maxHeight, imageType) => {
+        this.props.onDeactivateCropper()
+        setTimeout(()=>{
+            if (file !== undefined){
+                this.props.onActivateCropper(file, maxWidth, maxHeight, imageType)
+            }
+        }, 0)
+        
+        
+    }
+
+    loadImageToFirebase = (image, imageType) =>{
+        console.log(image)
+        if (image !== undefined){
+            const storageRef = fileUploader.storage().ref()
+            const fileRef = storageRef.child('user-' + imageType + this.props.userState.user.id)
+            fileRef.put(image).then((response)=>{
+                fileRef.getDownloadURL()
+                .then((response) => {
+                    console.log(response)
+                    if (imageType === 'avatar'){
+                        this.props.onChangeAvatar(response)
+                    }
+                    else if(imageType === 'personal-background'){
+                        this.props.onChangePersonalBackground(response)
+                    }
+                })
             })
-        })
+        }
+
+    }
+
+    loadUserImage = (e, imageType) =>{
+        const file = e.target.files[0];
+        this.loadImageToFirebase(file, imageType)
     }
 
     changeUserNameValue(e){
@@ -88,6 +111,7 @@ class ProfileRedactPopup extends Component {
         }
         
     }
+    
 
     deletePhone = (e) =>{
         e.preventDefault()
@@ -179,188 +203,41 @@ class ProfileRedactPopup extends Component {
         this.props.onPopupRedactProfileDeactivate();
     }
 
-    componentDidMount(){
-        console.log(this.props.userState.hasProfile)
+    changeSection(section) {
+        this.props.onChangeSection(section)
     }
+
+    dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type:mime});
+    }
+
+    getCropperData = () => {
+        console.log(this.props.cropperData.instance)
+        if (typeof this.props.cropperData.instance !== "undefined") {
+          const croppedImage = this.dataURLtoBlob(this.props.cropperData.instance.getCroppedCanvas().toDataURL());
+          this.loadImageToFirebase(croppedImage, this.props.cropperData.imageType)
+        }
+      };
 
     render() {
         return (
-            <div className={"profile-redact " + this.props.profileState.state}>
+            <div className={"rounded profile-redact " + this.props.profileState.state}>
                 <div className="profile-redact__popup-wrapper">
                     <MainPlaceholder></MainPlaceholder>
                     <div className="profile-redact__form">
-                        <div className="popup__input-block">
-                            <div className={"input-field  underline-anim wrong-" + this.props.wrongEmail}>
-                                <input className="popup__text-input" id="nameInput" name="nameInput" type="text" placeholder=" " onChange={this.changeUserNameValue.bind(this)} value={this.props.placeholderData.userName}/>
-                                <label className="popup__text-label" htmlFor="nameInput">Имя/никнейм</label>
-                            </div>
-
-                            <div className="gender-radio-box">
-                                <p>Пол:</p>
-                                <input className="gender-input" type="radio" id="gender-male" name="gender-radio" value="male" onChange={this.changeGender}/>
-                                <input className="gender-input" type="radio" id="gender-female" name="gender-radio" value="female" onChange={this.changeGender}/>
-
-                                <div>
-                                    <label htmlFor="gender-male">Мужской</label>
-                                    <label htmlFor="gender-female">Женский</label>
-                                </div>
-                            </div>
-                            
-                            <div className="textarea-field">
-                                <p>Описание</p>
-                                <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={this.changeUserDescriptionValue.bind(this)} value={this.props.placeholderData.description}></textarea>
-                            </div>
-                            
-                            <div className="input-field underlined">
-                                <input className="popup__text-input" id="birthdayInput" name="birthdayInput" type="date" placeholder=" " onChange={this.changeUserBDay.bind(this)} value={this.props.placeholderData.birthday}/>
-                                <label className="popup__text-label" htmlFor="birthdayInput">Дата рождения</label>
-                            </div>
-
-                            <div className="input-field underlined">
-                                <input className="popup__text-input" id="czInput" name="czInput" type="text" placeholder=" " onChange={this.changeCzValue.bind(this)} value={this.props.placeholderData.cz}/>
-                                <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
-                            </div>
-
-                            <div className="input-field underlined">
-                                <input className="popup__text-input" id="addressInput" name="addressInput" type="text" placeholder=" " onChange={this.changeCityValue.bind(this)} value={this.props.placeholderData.city}/>
-                                <label className="popup__text-label" htmlFor="addressInput">Адрес</label>
-                            </div>
+                        <div className="profile-redact__form-nav">
+                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'baseInfo')}>Базовая информация</button>
+                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'experience')}>Опыт и образование</button>
+                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'images')}>Персонализация</button>
                         </div>
-
-                        <div className="list-input-field popup__input-block">
-                            <p>Телефоны</p>
-
-                            {this.props.profileState.userPhones.map((phone, index)=>{
-                                return (
-                                    <div key={index} className="list-input-field__el-block" data-key={index}>
-                                        <span>{phone}</span>
-                                        <button className="el-block__delete-el" onClick={this.deletePhone}>x</button>
-                                    </div>
-                                )
-                            })}
-
-                            <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={this.phoneInput.bind(this)} maxLength="12"/>
-                        </div>
-
-                        <div className="list-input-field popup__input-block">
-                            <p>Владение языками</p>
-
-                            {this.props.profileState.language.map((el, index)=>{
-                                return (
-                                    <div key={index} className="list-input-field__el-block" data-key={index}>
-                                        <span>{el.language + ' - ' + el.grade}</span>
-                                        <button className="el-block__delete-el" onClick={this.deleteLanguage}>x</button>
-                                    </div>
-                                )
-                            })}
-                            <div className="popup__select-text-input">
-                                <input className="popup__text-input" type="text" id="languageInput" name="languageInput" placeholder="Нажмите пробел после введения языка..." onKeyDown={this.languageInput.bind(this)}/>
-                                <select name="languageGradeInput" id="languageGradeInput" onChange={this.languageGradeChange} value={this.props.profileState.buf.languageGrade}>
-                                    <option value="A1">A1 - начинающий (Beginner)</option>
-                                    <option value="A2">A2 - предпродвинутый (Pre-Intermediate)</option>
-                                    <option value="B1">B1 - продвинутый (Intermediate)</option>
-                                    <option value="B2">B2 - предпрофессиональный (Upper-Intermediate)</option>
-                                    <option value="C1">C1 - Профессиональный (Advanced)</option>
-                                    <option value="C2">C2 - Владение в совершенстве (Mastery)</option>
-                                </select>
-                            </div>
-                            
-                        </div>  
-
-                        <form className="popup__education-input popup__input-block" onSubmit={this.educationAdd}>
-                            {this.props.profileState.education.map((el, index)=>{
-                                    return (
-                                        <div key={index} className="list-input-field__el-block" data-key={index}>
-                                            <span>{el.proffession + ' - ' + el.university}</span>
-                                            <button className="el-block__delete-el" onClick={this.educationDelete}>x</button>
-                                        </div>
-                                    )
-                            })}
-                            <div className="input-field underlined">
-                                <input className="popup__text-input" id="professionInput" name="professionInput" type="input" placeholder=" " required/>
-                                <label className="popup__text-label" htmlFor="professionInput">Профессия</label>
-                            </div>
-
-                            <div className="input-field underlined">
-                                <input className="popup__text-input" id="universityInput" name="universityInput" type="input" placeholder=" " required/>
-                                <label className="popup__text-label" htmlFor="universityInput">Место образования</label>
-                            </div>
-
-                            <select name="educationTypeInput" id="educationTypeInput">
-                                <option value="course">Курсы</option>
-                                <option value="primary">Начальное образование (4 класса)</option>
-                                <option value="basic">Среднее общее образование (9 классов)</option>
-                                <option value="secondary">Среднее полное образование (11 классов)</option>
-                                <option value="post-secondary">Среднее профессиональное образование</option>
-                                <option value="bachelor">Высшее (бакалавриат)</option>
-                                <option value="specialist">Высшее (специалитет)</option>
-                                <option value="master">Высшее (магистратура)</option>
-                                <option value="PhD-asp">Аспирантура</option>
-                                <option value="PhD-doc">Докторантура</option>
-                            </select>
-
-                            <div className="popup__date-fields">
-                                <div className="input-field">
-                                    <input className="popup__text-input" id="educationStartDateInput" name="educationStartDateInput" type="date" placeholder=" " required/>
-                                    <label className="popup__text-label" htmlFor="educationStartDateInput">Дата начала</label>
-                                </div>
-
-                                <div className="input-field">
-                                    <input className="popup__text-input" id="educationEndDateInput" name="educationEndDateInput" type="date" placeholder=" " required/>
-                                    <label className="popup__text-label" htmlFor="educationEndDateInput">Дата окончания</label>
-                                </div>
-                            </div>
-
-                            <input type="submit" className="education-input__submit highlighted sup-btn" value="Сохранить"/>
-                        </form>
-
-                        <form className="popup__experience-input popup__input-block" onSubmit={this.experienceAdd}>
-                            {this.props.profileState.exp.map((el, index)=>{
-                                return (
-                                    <div key={index} className="list-input-field__el-block" data-key={index}>
-                                        <span>{el.position + ' - ' + el.company}</span>
-                                        <button className="el-block__delete-el" onClick={this.experienceDelete}>x</button>
-                                    </div>
-                                )
-                            })}
-
-                            <div className="input-field">
-                                <input className="popup__text-input" id="positionInput" name="positionInput" type="input" placeholder=" "/>
-                                <label className="popup__text-label" htmlFor="positionInput">Позиция</label>
-                            </div>
-
-                            <div className="input-field">
-                                <input className="popup__text-input" id="companyInput" name="companyInput" type="input" placeholder=" "/>
-                                <label className="popup__text-label" htmlFor="companyInput">Компания</label>
-                            </div>
-
-                            <select name="experienceTypeInput" id="experienceTypeInput">
-                                <option value="internship">Стажировка</option>
-                                <option value="junior">Младший специалист</option>
-                                <option value="middle">Средний специалист</option>
-                                <option value="senior">Старший специалист</option>
-                                <option value="director">Руководитель</option>
-                                <option value="senior-director">Старший руководитель</option>
-                            </select>
-
-                            <div className="popup__date-fields">
-                                <div className="input-field">
-                                    <input className="popup__text-input" id="experienceStartDateInput" name="experienceStartDateInput" type="date" placeholder=" "/>
-                                    <label className="popup__text-label" htmlFor="experienceStartDateInput">Дата начала</label>
-                                </div>
-
-                                <div className="input-field">
-                                    <input className="popup__text-input" id="experienceEndDateInput" name="experienceEndDateInput" type="date" placeholder=" "/>
-                                    <label className="popup__text-label" htmlFor="experienceEndDateInput">Дата окончания</label>
-                                </div>
-                            </div>
-
-                            <input type="submit" className="experience-input__submit highlighted sup-btn" value="Сохранить"/>
-                        </form>
-                        <Loader active={this.props.loaderActive}></Loader>
-                            
-                        <input type="file" name="userAvatarInput" onChange={(event) => {this.loadUserImage(event, 'avatar')}}/>
-                        <input type="file" name="userBackgroundInput" onChange={(event) => {this.loadUserImage(event, 'personal-background')}}/>
+                        {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')}
+                        {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
+                        {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
                         <button className="form-submit-btn f-large rounded bold" onClick={this.saveRedactProfileFormChanges}>Сохранить изменения</button>
                         <button className="profile-redact__close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
@@ -377,6 +254,9 @@ const mapStateToProps = (state) =>{
         userState: state.user,
         placeholderData: state.profile.placeholder,
         loaderActive: state.nav.popup.loaderActive,
+        cropperActive: state.profile.buf.cropper.state,
+        cropperData:state.profile.buf.cropper
+
     }
   }
   
@@ -385,65 +265,14 @@ const mapDispatchToProps = (dispatch) =>{
         onPopupRedactProfileDeactivate: () => {
             dispatch({type : 'POPUP_REDACT_PROFILE_DEACTIVATE', payload:null})
         },
+        onChangeSection: (section) => {
+            dispatch({type : 'POPUP_REDACT_CHANGE_SECTION', payload:section})
+        },
         onActivateLoader: ()=>{
             dispatch({type : 'ACTIVATE_PROFILE_REDACT_LOADER', payload:null})
         },
         onDeactivateLoader: ()=>{
             dispatch({type : 'DEACTIVATE_PROFILE_REDACT_LOADER', payload:null})
-        },
-        onUsernameChange: (username)=>{
-            dispatch({type : 'POPUP_REDACT_USERNAME_CHANGE', payload:username})
-        },
-        onChangeAvatar: (fileUrl)=>{
-            dispatch({type : 'POPUP_REDACT_AVATAR_CHANGE', payload:fileUrl})
-        },
-        onChangePersonalBackground: (fileUrl)=>{
-            dispatch({type : 'POPUP_REDACT_PERSONAL_BACKGROUND_CHANGE', payload:fileUrl})
-        },
-        onDescriptionChange: (text)=>{
-            dispatch({type : 'POPUP_REDACT_DESCRIPTION_CHANGE', payload:text})
-        },
-        onBDayChange: (text)=>{
-            dispatch({type : 'POPUP_REDACT_BIRTHDAY_CHANGE', payload:text})
-        },
-        onCzChange: (text)=>{
-            dispatch({type : 'POPUP_REDACT_CITIZENSHIP_CHANGE', payload:text})
-        },
-        onCityChange: (text)=>{
-            dispatch({type : 'POPUP_REDACT_CITY_CHANGE', payload:text})
-        },        
-        onChangeGenderToMale: () => {
-            dispatch({type : 'CHANGE_GENDER_TO_MALE', payload:null})
-        },
-        onChangeGenderToFemale: () => {
-            dispatch({type : 'CHANGE_GENDER_TO_FEMALE', payload:null})
-        },
-        onLanguageAdd: (language)=>{
-            dispatch({type : 'POPUP_REDACT_ADD_LANGUAGE', payload:language})
-        },
-        onLanguageGradeChange: (grade)=>{
-            dispatch({type : 'POPUP_REDACT_LANGUAGE_GRADE_CHANGE', payload:grade})
-        },
-        onLanguageDelete: (languageId)=>{
-            dispatch({type : 'POPUP_REDACT_DELETE_LANGUAGE', payload:languageId})
-        },
-        onTagAdd: (phone)=>{
-            dispatch({type : 'POPUP_REDACT_ADD_PHONE', payload:phone})
-        },
-        onTagDelete: (phoneId)=>{
-            dispatch({type : 'POPUP_REDACT_DELETE_PHONE', payload:phoneId})
-        },
-        onEducationAdd: (education)=>{
-            dispatch({type : 'POPUP_REDACT_ADD_EDUCATION', payload:education})
-        },
-        onEducationDelete: (educationId)=>{
-            dispatch({type : 'POPUP_REDACT_DELETE_EDUCATION', payload:educationId})
-        },
-        onExperienceAdd: (experience)=>{
-            dispatch({type : 'POPUP_REDACT_ADD_EXPERIENCE', payload:experience})
-        },
-        onExperienceDelete: (experienceId)=>{
-            dispatch({type : 'POPUP_REDACT_DELETE_EXPERIENCE', payload:experienceId})
         },
         onCreateNewEmployee:(data, userId, onGetUserFetch, onHasProfile)=>{
             dispatch({type : 'WAITING_FOR_FETCH', payload:null})

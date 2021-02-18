@@ -105,6 +105,18 @@ export default function profileState(state = initialState, action){
             ...state,
         };
     }
+    else if (action.type ==='POPUP_REDACT_RESUME_CHANGE_COLOR'){
+        if (action.payload.index !== state.cvs.length){
+            state.placeholder[action.payload.index].bg_header_color = action.payload.color
+        }
+        else {
+            state.newCv.bg_header_color = action.payload.color
+        }
+
+        return {
+            ...state,
+        };
+    }
     else if(action.type === 'POPUP_REDACT_RESUME_CHANGE_INDUSTRY_VALUE'){
         if (action.payload.index !== state.cvs.length){
             state.placeholder[action.payload.index].industry = action.payload.text

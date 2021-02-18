@@ -174,7 +174,12 @@
     margin-top: 20px;
 }
 
-.contacts__phones-el{
+.info__contacts__phones{
+    margin-bottom: 15px;
+}
+
+.contacts__phones-el,
+.languages-el{
     display: block;
     width: fit-content;
 }

@@ -1,9 +1,11 @@
 /*    Placeholder      */
 
 .main-placeholder{
-    min-width: 700px;
-    max-width: 700px;
-    padding: 20px;
+    position: relative;
+
+    min-width: 720px;
+    max-width: 720px;
+    padding: 10px;
 
     background-color: #eff5ff;
 }
@@ -24,6 +26,8 @@
 }
 
 .main-placeholder__personal__avatar{
+    z-index: 1;
+
     width: 120px;
     height: 120px;
     margin-left: 50px;
@@ -40,12 +44,29 @@
     padding-bottom: 50px;
 }
 
+.cropper__img-preview{
+    max-width: 700px;
+}
+
 /*    Placeholder-end      */
 
-.popup__input-block{
-    border-bottom: 3px solid #8b8b8b;
-    padding-bottom: 20px;
+.profile-redact__form-nav{
+    display: flex;
+
     margin-bottom: 20px;
+}
+
+.popup-nav-btn{
+    padding: 5px 6px;
+
+    border-bottom: 1px solid #000;
+}
+
+.popup__input-block{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+
+    border-bottom: 3px solid #8b8b8b;
 }
 
 .underlined{
@@ -56,6 +77,8 @@
     position: absolute;
     z-index: 1;
     top: 0;
+    margin-top: 30px;
+    background-color: #fff;
 
     visibility: hidden;
 
@@ -81,7 +104,6 @@
     display: flex;
 
     width: 100%;
-    margin-top: 30px;
     padding: 20px;
 
     border-radius: 10px;
@@ -102,10 +124,8 @@
 
 .profile-redact__form{
     width: 400px;
-    padding: 10px 0 10px 20px;
+    padding: 10px 20px;
 }
-
-
 
 .textarea-field{
     margin: 30px 0;
@@ -124,8 +144,9 @@
 }
 
 .popup__date-fields{
-    margin-top: 20px;
     display: flex;
+
+    margin-top: 20px;
 }
 
 .popup__select-text-input{
@@ -140,14 +161,14 @@
 
 .popup__education-input,
 .popup__experience-input{
-    margin-top: 10px;
     display: flex;
     flex-direction: column;
+
+    margin-top: 10px;
 }
 
 .education-input__submit,
 .experience-input__submit{
-
     align-self: center;
 }
 
@@ -210,11 +231,13 @@
 
 .list-input-field__el-block{
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border: 1px solid #000;
+    justify-content: space-between;
+
     margin: 5px 0 10px 0;
     padding: 5px 10px;
+
+    border: 1px solid #000;
     border-radius: 10px;
 }
 
@@ -222,10 +245,93 @@
 .el-block__delete-el{
     font-size: 30px;
     line-height: 1;
-    color: #ff0000;
+
+    color: #f00;
 }
 
 
 /* .popup__text-input:not(:focus)::placeholder{
     opacity: 0;
 } */
+
+/* Cropper */
+
+.cropper-block{
+    position: absolute;
+    top: 0;
+    left: -3px;
+
+    align-items: center;
+
+    min-width: 720px;
+    max-width: 720px;
+    padding: 10px;
+    border-radius: 16px;
+
+    background-color: #eff5ff;
+    background-size: cover;
+}
+
+
+.cropper__img-preview.avatar{
+    position: relative;
+    z-index: 2;
+
+    width: 120px;
+    height: 120px;
+    margin-top: 20px;
+    margin-left: 53px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.cropper__img-preview.personal-background{
+    margin-top: 10px;
+
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.cropper-controls{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.cropper-upload-btn,
+.cropper-close-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 70px;
+    height: 70px;
+
+    transition: .5s;
+
+    border: 1px solid #000;
+    border-radius: 50%;
+    background: #000;
+}
+
+.cropper-upload-btn img,
+.cropper-close-btn img{
+    width: 40px;
+}
+
+.cropper-upload-btn:hover,
+.cropper-close-btn:hover{
+    transition: .5s;
+
+    border: 1px solid #fff;
+
+    filter: invert(1);
+}
+
+.cropper-close-btn{
+    margin-left: 50px;
+}
+
+/* Cropper end */

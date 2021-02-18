@@ -1,6 +1,11 @@
 const initialState = {
     searchActive: '',
     position: '',
+    dropDownState: '',
+    optionsPopup:{
+        optionsPopupState: '',
+        loaderActive:false
+    },
     popup:{
         state:'muted',
         type:'',
@@ -26,6 +31,19 @@ export default function navState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'DROPDOWN_ACTIVATE'){
+        state.dropDownState = 'active';
+        return {
+            ...state
+        };
+    }
+    else if (action.type === 'DROPDOWN_DEACTIVATE'){
+        state.dropDownState = '';
+        return {
+            ...state
+        };
+    }
+    
     else if (action.type === 'POPUP_ACTIVATE'){
         state.popup.state = 'active';
         state.popup.type = action.payload;
@@ -93,6 +111,32 @@ export default function navState(state = initialState, action){
     }
     else if(action.type === 'DEACTIVATE_LOADER'){
         state.popup.loaderActive = false;
+        return{
+            ...state
+        }
+    }
+
+
+    if (action.type === 'OPTIONS_POPUP_ACTIVATE'){
+        state.optionsPopup.optionsPopupState = 'active';
+        return {
+            ...state
+        };
+    }
+    else if (action.type === 'OPTIONS_POPUP_DEACTIVATE'){
+        state.optionsPopup.optionsPopupState = '';
+        return {
+            ...state
+        };
+    }
+    else if(action.type === 'OPTIONS_POPUP_ACTIVATE_LOADER'){
+        state.optionsPopup.loaderActive = true;
+        return{
+            ...state
+        }
+    }
+    else if(action.type === 'OPTIONS_POPUP_DEACTIVATE_LOADER'){
+        state.optionsPopup.loaderActive = false;
         return{
             ...state
         }

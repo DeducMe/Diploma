@@ -12,6 +12,42 @@
     width: 100%;
 }
 
+.nav__profile-data{
+    position: relative;
+}
+
+.nav__profile-data__avatar {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav__profile-data__main{
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    min-width: 200px;
+}
+
+
+.nav__profile-data__dropdown{
+    padding: 10px;
+    position: absolute;
+    top: 75px;
+    background-color: #253957;
+    width: 100%;
+    display: none;
+}
+
+.nav__profile-data__dropdown.active{
+    display: block;
+}
+
+.nav__profile-data__options-btn{
+    margin-left: 10px;
+}
+
 .nav{
     width: 100%;
     display: flex;

@@ -65,6 +65,12 @@ function redactResumeFetchSucces(){
     }
 }
 
+function deleteResumeFetchSucces() {
+    return{
+        type:'DELETE_RESUME_FETCH_SUCCES'
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -142,9 +148,33 @@ export const addResume = (data) => (dispatch) => {
     })
 }
 
-export const redactResume = (data, cvId, userId) => (dispatch) => {
+export const deleteResume = (id) => (dispatch) => {
+    return fetch(url + '/cv/' + id,{
+        method: 'DELETE',  
+
+        headers:{
+        'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        'XSRF-TOKEN':'xjk2kzjn4',
+        "X-XSRF-TOKEN":'xjk2kzjn4',
+        "X-CSRF-TOKEN":'xjk2kzjn4'
+      }
+    })
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        return dispatch(deleteResumeFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const redactResume = (data, cvId) => (dispatch) => {
     console.log(data)
-    return fetch(url + '/cv/'+userId+'/'+cvId,{
+    return fetch(url + '/cv/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
         headers:{

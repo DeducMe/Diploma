@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import personalBackground from'../../../img/personal-background.png'
+import ImageCropper from "./ImageCropper";
+
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 
 export class MainPlaceholder extends Component {
     checkOnEmpty(el, returnValue){
-        console.log(el, returnValue)
         if (el !== ""){
             return el
         }
@@ -14,16 +17,13 @@ export class MainPlaceholder extends Component {
         return returnValue
     }
 
-    componentDidUpdate(){
-        console.log(this.props.userPhones)
-    }
     render() {
 
         return (
             <div className="main-placeholder rounded">
-                <section className="main-placeholder__personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.personalBackground, personalBackground)})`}}>
+                <div className="main-placeholder__personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.personalBackground, personalBackground)})`}}>
                     <img className="main-placeholder__personal__avatar" src={this.checkOnEmpty(this.props.avatarPhoto, placeholderAvatar)} alt="аватар"/>
-                </section>
+                </div>
                 <section className="main-placeholder__info">
                     <div className="main-placeholder__info-wrapper">
                         <div className="info-head">
@@ -43,9 +43,14 @@ export class MainPlaceholder extends Component {
                         </div>
                         
                         <div className="info__contacts__phones">
+                            <p>Контакты:</p>
                             {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                         </div>
 
+                        <div className="info__languages">
+                            <p>Владение языками:</p>
+                            {this.props.userLanguages.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
+                        </div>
                         
                         {this.props.userEducation.length!== 0 ?(
                             <div className="info__education">
@@ -84,6 +89,8 @@ export class MainPlaceholder extends Component {
                             </div>):('')}
                     </div>
                 </section>
+                
+                <ImageCropper></ImageCropper>
 
             </div>
         )
@@ -104,8 +111,9 @@ const mapStateToProps = (state) => {
         userCity:state.profile.placeholder.city,
         userCz:state.profile.placeholder.cz,
         userPhones:state.profile.userPhones,
+        userLanguages: state.profile.language,
         userEducation:state.profile.education,
-        userExperience:state.profile.exp
+        userExperience:state.profile.exp,
     }
 }
 
@@ -113,6 +121,9 @@ const mapDispatchToProps = (dispatch) =>{
     return{
       onUpdateUserName: (userName) => {
         dispatch({type : 'PLACEHOLDER_UPDATE_USER_NAME', payload:userName})
+      },
+      setCropperInstance: (instance) => {
+        dispatch({type : 'SET_CROPPER_INSTANCE', payload:instance})
       }
     }
 }

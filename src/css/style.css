@@ -76,7 +76,10 @@ input[type='submit']{
     border-top-left-radius: 16px;
 }
 
-
+.bottom-rounded{
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
 .f-pre{
     font-size: 1.1rem;
 }
@@ -110,6 +113,31 @@ input[type='submit']{
 
 .white{
     color: #fff;
+}
+
+.flex{
+    display: flex;
+}
+
+.bg-light-black{
+    background-color: #1e1f26;
+}
+
+.bg-blue-gray{
+    background-color: #253957;
+}
+
+.bg-blue-black{
+    background-color: #001e4b;
+}
+
+.bg-violet-black{
+    background-color: #150050;
+}
+
+.bg-violet-gray{
+    background-color: #351124;
+
 }
 
 .input-list{

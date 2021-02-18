@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux'
 
 import Popup from './Popup/Popup'
-import { connect } from 'react-redux'
+import OptionsPopup from './OptionsPopup/OptionsPopup'
+
 import logo from '../../img/logo.svg'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
@@ -9,11 +11,12 @@ import bell from '../../img/bell.svg'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 import {Link} from 'react-router-dom'
-import Cookies from 'universal-cookie';
 import {logout} from '../../actions/serverConnections'
+import placeholderAvatar from '../../img/placeholder-avatar.jpg'
 
 
-const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,onLogout, onRegistrationPopupActivate, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
+
+const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate, onDropDownActivate, onDropDownDeactivate, onOptionsPopupActivate, onOptionsPopupDeactivate, onLogout, onRegistrationPopupActivate,userData, onLoginPopupActivate, onNavPositionChangeToFixed, onNavPositionChangeToNone, location, history}) => {
   function searchToggle(){
     if (navState.searchActive){
       onSearchDeactivate();
@@ -35,6 +38,32 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,o
     e.preventDefault();
     onLogout()
   }
+
+  function dropdownToggle(){
+    if (navState.dropDownState === ''){
+      onDropDownActivate();
+    }
+    else{
+      onDropDownDeactivate();
+    }
+  }
+
+  function optionsPopupToggle(){
+    if (navState.optionsPopup.optionsPopupState === ''){
+      onOptionsPopupActivate();
+    }
+    else{
+      onOptionsPopupDeactivate();
+    }
+  }
+
+  function checkOnEmpty(el, returnValue){
+    if (el !== ""){
+        return el
+    }
+
+    return returnValue
+}
   
   useEffect(() => {
     if (location === '/landing')
@@ -76,13 +105,29 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,o
             <button  className="icon-anim nav-el">
               <img src={star} alt="favourites"/>
             </button>
-
-            <Link to={"/profile/"+userState.user.id} className="f-medium semi link-anim nav-el">Моя страница</Link>
-            {/* <form onSubmit={logoutHandleFormSubmit}>
-              <button type="submit">Logout</button>
-            </form> */}
+            <div className="nav__profile-data nav-el">
+              <div className="nav__profile-data__main link-anim" onClick={dropdownToggle}>
+                <Link to={"/profile/"+userState.user.id} className="f-medium semi flex">
+                  <img className="nav__profile-data__avatar" src={checkOnEmpty(userData.photo_url, placeholderAvatar)} alt="аватар"/>
+                </Link>
+                <button className="nav__profile-data__options-btn">{userState.user.name}</button>
+              </div>
+              
+              <div className={"nav__profile-data__dropdown bottom-rounded " + navState.dropDownState}>
+                <ul className="dropdown__list">
+                  <li className="dropdown__list-el">
+                    <Link to={"/profile/"+userState.user.id} className="semi">Моя страница</Link>
+                  </li>
+                  <li className="dropdown__list-el" onClick={optionsPopupToggle}>
+                    <button to={"/profile/"+userState.user.id} className="semi">Настройки</button>
+                  </li>
+                  <li className="dropdown__list-el" onClick={logoutHandleFormSubmit}>
+                    <button className="semi">Выход</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
-          
         </nav>     
       </div> 
     </div>
@@ -94,6 +139,8 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,o
         </div>
       </div>
     </div>  
+
+    {navState.optionsPopup.optionsPopupState === 'active'?(<OptionsPopup history={history}></OptionsPopup>):('')}
   </div>
   )
   else return(
@@ -132,6 +179,7 @@ const Nav = ({logged, navState, onSearchActivate,userState, onSearchDeactivate,o
     </div>  
     
     <Popup history={history}></Popup>
+
   </div>
   )
 }
@@ -143,6 +191,7 @@ const mapStateToProps = (state, ownProps) =>{
     navState: state.nav,
     logged:state.user.logged,
     userState:state.user,
+    userData:state.userData,
     location:ownProps.location.pathname,
     history:ownProps.history
   }
@@ -162,9 +211,19 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onRegistrationPopupActivate: (history) => {
       history.push('/landing')
-
       dispatch({type : 'POPUP_ACTIVATE', payload:'registration'})
-
+    },
+    onOptionsPopupActivate: () => {
+      dispatch({type : 'OPTIONS_POPUP_ACTIVATE', payload:null})
+    },
+    onOptionsPopupDeactivate: () => {
+      dispatch({type : 'OPTIONS_POPUP_DEACTIVATE', payload:null})
+    },
+    onDropDownActivate: () => {
+      dispatch({type : 'DROPDOWN_ACTIVATE', payload:null})
+    },
+    onDropDownDeactivate: () => {
+      dispatch({type : 'DROPDOWN_DEACTIVATE', payload:null})
     },
     onNavPositionChangeToNone: () => {
       dispatch({type : 'CHANGE_NAV_POSITION_TO_NONE', payload:null})
@@ -174,8 +233,7 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onLogout: (token)=>{
       dispatch(logout(token))
-
-    }
+    },
   }
 }
 
