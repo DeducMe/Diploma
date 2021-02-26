@@ -76,7 +76,7 @@ class ImageCropper extends Component {
                 />
 
                 <Cropper
-                style={{ width: "100%", height: "400px", backgroundColor:"#fff" }}
+                style={{ width: "100%", maxHeight: "400px",minHeight: "400px", backgroundColor:"#fff" }}
                 aspectRatio={this.props.cropperMaxWidth / this.props.cropperMaxHeight}
 
                 preview=".cropper__img-preview"
@@ -115,11 +115,11 @@ class ImageCropper extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cropperMaxWidth:state.profile.buf.cropper.maxWidth,
-        cropperMaxHeight:state.profile.buf.cropper.maxHeight,
-        cropperFile:state.profile.buf.cropper.file,
-        cropperActive:state.profile.buf.cropper.state,
-        cropperData:state.profile.buf.cropper,
+        cropperMaxWidth:state.companyProfile.buf.cropper.maxWidth,
+        cropperMaxHeight:state.companyProfile.buf.cropper.maxHeight,
+        cropperFile:state.companyProfile.buf.cropper.file,
+        cropperActive:state.companyProfile.buf.cropper.state,
+        cropperData:state.companyProfile.buf.cropper,
         userState: state.user,
 
     }
@@ -131,13 +131,13 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch({type : 'SET_CROPPER_INSTANCE', payload:instance})
         },
         onChangeAvatar: (fileUrl)=>{
-            dispatch({type : 'POPUP_REDACT_AVATAR_CHANGE', payload:fileUrl})
+            dispatch({type : 'PROFILE_EMPLOYER_REDACT_AVATAR_CHANGE', payload:fileUrl})
         },
         onChangePersonalBackground: (fileUrl)=>{
-            dispatch({type : 'POPUP_REDACT_PERSONAL_BACKGROUND_CHANGE', payload:fileUrl})
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_PERSONAL_BACKGROUND_CHANGE', payload:fileUrl})
         },
         onDeactivateCropper:()=>{
-            dispatch({type : 'DEACTIVATE_PROFILE_REDACT_IMAGE_CROPPER', payload:null})
+            dispatch({type : 'PROFILE_EMPLOYER_REDACT_DEACTIVATE_IMAGE_CROPPER', payload:null})
         }
     }
 }

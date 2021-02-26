@@ -6,7 +6,6 @@ import ProfileRedactPopup from './ProfileRedactPopup/ProfileRedactPopup'
 import { connect } from 'react-redux'
 import {getUserResumes, getUserData} from '../../actions/serverConnections'
 import './profile.css'
-import userData from '../../reducers/userData'
 import Loader from '../Loader/Loader'
 
 
@@ -19,7 +18,6 @@ class Profile extends Component {
         }
         return def
     }
-
 
     initPlaceholder = () => {
         console.log(this.props.userState.hasProfile)

@@ -6,6 +6,8 @@ import reducer from './reducers/reducer'
 import { BrowserRouter as Router } from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import Profile from './components/Profile/Profile'
+import CompanyProfile from './components/CompanyProfile/CompanyProfile'
+
 import {
   Route,
   Switch,
@@ -35,6 +37,7 @@ ReactDOM.render(
       <Switch>
           <Route path="/landing" component={Landing}/>
           <Route path="/profile/:id" component={Profile}/>
+          <Route path="/company/:id" component={CompanyProfile}/>
           <Redirect from="*" to="/landing"/>
       </Switch>
     </Router>

@@ -44,7 +44,13 @@ class Popup extends Component {
 
   redirectUser = (userId) =>{
     this.props.onLoginUser();
-    this.props.history.push("/profile/"+userId);
+    if (this.props.userState.user_type === 'employee'){
+      this.props.history.push("/profile/" + userId);
+    }
+    else{
+      this.props.history.push("/company/" + userId);
+
+    }
     this.props.onDeactivateLoader()
   }
 
@@ -109,6 +115,7 @@ class Popup extends Component {
       })
       .then(response => response.json())
       .then(data => {
+          data.name = user.name
           console.log(data)
           return data
       })
@@ -171,7 +178,7 @@ class Popup extends Component {
     if (this.props.popupState.type === 'login')
       return (
 
-    <div className={"user-id-popup " + this.props.popupState.state}>
+    <div className={"blur-box " + this.props.popupState.state}>
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Вход</h2>
 
@@ -208,7 +215,7 @@ class Popup extends Component {
         )
     else return (
 
-    <div className={"user-id-popup " + this.props.popupState.state}>
+    <div className={"blur-box " + this.props.popupState.state}>
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Регистрация</h2>
 
@@ -271,20 +278,6 @@ class Popup extends Component {
   }
 }
 
-// export default connect(
-//   state => ({
-//     popupState: state.nav.popup
-//   }),
-//   dispatch => ({
-//     onSubjectChangeToEmployer: () => {
-//       dispatch({type : 'CHANGE_SUBJECT_TO_EMPLOYER', payload:null})
-//     },
-//     onSubjectChangeToEmployee: () => {
-//       dispatch({type : 'CHANGE_SUBJECT_TO_EMPLOYEE', payload:null})
-//     }
-    
-//   })
-// )(Popup)
 
 const mapStateToProps = (state, ownProps) =>{
   return {
@@ -296,7 +289,7 @@ const mapStateToProps = (state, ownProps) =>{
     loaderActive: state.nav.popup.loaderActive,
     wrongEmailError:state.nav.popup.wrongEmailError,
     wrongPasswordError:state.nav.popup.wrongPasswordError,
-
+    userState:state.user.user
 
   }
 }

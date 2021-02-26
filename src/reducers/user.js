@@ -2,10 +2,8 @@ const initialState = {
   logged: false,
   userType:'employee',
   hasProfile: false,
-  userData: {},
   waitingFetch: false,
   user:{},
-  userId:'',
   error: false
 };
 

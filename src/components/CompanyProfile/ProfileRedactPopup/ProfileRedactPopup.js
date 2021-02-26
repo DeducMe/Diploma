@@ -3,11 +3,10 @@ import Loader from '../../Loader/Loader'
 import { connect } from 'react-redux'
 import './profileRedactPopup.css'
 import MainPlaceholder from './MainPlaceholder'
-import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
+import {updateEmployer, createNewEmployer, getEmployer} from '../../../actions/serverConnections'
 import "cropperjs/dist/cropper.css";
-
+import fileUploader from '../../../actions/fileUploader'
 import RedactPopupSectionBaseInfo from './redactPopupSections/RedactPopupSectionBaseInfo'
-import RedactPopupSectionExperience from './redactPopupSections/RedactPopupSectionExperience'
 import RedactPopupSectionImages from './redactPopupSections/RedactPopupSectionImages'
 
 class ProfileRedactPopup extends Component {
@@ -16,33 +15,24 @@ class ProfileRedactPopup extends Component {
         this.props.onPopupRedactProfileDeactivate();
     }
 
+
     saveRedactProfileFormChanges = (e) =>{
         e.preventDefault();
 
         let data = {
             "user_id": this.props.userState.user.id,
-            "gender":this.props.placeholderData.gender,
-            "name":this.props.placeholderData.userName,
+            "name":this.props.placeholderData.name,
             "mailing": true,
-            "language": this.props.profileState.language,
-            "birthday": this.props.placeholderData.birthday,
-            "city": this.props.placeholderData.city,
-            "phone": this.props.profileState.userPhones,
-            "about": this.props.placeholderData.description,
-            "social_links": [],
-            "education": this.props.profileState.education,
-            "exp": this.props.profileState.exp,
-            "cz": this.props.placeholderData.cz,
+            "address": this.props.placeholderData.address,
+            "phone": this.props.placeholderData.phone,
+            "about": this.props.placeholderData.about,
+            "links": [],
             "profile_link": "",
             "photo_url": this.props.placeholderData.photo_url,
             "profile_background": this.props.placeholderData.profile_background
         }
 
-        if (this.props.userState.user.user_type === 'employee'){
-            this.props.onUpdateEmployee(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
-        }
-        else this.props.onUpdateEmployer(data, this.props.userState.user.id, this.props.onGetUserFetch, this.props.onHasProfile)
-
+        this.props.onUpdateEmployer(data, this.props.userState.user.id, this.props.onGetEmployer, this.props.onHasProfile)
         this.props.onPopupRedactProfileDeactivate();
     }
 
@@ -58,11 +48,9 @@ class ProfileRedactPopup extends Component {
                     <div className="profile-redact__form">
                         <div className="profile-redact__form-nav">
                             <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'baseInfo')}>Базовая информация</button>
-                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'experience')}>Опыт и образование</button>
                             <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'images')}>Персонализация</button>
                         </div>
                         {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')}
-                        {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
                         <button className="form-submit-btn f-large rounded bold" onClick={this.saveRedactProfileFormChanges}>Сохранить изменения</button>
@@ -76,12 +64,12 @@ class ProfileRedactPopup extends Component {
 
 const mapStateToProps = (state) =>{
     return {
-        profileState: state.profile,
+        profileState: state.companyProfile,
         userState: state.user,
-        placeholderData: state.profile.placeholder,
+        placeholderData: state.companyProfile.placeholder,
         loaderActive: state.nav.popup.loaderActive,
-        cropperActive: state.profile.buf.cropper.state,
-        cropperData:state.profile.buf.cropper
+        cropperActive: state.companyProfile.buf.cropper.state,
+        cropperData:state.companyProfile.buf.cropper
 
     }
   }
@@ -89,38 +77,32 @@ const mapStateToProps = (state) =>{
 const mapDispatchToProps = (dispatch) =>{
     return{
         onPopupRedactProfileDeactivate: () => {
-            dispatch({type : 'POPUP_REDACT_PROFILE_DEACTIVATE', payload:null})
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_PROFILE_DEACTIVATE', payload:null})
         },
         onChangeSection: (section) => {
-            dispatch({type : 'POPUP_REDACT_CHANGE_SECTION', payload:section})
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_CHANGE_SECTION', payload:section})
         },
         onActivateLoader: ()=>{
-            dispatch({type : 'ACTIVATE_PROFILE_REDACT_LOADER', payload:null})
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_ACTIVATE_LOADER', payload:null})
         },
         onDeactivateLoader: ()=>{
-            dispatch({type : 'DEACTIVATE_PROFILE_REDACT_LOADER', payload:null})
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_DEACTIVATE_LOADER', payload:null})
         },
-        onCreateNewEmployee:(data, userId, onGetUserFetch, onHasProfile)=>{
+        onCreateNewEmployer:(data, userId, onGetEmployer, onHasProfile)=>{
             dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-            dispatch(createNewEmployee(data))
-            .then(data => onGetUserFetch(userId, onHasProfile))
+            dispatch(createNewEmployer(data))
+            .then(data => onGetEmployer(userId, onHasProfile))
         },
-        onCreateNewEmployer:()=>{
+        onUpdateEmployer:(data, userId, onGetEmployer, onHasProfile)=>{
             dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-        },
-        onUpdateEmployee:(data, userId, onGetUserFetch, onHasProfile)=>{
-            dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-            dispatch(updateEmployee(data, userId))
-            .then(data => onGetUserFetch(userId, onHasProfile))
-        },
-        onUpdateEmployer:()=>{
-            dispatch({type : 'WAITING_FOR_FETCH', payload:null})
+            dispatch(updateEmployer(data, userId))
+            .then(data => onGetEmployer(userId, onHasProfile))
         },
         onHasProfile: () => {
           dispatch({type : 'USER_HAS_PROFILE', payload:null})
         },
-        onGetUserFetch: (userId, onHasProfile)=> {
-          dispatch(getUserData(userId))
+        onGetEmployer: (userId, onHasProfile)=> {
+          dispatch(getEmployer(userId))
           .then((data)=>{
               if (data.userData !== null){
                   console.log(data.userData)

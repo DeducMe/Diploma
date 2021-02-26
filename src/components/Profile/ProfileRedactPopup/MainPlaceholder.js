@@ -59,7 +59,7 @@ export class MainPlaceholder extends Component {
                                     console.log('education', el)
                                     return (
                                         <div className="education-block" key={index}>
-                                            <p className="education-name highlighted">{el.proffession}</p>
+                                            <p className="education-name highlighted">{el.profession}</p>
                                             <div className="education-place">
                                                 <p className="education-place__institution">{el.university},</p>
                                                 <p className="education-place__grade">&nbsp;{el.type}</p>     

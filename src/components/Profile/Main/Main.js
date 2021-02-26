@@ -81,7 +81,7 @@ class Main extends Component {
                                 {this.props.userData.education.map((el, index)=>{
                                     return (
                                         <div className="education-block" key={index}>
-                                            <p className="education-name highlighted">{el.proffession}</p>
+                                            <p className="education-name highlighted">{el.profession}</p>
                                             <div className="education-place">
                                                 <p className="education-place__institution">{el.university},</p>
                                                 <p className="education-place__grade">&nbsp;{el.type}</p>     
@@ -161,7 +161,7 @@ class Main extends Component {
                         </div>
                     </div>
                     
-                    {this.props.userData.phone.length !== 0 ? (
+                    {(this.props.userData.phone.length !== 0 && this.props.userData.phone !== null) ? (
                         <div className="info__contacts">
                             <p>Контакты:</p>
                             <div className="info__contacts__phones">
@@ -169,7 +169,7 @@ class Main extends Component {
                             </div>
                         </div>):('')}
                         
-                    {this.props.userData.language.length !== 0 ? (
+                    {(this.props.userData.language.length !== 0 && this.props.userData.language !== null)  ? (
                     <div className="info__languages">
                         <p>Владение языками:</p>
                         {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
@@ -181,7 +181,7 @@ class Main extends Component {
                             {this.props.userData.education.map((el, index)=>{
                                 return (
                                     <div className="education-block" key={index}>
-                                        <p className="education-name highlighted">{el.proffession}</p>
+                                        <p className="education-name highlighted">{el.profession}</p>
                                         <div className="education-place">
                                             <p className="education-place__institution">{el.university},</p>
                                             <p className="education-place__grade">&nbsp;{el.type}</p>     

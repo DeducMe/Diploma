@@ -1,0 +1,15 @@
+{
+    "user_id": 0,
+    "salary": 0,
+    "vacancy_name": "",
+    "industry": "",
+    "grade":"",
+    "work_type": [],
+    "exp": "",
+    "tags": [],
+    "adress": "",
+    "pub_date": "",
+    "leading":"",
+    "trailing":"",
+    "body":[]
+}

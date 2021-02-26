@@ -10,5 +10,11 @@ export default function userData(state = initialState, action){
         ...state
         };
     }
+    else if (action.type === 'GET_EMPLOYER_FETCH_SUCCESS'){
+        state = action.userData;
+        return {
+        ...state
+        };
+    }
     return state;
 }

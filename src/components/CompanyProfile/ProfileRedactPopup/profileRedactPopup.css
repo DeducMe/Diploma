@@ -44,8 +44,18 @@
     padding-bottom: 50px;
 }
 
-.cropper__img-preview{
+.cropper__img-preview.personal-background{
     max-width: 700px;
+    min-width: 700px;
+    max-height: 160px;
+    min-height: 160px;
+}
+
+.cropper__img-preview.avatar{
+    max-height: 120px;
+    min-height: 120px;
+    max-width: 120px;
+    min-width: 120px;
 }
 
 /*    Placeholder-end      */
