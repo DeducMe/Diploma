@@ -56,8 +56,30 @@
     width: 100%;
 }
 
+.resume__header-color{
+    display: flex;
+}
+
+.resume__header-color-el{
+    margin-left: 10px;
+    width: 30px;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    height: 30px;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.resume__header-color-el.selected,
+.resume__header-color-el:hover{
+    border: 3px solid rgb(255, 207, 50);
+    transition: .3s;
+}
+
+
 .resume-redact-btn,
-.resume-delete-btn{
+.resume-delete-btn,
+.resume-close-btn{
     display: flex;
     position: absolute;
     align-items: center;
@@ -75,13 +97,22 @@
     background: #000;
 }
 
-.resume-redact-btn img,
+.resume-delete-btn{
+    right: 120px;
+}
+
 .resume-delete-btn img{
+    width: 35px;
+}
+
+.resume-redact-btn img,
+.resume-close-btn img{
     width: 30px;
 }
 
 .resume-redact-btn:hover,
-.resume-delete-btn:hover{
+.resume-delete-btn:hover,
+.resume-close-btn:hover{
     transition: .5s;
 
     border: 1px solid #fff;
@@ -89,6 +120,7 @@
     filter: invert(1);
 }
 
+.resume-close-btn,
 .resume-delete-btn{
     z-index: 1;
 }
@@ -97,7 +129,8 @@
     color: #254e8f;
 }
 
-.resume__tags-list{
+.resume__tags-list,
+.resume__work-type-list{
     display: flex;
     flex-wrap: wrap;
 }
@@ -143,12 +176,20 @@
     border-radius: 10px;
 }
 
-.resume-add-btn{
+.resume-add{
+    margin-top: 20px;
+
     align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resume-add-btn{
 
     width: 80px;
     height: 80px;
-    margin-top: 20px;
+    margin-top: 10px;
 
     transition: .5s;
 

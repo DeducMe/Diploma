@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addResume, redactResume, getUserResumes } from '../../../../actions/serverConnections'
+import { addResume, redactResume, getUserResumes, deleteResume } from '../../../../actions/serverConnections'
 import closeIcon from '../../../../img/close.svg'
+import deleteIcon from '../../../../img/trash.svg'
 import {checkStringInput, checkIntInput} from '../../../../scripts/commonScripts.js'
 
 
@@ -31,8 +32,6 @@ class ResumeRedactPopup extends Component {
             (this.props.onInputMistake(check, e.target))
         }
         else this.props.onSalaryValueChange(0, this.props.resumeIndex)
-
-        
     }
 
     changeIndustryValue = (e) =>{
@@ -76,7 +75,7 @@ class ResumeRedactPopup extends Component {
             "work_type": this.props.resumePlaceholder.work_type,
             "tags": this.props.resumePlaceholder.tags,
             "about": this.props.resumePlaceholder.about,
-            "bg_header_color": "",
+            "bg_header_color": this.props.resumePlaceholder.bg_header_color,
             "portfolio": [],
         }
         if (this.props.resumeData.cvs.length === this.props.resumeIndex || this.props.resumeData.cvs.length === 0){
@@ -108,14 +107,26 @@ class ResumeRedactPopup extends Component {
         }
     }
 
-    closeRedactPopup = (index) =>{
+    closeRedactPopup = (e) =>{
+        e.preventDefault()
         this.props.onPopupRedactResumeDeactivate(this.props.resumeIndex)
+    }
+
+    deleteResume = (e) =>{
+        e.preventDefault()
+        this.props.onPopupRedactResumeDelete(this.props.resumeData.cvs[this.props.resumeIndex].id, this.props.userData.id)
+    }
+
+    changeResumeHeaderColor = (e) =>{
+
+        e.preventDefault()
+        this.props.onResumeHeaderColorChange(e.target.value, this.props.resumeIndex)
     }
 
     render() {
         return (
             <form className={"rounded resume-redact-block "+this.props.resumeState} style={this.props.addStyle}>
-                <div className="resume__header white top-rounded">
+                <div className={"resume__header white top-rounded "+this.props.cvPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.resumePlaceholder.vacancy_name}/>
                         <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
@@ -124,19 +135,31 @@ class ResumeRedactPopup extends Component {
                         <p className="resume__header__grade">
                             <input required type="text" className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} placeholder="Уровень знаний" onChange={this.changeGradeValue.bind(this)} value={this.props.resumePlaceholder.grade}/>
                         </p>
-                        <p className="resume__publication-date sup">{this.props.resumePlaceholder.pub_date}</p>
+                        <ul className="resume__header-color">
+                            <button className={"resume__header-color-el bg-light-black " + (this.props.cvPlaceholder.bg_header_color === 'bg-light-black' ? ('selected'):(''))} onClick={this.changeResumeHeaderColor} value="bg-light-black"/>
+                            <button className={"resume__header-color-el bg-blue-gray " + (this.props.cvPlaceholder.bg_header_color === 'bg-blue-gray' ? ('selected'):(''))} onClick={this.changeResumeHeaderColor} value="bg-blue-gray"/>
+                            <button className={"resume__header-color-el bg-blue-black " + (this.props.cvPlaceholder.bg_header_color === 'bg-blue-black' ? ('selected'):(''))} onClick={this.changeResumeHeaderColor} value="bg-blue-black"/>
+                            <button className={"resume__header-color-el bg-violet-gray " + (this.props.cvPlaceholder.bg_header_color === 'bg-violet-gray' ? ('selected'):(''))} onClick={this.changeResumeHeaderColor} value="bg-violet-gray"/>
+                            <button className={"resume__header-color-el bg-violet-black " + (this.props.cvPlaceholder.bg_header_color === 'bg-violet-black' ? ('selected'):(''))} onClick={this.changeResumeHeaderColor} value="bg-violet-black"/>
+                        </ul>
                     </div>
                 </div>
 
-                <button className="resume-delete-btn"  onClick={this.closeRedactPopup}>
+                <button className="resume-close-btn"  onClick={this.closeRedactPopup}>
                     <img src={closeIcon} alt="closeIcon"/>
                 </button>
+                {this.props.resumeIndex !== this.props.resumeData.cvs.length ?(
+                    <button className="resume-delete-btn"  onClick={this.deleteResume}>
+                        <img src={deleteIcon} alt="deleteIcon"/>
+                    </button>
+                ):('')}
+                
 
                 <div className="resume__main-info rounded">
                     <p className="resume__industry f-pre"><input type="text" placeholder="Отрасль"  onChange={this.changeIndustryValue.bind(this)} value={this.props.resumePlaceholder.industry}/></p>
                     
-                    <div className="resume__tags-block input-list">
-                        <ul className="resume__tags-list">
+                    <div className="resume__work-type-block input-list">
+                        <ul className="resume__work-type-list">
                             {this.props.resumeWorkType.map((tag, index)=>{
                                 return (
                                     <li key={index} className="list-input-field__el-block" data-key={index}>
@@ -213,6 +236,21 @@ const mapDispatchToProps = (dispatch) =>{
         onPopupRedactResumeDeactivate: (index) => {
             dispatch({type : 'POPUP_REDACT_RESUME_DEACTIVATE', payload:index})
         },
+        onPopupRedactResumeDelete: (index, userId) => {
+            dispatch(deleteResume(index))
+            .then(data => {
+                dispatch(getUserResumes(userId))
+                .then((data)=>{
+                    if (data.data !== null && data.data!=='404'){
+                        data.data.map(el=>el.state = '')
+                        dispatch({type : 'INITIALIZE_RESUME_PLACEHOLDER', payload:data.data}) 
+                    }
+                })
+            })
+        },
+        onResumeHeaderColorChange: (color, resumeIndex) =>{
+            dispatch({type : 'POPUP_REDACT_RESUME_CHANGE_COLOR', payload:{'color': color, 'index': resumeIndex}})
+        },
         onTagAdd: (tag, resumeIndex) => {
             dispatch({type : 'POPUP_REDACT_RESUME_ADD_TAG', payload:{'tag': tag, 'index': resumeIndex}})
         },
@@ -241,7 +279,7 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch({type : 'POPUP_REDACT_RESUME_CHANGE_SALARY_VALUE', payload:{'text': text, 'index': resumeIndex}})
         },
         onSaveResumeFormChanges:(data, resumeIndex, userId, resumeId) => {
-            dispatch(resumeIndex===-1?(addResume(data)):(redactResume(data, resumeId, userId)))
+            dispatch(resumeIndex===-1?(addResume(data)):(redactResume(data, resumeId)))
             .then(data => dispatch({type : 'POPUP_REDACT_RESUME_DEACTIVATE', payload:resumeIndex}))
             .then(data => {
                 dispatch(getUserResumes(userId))

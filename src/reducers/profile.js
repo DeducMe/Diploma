@@ -1,5 +1,6 @@
 const initialState = {
     state:'muted',
+    popupRedactActiveSection:'images',
     placeholder: {
       userName: '',
       description: '',
@@ -19,7 +20,17 @@ const initialState = {
     exp : [],
     social_links: [],
     buf:{
-      languageGrade:'A1'
+      languageGrade:'A1',
+      cropper:{
+        state:false,
+        file:'',
+        maxWidth:0,
+        maxHeight:0,
+        instance:{
+
+        },
+        imageType:''
+      }
   }
 };
   
@@ -37,6 +48,20 @@ export default function profileState(state = initialState, action){
           ...state
         };
     }
+    else if (action.type === 'SET_CROPPER_INSTANCE'){
+      state.buf.cropper.instance = action.payload;
+      return {
+        ...state
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_CHANGE_SECTION'){
+      state.popupRedactActiveSection = action.payload;
+      return {
+        ...state
+      };
+    }
+    
+    
     // else if(action.type === 'ACTIVATE_PROFILE_REDACT_LOADER'){
     //     state.state = 'active';
     //     return{
@@ -180,6 +205,22 @@ export default function profileState(state = initialState, action){
     }
     else if (action.type === 'CHANGE_GENDER_TO_FEMALE'){
       state.placeholder.gender = 'female';
+      return {
+        ...state
+      };
+    }
+    else if(action.type === 'ACTIVATE_PROFILE_REDACT_IMAGE_CROPPER'){
+      state.buf.cropper.state = true;
+      state.buf.cropper.file = action.payload[0]
+      state.buf.cropper.maxWidth = action.payload[1]
+      state.buf.cropper.maxHeight = action.payload[2]
+      state.buf.cropper.imageType = action.payload[3]
+      return {
+        ...state
+      };
+    }
+    else if(action.type === 'DEACTIVATE_PROFILE_REDACT_IMAGE_CROPPER'){
+      state.buf.cropper = {}
       return {
         ...state
       };

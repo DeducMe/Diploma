@@ -31,9 +31,6 @@ class Resumes extends Component {
     }
 
     render() { 
-        const resumeHeaderStyle = {
-            background:"#1E1F26"
-        }
         return (
             <div className="resumes-block">
                 {this.props.userState.logged ? (this.props.cvData.cvs.length !== 0 ?(<h2>Ваши Резюме:</h2>):('')):(this.props.cvData.cvs.length !== 0 ?(<h2>Резюме:</h2>):(''))}
@@ -44,7 +41,7 @@ class Resumes extends Component {
                             <li key={index} className="resume resumes-list-el rounded">
                                 {el.state==='active' ? (<ResumeRedactPopup index={index}></ResumeRedactPopup>) : ('')}
                                 <section className={"resume-main " + (el.state === 'active' ? ('muted'):(''))}>
-                                    <div className="resume__header white top-rounded" style={resumeHeaderStyle}>
+                                    <div className={"resume__header white top-rounded " + this.props.cvData.cvs[index].bg_header_color}>
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{el.vacancy_name}</h2>
                                             <p><span className="resume__header__salary bold f-medium">{el.salary}</span><span className="bold f-medium"> руб.</span></p>
@@ -96,9 +93,12 @@ class Resumes extends Component {
                     {this.props.cvData.newCv.length!==0 ? (this.props.cvData.newCv.state==='active' ? (<ResumeRedactPopup index={this.props.cvData.cvs.length}></ResumeRedactPopup>) : ('')) : ('')}
                 </ul>
                 {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id && this.props.cvData.newCv.state!=='active' ? (
-                    <button className="resume-add-btn" onClick={this.addResume.bind(this, 0)}>
-                        <img src={plusIcon} alt="plusIcon"/>
-                    </button>)
+                    <div className="resume-add">
+                        <p>Добавить резюме:</p>
+                        <button className="resume-add-btn" onClick={this.addResume.bind(this, 0)}>
+                            <img src={plusIcon} alt="plusIcon"/>
+                        </button>
+                    </div>)
                 :('')}
             </div>
         )

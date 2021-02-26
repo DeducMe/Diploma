@@ -1,14 +1,15 @@
 {
     "user_id": 0,
-    "name": "string",
-    "mailing": true,
-    "address": "string",
-    "profile_background": "string",
-    "photo_url": "string",
-    "links": [
-      "string"
-    ],
-    "phone": [
-      "string"
-    ]
+    "name": "",
+    "mailing": true,                
+    "address": "",
+    "profile_background": "",
+    "photo_url": "",
+    "about":"",
+    "links": [],
+    "phone": [],
+    "profile_link": "empty"
+
 }
+
+

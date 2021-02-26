@@ -41,6 +41,44 @@ function createNewEmployerFetchSucces(){
     }
 }
 
+function getEmployerFetchSucces(userData){
+    return{
+        type:'GET_EMPLOYER_FETCH_SUCCESS',
+        userData
+    }
+}
+
+function updateEmployerFetchSucces(){
+    return{
+        type:'UPDATE_EMPLOYER_FETCH_SUCCES'
+    }
+}
+
+function getUserVacanciesFetchSuccess(data){
+    return{
+        type:'GET_USER_VACANCIES_FETCH_SUCCES',
+        data
+    }
+}
+
+function addVacancyFetchSucces(){
+    return{
+        type:'ADD_RESUME_FETCH_SUCCES'
+    }
+}
+
+function deleteVacancyFetchSucces(){
+    return{
+        type:'DELETE_RESUME_FETCH_SUCCES'
+    }
+}
+
+function redactVacancyFetchSucces(){
+    return{
+        type:'REDACT_RESUME_FETCH_SUCCES'
+    }
+}
+
 function updateEmployeeFetchSucces(){
     return{
         type:'UPDATE_EMPLOYEE_FETCH_SUCCES'
@@ -65,6 +103,12 @@ function redactResumeFetchSucces(){
     }
 }
 
+function deleteResumeFetchSucces() {
+    return{
+        type:'DELETE_RESUME_FETCH_SUCCES'
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -76,17 +120,9 @@ export const getUserData = (userId) => (dispatch) => {
     console.log(userId)
     return fetch(url + '/workers/'+userId,{
         method: 'GET',
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
+        
     })  //userId
-    .then(response => {
-        let a = response.json()
-        console.log(a)
-        return a
-    })
+    .then(response => response.json())
     .then(data => {
         console.log(data)
         if (data !== '404')
@@ -99,17 +135,9 @@ export const getUserResumes = (userId) => (dispatch) => {
     console.log(userId)
     return fetch(url + '/cv/'+userId,{
         method: 'GET',
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
+        
     })  //userId
-    .then(response => {
-        let a = response.json()
-        console.log(a)
-        return a
-    })
+    .then(response => response.json())
     .then(data => {
         console.log(data)
         if (data !== '404')
@@ -123,17 +151,9 @@ export const addResume = (data) => (dispatch) => {
     return fetch(url + '/cv',{
         method: 'POST',
         body: JSON.stringify(data),  
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
+        
     })  
-    .then(response => {
-        let a = response.json()
-        console.log(a)
-        return a
-    })
+    .then(response => response.json())
     .then(data => {
         console.log(data)
         if (data !== '404')
@@ -142,22 +162,28 @@ export const addResume = (data) => (dispatch) => {
     })
 }
 
-export const redactResume = (data, cvId, userId) => (dispatch) => {
+export const deleteResume = (id) => (dispatch) => {
+    return fetch(url + '/cv/' + id,{
+        method: 'DELETE',  
+
+        
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return dispatch(deleteResumeFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const redactResume = (data, cvId) => (dispatch) => {
     console.log(data)
-    return fetch(url + '/cv/'+userId+'/'+cvId,{
+    return fetch(url + '/cv/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
+        
     })  
-    .then(response => {
-        let a = response.json()
-        console.log(a)
-        return a
-    })
+    .then(response => response.json())
     .then(data => {
         console.log(data)
         if (data !== '404')
@@ -171,12 +197,6 @@ export const loginUser = (data) => (dispatch) => {
     return fetch(url + '/login',{
         method: 'POST',  
         body: JSON.stringify(data),  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
     })
     .then(response => response.json())
     .then(data => {
@@ -191,12 +211,6 @@ export const registrateNewUser = (data) => (dispatch) => {
     return fetch(url + '/register',{
         method: 'POST',  
         body: JSON.stringify(data),  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
     })
     .then(response => response.json())
     .then(data => dispatch(registarteUserFetchSucces(data)))
@@ -206,21 +220,8 @@ export const registrateNewUser = (data) => (dispatch) => {
 export const logout = () => (dispatch) => {
     return fetch(url + '/logout',{
         method: 'DELETE',  
-        body: '',  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*",
-        'XSRF-TOKEN':'xjk2kzjn4',
-        "X-XSRF-TOKEN":'xjk2kzjn4',
-        "X-CSRF-TOKEN":'xjk2kzjn4'
-      }
     })
-    .then(response => {
-        console.log(response)
-        return response.json()
-    })
+    .then(response => response.json())
     .then(data => {
         console.log(data)
         return dispatch(logoutUserFetchSucces(data))
@@ -229,16 +230,9 @@ export const logout = () => (dispatch) => {
 }
 
 export const createNewEmployee = (data) => (dispatch) => {
-    
     return fetch(url + '/workers',{
         method: 'POST',  
         body: JSON.stringify(data),  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
     })
     .then(response => response.json())
     .then(data => {
@@ -253,12 +247,6 @@ export const updateEmployee = (data, userId) => (dispatch) => {
     return fetch(url + '/workers/' + userId,{
         method: 'PUT',  
         body: JSON.stringify(data),  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
     })
     .then(response => response.json())
     .then(data => {
@@ -274,14 +262,89 @@ export const createNewEmployer = (data) => (dispatch) => {
     return fetch(url + '/employers',{
         method: 'POST',  
         body: JSON.stringify(data),  
-
-        headers:{
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*"
-      }
     })
     .then(response => response.json())
     .then(data => dispatch(createNewEmployerFetchSucces()))
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const getEmployer = (userId) => (dispatch) => {
+    return fetch(url + '/employers/' + userId,{
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => dispatch(getEmployerFetchSucces(data)))
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const updateEmployer = (data, userId) => (dispatch) => {
+    console.log(JSON.stringify(data))
+    return fetch(url + '/employers/' + userId,{
+        method: 'PUT',  
+        body: JSON.stringify(data),  
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return dispatch(updateEmployerFetchSucces())
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const getUserVacancies = (userId) => (dispatch) => {
+    console.log(userId)
+    return fetch(url + '/vacancy/' + userId,{
+        method: 'GET',
+        
+    })  //userId
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(getUserVacanciesFetchSuccess(data))
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const addVacancy = (data) => (dispatch) => {
+    return fetch(url + '/vacancy',{
+        method: 'POST',
+        body: JSON.stringify(data),  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(addVacancyFetchSucces(data.new_vacancy_id))
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const deleteVacancy = (id) => (dispatch) => {
+    return fetch(url + '/vacancy/' + id,{
+        method: 'DELETE',  
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return dispatch(deleteVacancyFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const redactVacancy = (data, cvId) => (dispatch) => {
+    console.log(data)
+    return fetch(url + '/vacancy/'+cvId,{
+        method: 'PUT',
+        body: JSON.stringify(data),  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(redactVacancyFetchSucces())
+        else return dispatch(notFoundError(data))
+    })
 }

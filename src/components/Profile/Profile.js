@@ -6,7 +6,6 @@ import ProfileRedactPopup from './ProfileRedactPopup/ProfileRedactPopup'
 import { connect } from 'react-redux'
 import {getUserResumes, getUserData} from '../../actions/serverConnections'
 import './profile.css'
-import userData from '../../reducers/userData'
 import Loader from '../Loader/Loader'
 
 
@@ -20,50 +19,55 @@ class Profile extends Component {
         return def
     }
 
-
     initPlaceholder = () => {
         console.log(this.props.userState.hasProfile)
         if (this.props.userState.hasProfile)
         this.props.onInitializeProfileData({
                 state: this.props.profileState.state,
+                popupRedactActiveSection: this.props.profileState.popupRedactActiveSection,
                     placeholder: {
                     userName: this.props.userData.name,
                     description: this.checkIfNotNull(this.props.userData.about, ''),
                     avatar: '',
                     gender: this.checkIfNotNull(this.props.userData.gender, ''),
-                    personalBackground: '',
                     birthday: this.checkIfNotNull(this.props.userData.birthday, ''),
                     cz: this.checkIfNotNull(this.props.userData.cz, ''),
                     city: this.checkIfNotNull(this.props.userData.city, ''),
                     profile_link: '',
                     photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
-                    profile_background: ''
+                    profile_background: this.checkIfNotNull(this.props.userData.profile_background, '')
                 },
                 userPhones: this.checkIfNotNull(this.props.userData.phone, []),
                 userPhones: [],
-                language:[],
+                language: this.checkIfNotNull(this.props.userData.language, []),
                 education: this.checkIfNotNull(this.props.userData.education, []),
                 exp: this.checkIfNotNull(this.props.userData.exp, []),
                 social_links: [],
                 buf:{
-                    languageGrade:'A1'
+                    languageGrade:'A1',
+                    cropper:{
+                      state:false,
+                      file:this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
+                      maxWidth:120,
+                      maxHeight:120
+                    }
                 }
             }
         )
         else 
         this.props.onInitializeProfileData({
                 state: this.props.profileState.state,
+                popupRedactActiveSection:'baseInfo',
                 placeholder: {
                     userName: this.props.userData.name,
                     description: '',
                     avatar: '',
                     gender: '',
-                    personalBackground: '',
                     birthday: '',
                     cz:'',
                     city: '',
                     profile_link: '',
-                    photo_url: 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',
+                    photo_url: '',
                     profile_background: ''
                 },
                 userPhones: [],
@@ -72,7 +76,15 @@ class Profile extends Component {
                 exp: [],
                 social_links: [],
                 buf:{
-                    languageGrade:'A1'
+                    languageGrade:'A1',
+                    cropper:{
+                      state:false,
+                      file:'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',
+                      maxWidth:0,
+                      maxHeight:0,
+                      imageType:''
+
+                    }
                 }
 
             }
@@ -100,14 +112,12 @@ class Profile extends Component {
                 <div className="profile__main">
                     <Main></Main>
                     
-                    
-                    {/* {Object.keys(this.props.resumeData.placeholder).length !== 0 ? (<Resumes></Resumes>):('')} */}
                     <Resumes></Resumes>
                 </div>
                 <div className="profile__side">
                     <Side></Side>
                 </div>
-                <ProfileRedactPopup></ProfileRedactPopup>
+                {this.props.profileState.state === 'active' ? (<ProfileRedactPopup></ProfileRedactPopup>):('')}
             </div>
         )
 
@@ -131,9 +141,6 @@ const mapDispatchToProps = (dispatch) =>{
     return{
         onInitializeProfileData: (data)=>{
             dispatch({type : 'POPUP_REDACT_INITIALIZE_PROFILE', payload:data}) 
-        },
-        onInitializeResumePlaceholder: (data)=>{
-            
         },
         onHasProfile: (data)=>{
             dispatch({type : 'USER_HAS_PROFILE', payload:null}) 
