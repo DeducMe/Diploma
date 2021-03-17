@@ -26,13 +26,13 @@ class ProfileRedactPopup extends Component {
             "mailing": true,
             "language": this.props.profileState.language,
             "birthday": this.props.placeholderData.birthday,
-            "city": this.props.placeholderData.city,
+            "address": this.props.profileState.address,
             "phone": this.props.profileState.userPhones,
             "about": this.props.placeholderData.description,
             "social_links": [],
             "education": this.props.profileState.education,
-            "exp": this.props.profileState.exp,
-            "cz": this.props.placeholderData.cz,
+            "experience": this.props.profileState.experience,
+            "citizenship": this.props.placeholderData.citizenship,
             "profile_link": "",
             "photo_url": this.props.placeholderData.photo_url,
             "profile_background": this.props.placeholderData.profile_background
@@ -52,7 +52,7 @@ class ProfileRedactPopup extends Component {
 
     render() {
         return (
-            <div className={"rounded profile-redact " + this.props.profileState.state}>
+            <div className={"no-fix-blur-box rounded profile-redact " + this.props.profileState.state}>
                 <div className="profile-redact__popup-wrapper">
                     <MainPlaceholder></MainPlaceholder>
                     <div className="profile-redact__form">

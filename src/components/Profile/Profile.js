@@ -11,6 +11,8 @@ import Loader from '../Loader/Loader'
 
 class Profile extends Component {
     checkIfNotNull(variable, def){
+        console.log(variable)
+
         if(typeof(variable) !== "undefined") {
             if(variable !== null && variable !== '') {
                 return variable
@@ -31,17 +33,16 @@ class Profile extends Component {
                     avatar: '',
                     gender: this.checkIfNotNull(this.props.userData.gender, ''),
                     birthday: this.checkIfNotNull(this.props.userData.birthday, ''),
-                    cz: this.checkIfNotNull(this.props.userData.cz, ''),
-                    city: this.checkIfNotNull(this.props.userData.city, ''),
+                    citizenship: this.checkIfNotNull(this.props.userData.citizenship, ''),
                     profile_link: '',
                     photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
                     profile_background: this.checkIfNotNull(this.props.userData.profile_background, '')
                 },
+                address: this.checkIfNotNull(this.props.userData.address, {}),
                 userPhones: this.checkIfNotNull(this.props.userData.phone, []),
-                userPhones: [],
                 language: this.checkIfNotNull(this.props.userData.language, []),
                 education: this.checkIfNotNull(this.props.userData.education, []),
-                exp: this.checkIfNotNull(this.props.userData.exp, []),
+                experience: this.checkIfNotNull(this.props.userData.experience, []),
                 social_links: [],
                 buf:{
                     languageGrade:'A1',
@@ -64,16 +65,16 @@ class Profile extends Component {
                     avatar: '',
                     gender: '',
                     birthday: '',
-                    cz:'',
-                    city: '',
+                    citizenship:'',
                     profile_link: '',
                     photo_url: '',
                     profile_background: ''
                 },
+                address: {},
                 userPhones: [],
                 language:[],
                 education: [],
-                exp: [],
+                experience: [],
                 social_links: [],
                 buf:{
                     languageGrade:'A1',
@@ -102,10 +103,10 @@ class Profile extends Component {
         }        
         console.log(this.props.userFetchId)
         this.props.onGetResumes(this.props.userFetchId)
-
     }
     
     render() {
+        console.log(Object.keys(this.props.userData).length)
         if (Object.keys(this.props.userData).length !== 0)
         return (
             <div className="small-container profile-wrapper">

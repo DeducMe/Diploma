@@ -117,7 +117,7 @@ class VacancyRedactPopup extends Component {
         this.props.onLeadingValueChange(e.target.value, this.props.vacancyIndex)
     }
 
-    changeLeadingValue = (e) =>{
+    changeTrailingValue = (e) =>{
         this.props.onTrailingValueChange(e.target.value, this.props.vacancyIndex)
     }
 
@@ -125,28 +125,27 @@ class VacancyRedactPopup extends Component {
         this.props.onExperienceValueChange(e.target.value, this.props.vacancyIndex)
     }
 
-    changeAdressValue = (e) => {
-        this.props.onExperienceValueChange(e.target.value, this.props.vacancyIndex)
+    changeaddressValue = (e) => {
+        this.props.onAddressValueChange(e.target.value, this.props.vacancyIndex)
     }
 
     saveVacancyFormChanges = (e) => {
         e.preventDefault();
 
         let data = {
-            "id":this.props.vacancyPlaceholder.id,
-            "user_id": this.props.userData.id,
+            "user": this.props.userData.id,
             "vacancy_name": this.props.vacancyPlaceholder.vacancy_name,
             "industry": this.props.vacancyPlaceholder.industry,
             "grade": this.props.vacancyPlaceholder.grade,
             "salary": this.props.vacancyPlaceholder.salary,
             "work_type": this.props.vacancyPlaceholder.work_type,
-            "exp": this.props.vacancyPlaceholder.exp,
-            "adress": this.props.vacancyPlaceholder.adress,
+            "experience": this.props.vacancyPlaceholder.experience,
+            "address": this.props.vacancyPlaceholder.address,
             "tags": this.props.vacancyPlaceholder.tags,
             "leading":this.props.vacancyPlaceholder.leading,
             "trailing":this.props.vacancyPlaceholder.trailing,
-            "body":this.props.vacancyPlaceholder.body
-            
+            "body":this.props.vacancyPlaceholder.body,
+            "bg_header_color":this.props.vacancyPlaceholder.bg_header_color
         }
         if (this.props.vacancyData.vacancies.length === this.props.vacancyIndex || this.props.vacancyData.vacancies.length === 0){
             this.props.onSaveVacancyFormChanges(data, -1, this.props.userData.id, this.props.vacancyPlaceholder.vacancy_name)
@@ -195,8 +194,8 @@ class VacancyRedactPopup extends Component {
 
     render() {
         return (
-            <div className={"rounded resume-redact-block "+this.props.vacancyState} style={this.props.addStyle}>
-                <div className={"resume__header white top-rounded "+this.props.vacancyPlaceholder.bg_header_color}>
+            <div className={"rounded resume-redact-block " + this.props.vacancyState} style={this.props.addStyle}>
+                <div className={"resume__header white top-rounded " + this.props.vacancyPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.vacancyPlaceholder.vacancy_name}/>
                         <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.vacancyPlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
@@ -227,6 +226,8 @@ class VacancyRedactPopup extends Component {
 
                 <div className="resume__main-info rounded">
                     <p className="resume__industry f-pre"><input type="text" placeholder="Отрасль" onChange={this.changeIndustryValue.bind(this)} value={this.props.vacancyPlaceholder.industry}/></p>
+
+                    <p className="resume__address f-pre"><input type="text" placeholder="Адрес" onChange={this.changeaddressValue.bind(this)} value={this.props.vacancyPlaceholder.address}/></p>
                     
                     <div className="resume__work-type-block input-list">
                         <ul className="resume__work-type-list">
@@ -240,6 +241,11 @@ class VacancyRedactPopup extends Component {
                             })}
                         </ul>
                         <p className="resume__work-type input-list"><input type="text" className="input-list__input-block" placeholder="Тип работы" onKeyDown={this.workTypeInput}/></p>
+                    </div>
+
+                    <div className="textarea-field">
+                        <p>Вступление</p>
+                        <textarea className="popup__textarea-input" name="leadingInput" id="leadingInput" onChange={this.changeLeadingValue.bind(this)} value={this.props.vacancyPlaceholder.leading}></textarea>
                     </div>
 
                     <div className="vacancy__about">    
@@ -307,6 +313,11 @@ class VacancyRedactPopup extends Component {
                         </div>
                     </div>
 
+                    <div className="textarea-field">
+                        <p>Завершение</p>
+                        <textarea className="popup__textarea-input" name="trailingInput" id="trailingInput" onChange={this.changeTrailingValue.bind(this)} value={this.props.vacancyPlaceholder.trailing}></textarea>
+                    </div>
+
                     <div className="resume__tags-block input-list">
                         <ul className="resume__tags-list">
                             {this.props.vacancyTags.map((tag, index)=>{
@@ -341,7 +352,6 @@ const mapStateToProps = (state, ownProps) =>{
         vacancyState: vacancyPlaceholder.state,
         vacancyPoints: state.vacancy.buf.bufPoints,
         vacancyIndex: ownProps.index,
-        vacancyPlaceholder:vacancyPlaceholder,
         vacancyBuf:state.vacancy.buf,
         aboutBodies:vacancyPlaceholder.body
     }
@@ -394,6 +404,15 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onIndustryValueChange: (text, vacancyIndex) => {
             dispatch({type : 'POPUP_REDACT_VACANCY_CHANGE_INDUSTRY_VALUE', payload:{'text': text, 'index': vacancyIndex}})
+        },
+        onAddressValueChange: (text, vacancyIndex) => {
+            dispatch({type : 'POPUP_REDACT_VACANCY_CHANGE_ADDRESS_VALUE', payload:{'text': text, 'index': vacancyIndex}})
+        },
+        onLeadingValueChange: (text, vacancyIndex) => {
+            dispatch({type : 'POPUP_REDACT_VACANCY_CHANGE_LEADING_VALUE', payload:{'text': text, 'index': vacancyIndex}})
+        },
+        onTrailingValueChange: (text, vacancyIndex) => {
+            dispatch({type : 'POPUP_REDACT_VACANCY_CHANGE_TRAILING_VALUE', payload:{'text': text, 'index': vacancyIndex}})
         },
         onPointAdd: (text, vacancyIndex) => {
             dispatch({type : 'POPUP_REDACT_VACANCY_ADD_POINT', payload:{'text': text, 'index': vacancyIndex}})

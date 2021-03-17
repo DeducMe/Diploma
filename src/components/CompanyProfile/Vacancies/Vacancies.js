@@ -65,7 +65,7 @@ class Vacancy extends Component {
                                         </ul>
                                     </div>
                                 </section>
-                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id?(
+                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user?(
                                     <button className="resume-redact-btn"  onClick={this.redactVacancy.bind(this, index)}>
                                         <img src={editIcon} alt="editIcon"/>
                                     </button>
@@ -78,7 +78,7 @@ class Vacancy extends Component {
 
                     {this.props.vacancyData.newVacancy.length!==0 ? (this.props.vacancyData.newVacancy.state==='active' ? (<VacancyRedactPopup index={this.props.vacancyData.vacancies.length}></VacancyRedactPopup>) : ('')) : ('')}
                 </ul>
-                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id && this.props.vacancyData.newVacancy.state!=='active' ? (
+                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user && this.props.vacancyData.newVacancy.state!=='active' ? (
                     <div className="resume-add">
                         <p>Добавить резюме:</p>
                         <button className="resume-add-btn" onClick={this.addVacancy.bind(this, 0)}>

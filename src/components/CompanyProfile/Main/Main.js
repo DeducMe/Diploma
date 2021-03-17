@@ -9,6 +9,7 @@ import personalBackground from'../../../img/personal-background.png'
 
 import editIcon from '../../../img/edit.svg'
 
+import LeafletMap from '../../leafletMap/LeafletMap'
 
 class Main extends Component {
     goPhrase(){
@@ -31,6 +32,8 @@ class Main extends Component {
     }
 
     
+
+    
     render() {
         if (this.props.userState.hasProfile){
             return (
@@ -38,7 +41,7 @@ class Main extends Component {
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
                         <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
 
-                        {this.props.userState.user.id === this.props.userData.user_id ? (
+                        {this.props.userState.user.id === this.props.userData.user ? (
                             <button className="profile-redact-btn"  onClick={this.redactProfile}>
                                 <img src={editIcon} alt="editIcon"/>
                             </button>
@@ -53,7 +56,8 @@ class Main extends Component {
                         <p className="info__description">{this.props.userData.about}</p>
 
                         <div className="info__common-info">
-                            <p className="living__place">{this.props.userData.address}</p>
+                            <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
+                            <LeafletMap></LeafletMap>
                         </div>
                         
                         {this.props.userData.phone.length !== 0 ? (
@@ -69,7 +73,7 @@ class Main extends Component {
             )
         }
         
-        else if (this.props.userState.user.id === this.props.userData.user_id)
+        else if (this.props.userState.user.id === this.props.userData.user)
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>

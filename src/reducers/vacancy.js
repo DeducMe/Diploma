@@ -147,6 +147,41 @@ export default function profileState(state = initialState, action){
             ...state,
         };
     }
+    else if(action.type === 'POPUP_REDACT_VACANCY_CHANGE_ADDRESS_VALUE'){
+        if (action.payload.index !== state.vacancies.length){
+            state.placeholder[action.payload.index].address = action.payload.text
+        }
+        else {
+            state.newVacancy.address = action.payload.text
+        }
+        return {
+            ...state,
+        };
+    }
+    
+    else if(action.type === 'POPUP_REDACT_VACANCY_CHANGE_LEADING_VALUE'){
+        if (action.payload.index !== state.vacancies.length){
+            state.placeholder[action.payload.index].leading = action.payload.text
+        }
+        else {
+            state.newVacancy.leading = action.payload.text
+        }
+        return {
+            ...state,
+        };
+    }
+    else if(action.type === 'POPUP_REDACT_VACANCY_CHANGE_TRAILING_VALUE'){
+        if (action.payload.index !== state.vacancies.length){
+            state.placeholder[action.payload.index].trailing = action.payload.text
+        }
+        else {
+            state.newVacancy.trailing = action.payload.text
+        }
+        return {
+            ...state,
+        };
+    }
+    
     else if(action.type === 'POPUP_REDACT_VACANCY_CHANGE_ABOUT_VALUE'){
         if (action.payload.index !== state.vacancies.length){
             state.placeholder[action.payload.index].about = action.payload.text
@@ -202,9 +237,9 @@ export default function profileState(state = initialState, action){
         };
     }
     else if (action.type === 'POPUP_REDACT_VACANCY_ADD_ABOUT_BODY'){
-        if (action.payload.index !== state.vacancies.length){
-            state.vacancies[action.payload.index].body.push(action.payload.body)
-            Object.assign([], state.vacancies[action.payload.index].body, [...state.vacancies[action.payload.index].body]);
+        if (action.payload.index !== state.placeholder.length){
+            state.placeholder[action.payload.index].body.push(action.payload.body)
+            Object.assign([], state.placeholder[action.payload.index].body, [...state.placeholder[action.payload.index].body]);
         }
         else {
             state.newVacancy.body.push(action.payload.body)
@@ -218,9 +253,9 @@ export default function profileState(state = initialState, action){
     else if (action.type === 'POPUP_REDACT_VACANCY_REDACT_ABOUT_BODY'){
         const bodyId = parseInt(state.buf.activeBodyId)
         console.log(bodyId)
-        if (action.payload.index !== state.vacancies.length){
-            state.vacancies[action.payload.index].body[bodyId] = action.payload.body
-            Object.assign([], state.vacancies[action.payload.index].body, [...state.vacancies[action.payload.index].body]);
+        if (action.payload.index !== state.placeholder.length){
+            state.placeholder[action.payload.index].body[bodyId] = action.payload.body
+            Object.assign([], state.placeholder[action.payload.index].body, [...state.placeholder[action.payload.index].body]);
         }
         else {
             state.newVacancy.body[bodyId] = action.payload.body
@@ -233,11 +268,11 @@ export default function profileState(state = initialState, action){
         }
     }
     else if (action.type === 'POPUP_REDACT_VACANCY_DELETE_ABOUT_BODY'){
-
-        if (action.payload.index !== state.vacancies.length){
-
-            state.vacancies[action.payload.index].body.splice(action.payload.bodyId,1)
-            Object.assign([], state.vacancies[action.payload.index].body, [...state.vacancies[action.payload.index].body]);
+        console.log(action.payload)
+        if (action.payload.index !== state.placeholder.length){
+            state.placeholder[action.payload.index].body.splice(action.payload.bodyId, 1)
+            Object.assign([], state.placeholder[action.payload.index].body, [...state.placeholder[action.payload.index].body]);
+            console.log(state.placeholder[action.payload.index].body)
         }
         else {
             state.newVacancy.body.splice(action.payload.bodyId,1)

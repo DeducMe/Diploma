@@ -23,7 +23,7 @@ class ProfileRedactPopup extends Component {
             "user_id": this.props.userState.user.id,
             "name":this.props.placeholderData.name,
             "mailing": true,
-            "address": this.props.placeholderData.address,
+            "address": this.props.profileState.address,
             "phone": this.props.placeholderData.phone,
             "about": this.props.placeholderData.about,
             "links": [],
