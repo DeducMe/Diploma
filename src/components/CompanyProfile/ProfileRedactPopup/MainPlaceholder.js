@@ -32,7 +32,7 @@ export class MainPlaceholder extends Component {
                     <p className="info__description">{this.props.userDescription}</p>
 
                     <div className="info__common-info">
-                        <p className="living__place">{this.props.userAddress}</p>
+                        <p className="living__place">{this.props.userAddress.name}</p>
                     </div>
                     
                     {this.props.userPhones !== 0 ? (

@@ -21,7 +21,6 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
         state.onCzChange(e.target.value)
     }
 
-
     const saveNewAddress = (e) => {
         state.onSaveNewAddress({
             name:state.LeafletMapData.name,
@@ -120,7 +119,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                     <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
                 </div>
                 <div className="address-input">
-                    <LeafletMap></LeafletMap>
+                    <LeafletMap address={state.profileState.address}></LeafletMap>
                     <button className="highlighted sup-btn" onClick={saveNewAddress}>Сохранить</button>
                 </div>
                 

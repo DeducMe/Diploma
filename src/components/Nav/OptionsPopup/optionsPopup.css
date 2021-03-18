@@ -332,6 +332,7 @@ label.capsule{
     background-color: #fff;
 }
 
+
 .popup__text-input:not(:placeholder-shown) + .popup__text-label,
 .popup__text-input:focus + .popup__text-label{
     font-weight: 500;

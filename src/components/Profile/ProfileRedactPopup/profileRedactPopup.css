@@ -52,14 +52,28 @@
 
 .profile-redact__form-nav{
     display: flex;
-
+    justify-content: space-between;
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .popup-nav-btn{
     padding: 5px 6px;
-
+    margin: 5px 10px;
     border-bottom: 1px solid #000;
+    transition: .5s;
+
+}
+
+.popup-nav-btn img{
+    height: 60px;
+
+    width: 70%;
+}
+
+.popup-nav-btn.active{
+    background-color: #07006220;
+    transition: .5s;
 }
 
 .popup__input-block{
@@ -121,7 +135,8 @@
 }
 
 .profile-redact__form{
-    width: 400px;
+    max-width: 400px;
+    min-width: 400px;
     padding: 10px 20px;
 }
 
@@ -143,8 +158,12 @@
 
 .popup__date-fields{
     display: flex;
-
+    width: 100%;
     margin-top: 20px;
+}
+
+.popup__date-fields .input-field{
+    width: 50%;
 }
 
 .popup__select-text-input{
@@ -248,10 +267,31 @@
 }
 
 
+
 /* .popup__text-input:not(:focus)::placeholder{
     opacity: 0;
 } */
+.address-input{
+    display: flex;
+    flex-direction: column;
+}
 
+.leaflet-container{
+    margin-bottom: 15px;
+}
+
+.drop-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 180px;
+    margin-bottom: 40px;
+    border: 2px dashed black
+}
+
+.file-input{
+    margin-right: 20px;
+}
 /* Cropper */
 
 .cropper-block{
@@ -303,7 +343,8 @@
 }
 
 .cropper-upload-btn,
-.cropper-close-btn{
+.cropper-close-btn,
+.cropper-activate-btn{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -318,13 +359,24 @@
     background: #000;
 }
 
+.cropper-activate-btn{
+    background: transparent;
+
+}
+
 .cropper-upload-btn img,
-.cropper-close-btn img{
+.cropper-close-btn img,
+.cropper-activate-btn img{
     width: 40px;
 }
 
+.cropper-activate-btn:hover{
+    background: #fff;
+}
+
 .cropper-upload-btn:hover,
-.cropper-close-btn:hover{
+.cropper-close-btn:hover, 
+.cropper-activate-btn:hover{
     transition: .5s;
 
     border: 1px solid #fff;

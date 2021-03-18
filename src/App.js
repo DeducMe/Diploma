@@ -6,8 +6,6 @@ import './css/normalize.css'
 import './fonts/Nunito/Nunito.css'
 import { connect } from 'react-redux'
 
-
-
 class App extends Component {
   
   render() {

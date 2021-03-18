@@ -30,12 +30,9 @@ class Main extends Component {
     redactProfile = () =>{
         this.props.onPopupRedactProfileActivate()
     }
-
-    
-
     
     render() {
-        if (this.props.userState.hasProfile){
+        if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user){
             return (
                 <div className="main rounded">
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
@@ -57,7 +54,7 @@ class Main extends Component {
 
                         <div className="info__common-info">
                             <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
-                            <LeafletMap></LeafletMap>
+                            {/* <LeafletMap></LeafletMap> */}
                         </div>
                         
                         {this.props.userData.phone.length !== 0 ? (

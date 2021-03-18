@@ -44,7 +44,7 @@ const RedactPopupSectionExperience = (state, profileState, onExperienceAdd, onEx
     }
 
     return (
-        <section className="redact-popup-section">
+        <section className="popup-redact-section">
             <form className="popup__education-input popup__input-block" onSubmit={educationAdd}>
             {console.log(state)}
             {state.profileState.education.map((el, index)=>{

@@ -282,7 +282,7 @@ const mapDispatchToProps = (dispatch) =>{
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
           redirectUser(data.data.id)
         }
         else{
@@ -296,7 +296,7 @@ const mapDispatchToProps = (dispatch) =>{
       dispatch(registrateNewUser(userCredentials))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
           onLoginUserCheck(userCredentials, redirectUser, fetchError)
         }
         else{
