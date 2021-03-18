@@ -1,7 +1,7 @@
 .nav-bar{
     background-color:#253957;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .fixed .nav-bar{

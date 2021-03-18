@@ -67,9 +67,18 @@ class ImageCropper extends Component {
     }
 
     render() {
+        let file
+        if (!this.props.cropperFile){
+            if(this.props.cropperData.imageType === 'avatar'){
+                file = 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'
+            }
+            else file = 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-background.png?alt=media&token=1c91f99c-c236-4a28-b291-bfc2263df45b'
+        }
+        else{
+            file = this.props.cropperFile
+        }
         return this.props.cropperActive ? (
             <div className="cropper-block">
-                {console.log(this.props.cropperFile)}
                 <div
                     className={"cropper__img-preview " + this.props.cropperData.imageType}
                     style={{ width: this.props.cropperMaxWidth, height: this.props.cropperMaxHeight, overflow:"hidden"}}
@@ -80,7 +89,7 @@ class ImageCropper extends Component {
                 aspectRatio={this.props.cropperMaxWidth / this.props.cropperMaxHeight}
 
                 preview=".cropper__img-preview"
-                src={this.props.cropperFile}
+                src={file}
                 viewMode={1}
                 dragMode='move'
                 guides={true}

@@ -33,7 +33,7 @@ class Main extends Component {
     
     render() {
 
-        if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user_id){
+        if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user){
             return (
                 <div className="main rounded">
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
@@ -56,8 +56,8 @@ class Main extends Component {
                             <p className={"info__common-info__gender " + this.props.userData.gender}></p>
 
                             <div className="info__common-info__living">
-                                <p className="living__place">{this.props.userData.city}</p>
-                                <p className="living__cz">{this.props.userData.cz}</p>
+                                <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
+                                <p className="living__cz">{this.props.userData.citizenship}</p>
                             </div>
                         </div>
                         
@@ -74,7 +74,6 @@ class Main extends Component {
                             <p>Владение языками:</p>
                             {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
                         </div>):('')}
-                        
                         {this.props.userData.education.length!== 0 ?(
                             <div className="info__education">
                                 <h3 className="education-head bold headed">Образование:</h3>
@@ -92,10 +91,10 @@ class Main extends Component {
                                 })}
                             </div>):('')}
                                                
-                        {this.props.userData.exp.length!== 0 ? (
+                        {this.props.userData.experience.length!== 0 ? (
                             <div className="info__work-experience">
                                 <h3 className="courses-head bold headed">Опыт Работы:</h3>
-                                {this.props.userData.exp.map((el, index)=>{
+                                {this.props.userData.experience.map((el, index)=>{
                                     return (
                                         <div className="education-block" key={index}>
                                             <p className="education-name highlighted">{el.position}</p>
@@ -115,7 +114,8 @@ class Main extends Component {
             )
         }
         
-        else if (this.props.userState.user.id === this.props.userData.user_id)
+        else if (this.props.userState.user.id === this.props.userData.user){
+        console.log('dsdsd')
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
@@ -135,7 +135,7 @@ class Main extends Component {
                     </div>
                 </section>
             </div>
-        )
+        )}
         else
         return(
             <div className="main rounded">
@@ -156,8 +156,8 @@ class Main extends Component {
                         <p className={"info__common-info__gender " + this.props.userData.gender}></p>
 
                         <div className="info__common-info__living">
-                            <p className="living__place">{this.props.userData.city}</p>
-                            <p className="living__cz">{this.props.userData.cz}</p>
+                            <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
+                            <p className="living__cz">{this.props.userData.citizenship}</p>
                         </div>
                     </div>
                     
@@ -174,8 +174,9 @@ class Main extends Component {
                         <p>Владение языками:</p>
                         {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
                     </div>):('')}
+                    {console.log(this.props.userData.education.length)}
                     
-                    {this.props.userData.education.length!== 0 ?(
+                    {this.props.userData.education.length !== 0 ?(
                         <div className="info__education">
                             <h3 className="education-head bold headed">Образование:</h3>
                             {this.props.userData.education.map((el, index)=>{
@@ -192,10 +193,10 @@ class Main extends Component {
                             })}
                         </div>):('')}
                                             
-                    {this.props.userData.exp.length!== 0 ? (
+                    {this.props.userData.experience.length!== 0 ? (
                         <div className="info__work-experience">
                             <h3 className="courses-head bold headed">Опыт Работы:</h3>
-                            {this.props.userData.exp.map((el, index)=>{
+                            {this.props.userData.experience.map((el, index)=>{
                                 return (
                                     <div className="education-block" key={index}>
                                         <p className="education-name highlighted">{el.position}</p>

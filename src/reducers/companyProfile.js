@@ -4,7 +4,7 @@ const initialState = {
     placeholder: {
       name: '',
       about: '',
-      address: '',
+      address: {},
       profile_link: '',
       photo_url: '',
       profile_background: '',
@@ -66,8 +66,12 @@ export default function profileState(state = initialState, action){
         ...state,
       };
     }
-    
-    
+    else if (action.type === 'POPUP_REDACT_ADDRESS_CHANGE'){
+      state.placeholder.address = action.payload;
+      return {
+        ...state
+      };
+    }
     else if (action.type === 'POPUP_EMPLOYER_REDACT_ADD_PHONE'){
       state.placeholder.phone.push(action.payload);
       state.placeholder.phone = Object.assign([], state.placeholder.phone, [...state.placeholder.phone]);

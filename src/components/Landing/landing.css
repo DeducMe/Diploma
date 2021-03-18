@@ -1,0 +1,11 @@
+.landing-wrapper{
+    background-color: #253957;
+    height: 100vh;
+    background-image: url('../../img/landingBg.png');
+    background-size: cover;
+}
+
+/* .nav{
+    position: fixed;
+    top: 0;
+} */

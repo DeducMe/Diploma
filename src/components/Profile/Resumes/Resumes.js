@@ -17,7 +17,7 @@ class Resumes extends Component {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            data.user_id = this.props.userData.user_id
+            data.user = this.props.userData.user
             return data
         })
         .then (data => {
@@ -48,7 +48,7 @@ class Resumes extends Component {
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{el.grade}</p>
-                                            <p className="resume__publication-date sup">{el.pub_date}</p>
+                                            <p className="resume__publication-date sup">{el.pub_date.slice(0,10)}</p>
                                         </div>
                                     </div>
             
@@ -79,7 +79,7 @@ class Resumes extends Component {
                                         </ul>
                                     </div>
                                 </section>
-                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id?(
+                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user?(
                                     <button className="resume-redact-btn"  onClick={this.redactResume.bind(this, index)}>
                                         <img src={editIcon} alt="editIcon"/>
                                     </button>
@@ -92,7 +92,7 @@ class Resumes extends Component {
 
                     {this.props.cvData.newCv.length!==0 ? (this.props.cvData.newCv.state==='active' ? (<ResumeRedactPopup index={this.props.cvData.cvs.length}></ResumeRedactPopup>) : ('')) : ('')}
                 </ul>
-                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id && this.props.cvData.newCv.state!=='active' ? (
+                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user && this.props.cvData.newCv.state!=='active' ? (
                     <div className="resume-add">
                         <p>Добавить резюме:</p>
                         <button className="resume-add-btn" onClick={this.addResume.bind(this, 0)}>

@@ -133,7 +133,7 @@ export const getUserData = (userId) => (dispatch) => {
 
 export const getUserResumes = (userId) => (dispatch) => {
     console.log(userId)
-    return fetch(url + '/cv/'+userId,{
+    return fetch(url + '/cv/user/'+userId,{
         method: 'GET',
         
     })  //userId
@@ -148,9 +148,14 @@ export const getUserResumes = (userId) => (dispatch) => {
 
 export const addResume = (data) => (dispatch) => {
     console.log(data)
-    return fetch(url + '/cv',{
+    return fetch(url + '/cv/',{
         method: 'POST',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())
@@ -181,7 +186,13 @@ export const redactResume = (data, cvId) => (dispatch) => {
     return fetch(url + '/cv/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
-        
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+
+
+        }
     })  
     .then(response => response.json())
     .then(data => {
@@ -194,23 +205,32 @@ export const redactResume = (data, cvId) => (dispatch) => {
 
 export const loginUser = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
-    return fetch(url + '/login',{
+    return fetch(url + '/auth/login/',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
-        return dispatch(loginUserFetchSucces(data))
+        return dispatch(loginUserFetchSucces(data.user))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 
 export const registrateNewUser = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
-    return fetch(url + '/register',{
+    return fetch(url + '/register/',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        }
     })
     .then(response => response.json())
     .then(data => dispatch(registarteUserFetchSucces(data)))
@@ -218,7 +238,7 @@ export const registrateNewUser = (data) => (dispatch) => {
 }
 
 export const logout = () => (dispatch) => {
-    return fetch(url + '/logout',{
+    return fetch(url + '/auth/logout',{
         method: 'DELETE',  
     })
     .then(response => response.json())
@@ -233,6 +253,11 @@ export const createNewEmployee = (data) => (dispatch) => {
     return fetch(url + '/workers',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -247,6 +272,11 @@ export const updateEmployee = (data, userId) => (dispatch) => {
     return fetch(url + '/workers/' + userId,{
         method: 'PUT',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -262,6 +292,11 @@ export const createNewEmployer = (data) => (dispatch) => {
     return fetch(url + '/employers',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => dispatch(createNewEmployerFetchSucces()))
@@ -282,6 +317,11 @@ export const updateEmployer = (data, userId) => (dispatch) => {
     return fetch(url + '/employers/' + userId,{
         method: 'PUT',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -293,7 +333,7 @@ export const updateEmployer = (data, userId) => (dispatch) => {
 
 export const getUserVacancies = (userId) => (dispatch) => {
     console.log(userId)
-    return fetch(url + '/vacancy/' + userId,{
+    return fetch(url + '/vacancy/user/' + userId,{
         method: 'GET',
         
     })  //userId
@@ -307,9 +347,14 @@ export const getUserVacancies = (userId) => (dispatch) => {
 }
 
 export const addVacancy = (data) => (dispatch) => {
-    return fetch(url + '/vacancy',{
+    return fetch(url + '/vacancy/',{
         method: 'POST',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())
@@ -338,6 +383,11 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
     return fetch(url + '/vacancy/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())

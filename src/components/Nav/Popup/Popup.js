@@ -63,7 +63,7 @@ class Popup extends Component {
   }
 
   registrateUser(data){
-    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError)
+    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
     this.props.onActivateLoader()
   }
 
@@ -81,55 +81,14 @@ class Popup extends Component {
   }
 
   async registrationJsonCreate(login, password, username, type){
-    const user = {
+    return {
       "name": username,
       "email": login,
       "password": password,
       "user_type": type
     }
-    if (user["user_type"] === 'employee'){
-      return fetch('new_worker.json', {
-        headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-          data.name = user.name
-          return data
-      })
-      .then(data =>{
-        return {
-          "user":user,
-          "worker":data
-        }
-      })
-    }
-    else{
-      return fetch('new_employer.json', {
-        headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-          data.name = user.name
-          console.log(data)
-          return data
-      })
-      .then(data =>{
-        return {
-          "user":user,
-          "employer":data
-        }
-      })
-    }
-    
     
   }
-
 
   handleFormSubmit = (e) => {
     e.preventDefault();
@@ -323,7 +282,7 @@ const mapDispatchToProps = (dispatch) =>{
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
           redirectUser(data.data.id)
         }
         else{
@@ -331,15 +290,14 @@ const mapDispatchToProps = (dispatch) =>{
         }
       })
     },
-    onRegistrationUserFetch: (data, redirectUser, fetchError)=> {
+    onRegistrationUserFetch: (data, redirectUser, fetchError, onLoginUserCheck) => {
+      const userCredentials = data
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-      dispatch(registrateNewUser(data))
+      dispatch(registrateNewUser(userCredentials))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
-          let userId = data.data.id
-          let name = data.data.name
-          redirectUser(userId)
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
+          onLoginUserCheck(userCredentials, redirectUser, fetchError)
         }
         else{
           fetchError('email-occupied')

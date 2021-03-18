@@ -40,11 +40,11 @@ const RedactPopupSectionExperience = (state, profileState, onExperienceAdd, onEx
     const experienceDelete = (e) =>{
         e.preventDefault()
         console.log(e.target.parentElement.dataset.key)
-        state.onExperienceDelete(state.profileState.exp[e.target.parentElement.dataset.key])   
+        state.onExperienceDelete(state.profileState.experience[e.target.parentElement.dataset.key])   
     }
 
     return (
-        <section className="redact-popup-section">
+        <section className="popup-redact-section">
             <form className="popup__education-input popup__input-block" onSubmit={educationAdd}>
             {console.log(state)}
             {state.profileState.education.map((el, index)=>{
@@ -94,7 +94,7 @@ const RedactPopupSectionExperience = (state, profileState, onExperienceAdd, onEx
         </form>
 
         <form className="popup__experience-input popup__input-block" onSubmit={experienceAdd}>
-            {state.profileState.exp.map((el, index)=>{
+            {state.profileState.experience.map((el, index)=>{
                 return (
                     <div key={index} className="list-input-field__el-block" data-key={index}>
                         <span>{el.position + ' - ' + el.company}</span>

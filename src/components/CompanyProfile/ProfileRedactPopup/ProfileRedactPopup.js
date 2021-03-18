@@ -9,6 +9,9 @@ import fileUploader from '../../../actions/fileUploader'
 import RedactPopupSectionBaseInfo from './redactPopupSections/RedactPopupSectionBaseInfo'
 import RedactPopupSectionImages from './redactPopupSections/RedactPopupSectionImages'
 
+import baseInfoIcon from '../../../img/baseInfo.svg'
+import personalizationIcon from '../../../img/personalization.svg'
+
 class ProfileRedactPopup extends Component {
     popupClose(e){
         e.preventDefault()
@@ -31,7 +34,7 @@ class ProfileRedactPopup extends Component {
             "photo_url": this.props.placeholderData.photo_url,
             "profile_background": this.props.placeholderData.profile_background
         }
-
+        console.log(data)
         this.props.onUpdateEmployer(data, this.props.userState.user.id, this.props.onGetEmployer, this.props.onHasProfile)
         this.props.onPopupRedactProfileDeactivate();
     }
@@ -47,8 +50,13 @@ class ProfileRedactPopup extends Component {
                     <MainPlaceholder></MainPlaceholder>
                     <div className="profile-redact__form">
                         <div className="profile-redact__form-nav">
-                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'baseInfo')}>Базовая информация</button>
-                            <button className="popup-nav-btn" onClick={this.changeSection.bind(this, 'images')}>Персонализация</button>
+                            
+                            <button className={"popup-nav-btn rounded " + (this.props.profileState.popupRedactActiveSection === 'baseInfo' ? 'active' : '')} onClick={this.changeSection.bind(this, 'baseInfo')}>
+                                <img src={baseInfoIcon} alt="Базовая информация"/>
+                            </button>
+                            <button className={"popup-nav-btn rounded " + (this.props.profileState.popupRedactActiveSection === 'images' ? 'active' : '')} onClick={this.changeSection.bind(this, 'images')}>
+                                <img src={personalizationIcon} alt="Персонализация"/>
+                            </button>
                         </div>
                         {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}

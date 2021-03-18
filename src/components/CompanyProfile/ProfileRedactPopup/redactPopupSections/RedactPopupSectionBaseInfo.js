@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import LeafletMap from '../../../leafletMap/LeafletMap'
 
-const RedactPopupSectionBaseInfo = (state, placeholderData) => {
+
+const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
     const changeUserNameValue = (e) => {
         let input = e.target.value
         state.onUsernameChange(input)
@@ -11,8 +13,13 @@ const RedactPopupSectionBaseInfo = (state, placeholderData) => {
         state.onDescriptionChange(e.target.value)
     }
 
-    const changeAddressValue = (e) =>{
-        state.onAddressChange(e.target.value)
+    const saveNewAddress = (e) => {
+        state.onSaveNewAddress({
+            name:state.LeafletMapData.name,
+            lat:state.LeafletMapData.lat,
+            lng:state.LeafletMapData.lng
+
+        })
     }
 
     const deletePhone = (e) =>{
@@ -39,24 +46,23 @@ const RedactPopupSectionBaseInfo = (state, placeholderData) => {
         <section className="popup-redact-section">
             <div className="popup__input-block">
                 <div className="input-field underline-anim">
-                    <input className="popup__text-input" id="nameInput" name="nameInput" type="text" placeholder=" " onChange={changeUserNameValue} value={placeholderData.userName}/>
+                    <input className="popup__text-input" id="nameInput" name="nameInput" type="text" placeholder=" " onChange={changeUserNameValue} value={state.placeholderData.name}/>
                     <label className="popup__text-label" htmlFor="nameInput">Имя/никнейм</label>
                 </div>
 
                 <div className="textarea-field">
                     <p>Описание</p>
-                    <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={changeUserDescriptionValue} value={placeholderData.about}></textarea>
+                    <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={changeUserDescriptionValue} value={state.placeholderData.about}></textarea>
                 </div>
 
-                <div className="input-field underlined">
-                    <input className="popup__text-input" id="addressInput" name="addressInput" type="text" placeholder=" " onChange={changeAddressValue} value={placeholderData.address}/>
-                    <label className="popup__text-label" htmlFor="addressInput">Адрес</label>
+                <div className="address-input">
+                    <LeafletMap address={state.profileState.address}></LeafletMap>
+                    <button className="highlighted sup-btn" onClick={saveNewAddress}>Сохранить</button>
                 </div>
             </div>
 
             <div className="list-input-field popup__input-block">
                 <p>Телефоны</p>
-                {console.log(state.placeholderData)}
                 {state.placeholderData.phone.map((phone, index)=>{
                     return (
                         <div key={index} className="list-input-field__el-block" data-key={index}>
@@ -78,7 +84,9 @@ const mapStateToProps = (state) =>{
         state:state,
         profileState: state.companyProfile,
         userState: state.user,
-        placeholderData: state.companyProfile.placeholder
+        placeholderData: state.companyProfile.placeholder,
+        LeafletMapData:state.buf.leafletMap.data
+
     }
 }
 
@@ -99,7 +107,13 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onPhoneDelete: (phoneId)=>{
             dispatch({type : 'POPUP_EMPLOYER_REDACT_DELETE_PHONE', payload:phoneId})
-        }
+        },
+        onAddressChange: (text)=>{
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_ADDRESS_NAME_CHANGE', payload:text})
+        }, 
+        onSaveNewAddress:(address)=>{
+            dispatch({type : 'POPUP_EMPLOYER_REDACT_ADDRESS_CHANGE', payload:address})
+        },
     }
 }
 

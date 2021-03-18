@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import "cropperjs/dist/cropper.css";
 import fileUploader from '../../../../actions/fileUploader';
+import cropIcon from '../../../../img/crop.svg'
+
 
 const RedactPopupSectionImages = (state) => {
     
@@ -41,15 +43,66 @@ const RedactPopupSectionImages = (state) => {
         loadImageToFirebase(file, imageType)
     }
 
+    const dragOver = (e) => {
+        e.preventDefault();
+    }
+
+    const dragEnter = (e) => {
+        e.preventDefault();
+    }
+
+    const dragLeave = (e) => {
+        e.preventDefault();
+    }
+
+    const fileDrop = (e, imageType) => {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        console.log(files);
+        loadImageToFirebase(files[0], imageType)
+
+    }
+
+
 
     return (
         <section className="popup-redact-section">
-            <input type="file" name="userAvatarInput" onChange={(event) => {loadUserImage(event, 'avatar')}}/>
-            <button onClick={cropUserImage.bind(this, state.placeholderData.photo_url, 120, 120, 'avatar')} >cropper</button>
+            <div className="drop-container" 
+                onDragOver={dragOver}
+                onDragEnter={dragEnter}
+                onDragLeave={dragLeave}
+                onDrop={(event)=>{fileDrop(event, 'avatar')}}
+            >
+                <input type="file" id="file-avatar" hidden name="userAvatarInput" onChange={(event) => {loadUserImage(event, 'avatar')}}/>
+                <label className="file-input rounded sup-btn" htmlFor="file-avatar">Загрузить аватар</label>
+                
+                <button className="cropper-activate-btn" onClick={cropUserImage.bind(this, state.placeholderData.photo_url, 120, 120, 'avatar')}>
+                    <img src={cropIcon} alt="обрезать"/>
+                </button>
+          
+                <div className="drop-message">
+                    <div className="upload-icon"></div>
+                </div>
+            </div>
 
-            <input type="file" name="userBackgroundInput" onChange={(event) => {loadUserImage(event, 'personal-background')}}/>
-            <button onClick={cropUserImage.bind(this, state.placeholderData.profile_background, 700, 160, 'personal-background')} >cropper</button>
+            <div className="drop-container" 
+                onDragOver={dragOver}
+                onDragEnter={dragEnter}
+                onDragLeave={dragLeave}
+                onDrop={(event)=>{fileDrop(event, 'personal-background')}}
+            >
+                <input type="file" id="file-back" hidden name="userBackgroundInput" onChange={(event) => {loadUserImage(event, 'personal-background')}}/>
+                <label className="file-input rounded sup-btn" htmlFor="file-back">Загрузить задний фон</label>
 
+                <button className="cropper-activate-btn" onClick={cropUserImage.bind(this, state.placeholderData.profile_background, 700, 160, 'personal-background')}>
+                    <img src={cropIcon} alt="обрезать"/>
+                </button>
+
+                <div className="drop-message">
+                    <div className="upload-icon"></div>
+                    
+                </div>
+            </div>
         </section>
     )
 }
