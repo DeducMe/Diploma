@@ -154,7 +154,7 @@ export const addResume = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
@@ -229,7 +229,7 @@ export const registrateNewUser = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         }
     })
     .then(response => response.json())
@@ -256,7 +256,7 @@ export const createNewEmployee = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -275,7 +275,7 @@ export const updateEmployee = (data, userId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -295,7 +295,7 @@ export const createNewEmployer = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -320,7 +320,7 @@ export const updateEmployer = (data, userId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -353,7 +353,7 @@ export const addVacancy = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
@@ -386,7 +386,7 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-'X-CSRFToken': document.cookie.split('=')[1]
+            'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
