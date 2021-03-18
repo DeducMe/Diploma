@@ -1,17 +1,13 @@
-import React, { Component, useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from 'react-redux'
 
 import { useState } from 'react';
 import '../../css/leaflet.css'
 import '../../css/geosearch.css'
-import '../../scripts/geosearch.umd'
-
 import L from "leaflet";
-import '../../scripts/leaflet-src'
-import '../../scripts/leaflet'
 import { MapContainer , TileLayer, useMapEvents, Marker, Popup, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { find } from "esri-leaflet";
+
 
 // import marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -93,8 +89,6 @@ function MapComp ({address, onChangeMapPosition}) {
     function initMap(map){
         map.addControl(searchControl);
     }
-
-
 
     const center = address ? [address.lat, address.lng] : [0, 0];
     return (
