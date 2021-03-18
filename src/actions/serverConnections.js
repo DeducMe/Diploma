@@ -153,7 +153,8 @@ export const addResume = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
@@ -187,7 +188,10 @@ export const redactResume = (data, cvId) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+
+
         }
     })  
     .then(response => response.json())
@@ -206,12 +210,12 @@ export const loginUser = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
         }
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         return dispatch(loginUserFetchSucces(data.user))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
@@ -224,11 +228,12 @@ export const registrateNewUser = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         }
     })
     .then(response => response.json())
-    .then(data => dispatch(registarteUserFetchSucces(data.user)))
+    .then(data => dispatch(registarteUserFetchSucces(data)))
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 
@@ -250,7 +255,8 @@ export const createNewEmployee = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -268,7 +274,8 @@ export const updateEmployee = (data, userId) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -287,7 +294,8 @@ export const createNewEmployer = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -311,7 +319,8 @@ export const updateEmployer = (data, userId) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
     })
     .then(response => response.json())
@@ -343,7 +352,8 @@ export const addVacancy = (data) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
@@ -375,7 +385,8 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
         body: JSON.stringify(data),  
         headers : { 
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json',
+'X-CSRFToken': document.cookie.split('=')[1]
         },  
         
     })  
