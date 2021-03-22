@@ -135,7 +135,7 @@ const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate,
     <div className={"search-panel " + navState.searchActive}>
       <div className="container">
         <div className="search-panel__wrapper">
-          <SearchPanel></SearchPanel>
+          <SearchPanel history={history}></SearchPanel>
         </div>
       </div>
     </div>  
@@ -173,7 +173,7 @@ const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate,
     <div className={"search-panel " + navState.searchActive}>
       <div className="container">
         <div className= "search-panel__wrapper">
-          <SearchPanel></SearchPanel>
+          <SearchPanel history={history}></SearchPanel>
         </div>
       </div>
     </div>  

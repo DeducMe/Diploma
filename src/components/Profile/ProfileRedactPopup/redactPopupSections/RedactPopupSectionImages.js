@@ -8,6 +8,7 @@ const RedactPopupSectionImages = (state, placeholderData, cropperData, onDeactiv
     
     const cropUserImage = (file, maxWidth, maxHeight, imageType) => {
         state.onDeactivateCropper()
+        console.log(file)
 
         setTimeout(()=>{
             if (file !== undefined){
@@ -22,6 +23,7 @@ const RedactPopupSectionImages = (state, placeholderData, cropperData, onDeactiv
             const storageRef = fileUploader.storage().ref()
             const fileRef = storageRef.child('user-' + imageType + state.userState.user.id)
             fileRef.put(image).then((response)=>{
+                console.log(response)
                 fileRef.getDownloadURL()
                 .then((response) => {
                     console.log(response)
@@ -62,8 +64,6 @@ const RedactPopupSectionImages = (state, placeholderData, cropperData, onDeactiv
         loadImageToFirebase(file, imageType)
     }
 
-    
-
 
     return (
         <section className="popup-redact-section">
@@ -103,9 +103,6 @@ const RedactPopupSectionImages = (state, placeholderData, cropperData, onDeactiv
                     
                 </div>
             </div>
-
-
-
         </section>
     )
 }

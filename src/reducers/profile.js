@@ -60,6 +60,13 @@ export default function profileState(state = initialState, action){
         ...state
       };
     }
+    else if (action.type === 'SET_CROPPER_FILE'){
+      state.buf.cropper.file = action.payload;
+      return {
+        ...state
+      };
+    }
+    
     
     
     // else if(action.type === 'ACTIVATE_PROFILE_REDACT_LOADER'){
@@ -210,6 +217,7 @@ export default function profileState(state = initialState, action){
       };
     }
     else if(action.type === 'ACTIVATE_PROFILE_REDACT_IMAGE_CROPPER'){
+      console.log(action.payload)
       state.buf.cropper.state = true;
       state.buf.cropper.file = action.payload[0]
       state.buf.cropper.maxWidth = action.payload[1]

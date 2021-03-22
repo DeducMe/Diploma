@@ -47,7 +47,7 @@ class Vacancy extends Component {
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{el.grade}</p>
-                                            <p className="resume__publication-date sup">{el.pub_date}</p>
+                                            <p className="resume__publication-date sup">{el.pub_date.slice(0,10)}</p>
                                         </div>
                                     </div>
             

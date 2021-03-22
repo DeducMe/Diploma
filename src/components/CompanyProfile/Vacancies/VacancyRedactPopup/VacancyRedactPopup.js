@@ -133,7 +133,7 @@ class VacancyRedactPopup extends Component {
         e.preventDefault();
 
         let data = {
-            "user": this.props.userData.id,
+            "user_id": this.props.userData.id,
             "vacancy_name": this.props.vacancyPlaceholder.vacancy_name,
             "industry": this.props.vacancyPlaceholder.industry,
             "grade": this.props.vacancyPlaceholder.grade,

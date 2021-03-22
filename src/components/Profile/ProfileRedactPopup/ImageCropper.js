@@ -11,6 +11,7 @@ import uploadIcon from '../../../img/upload.svg';
 class ImageCropper extends Component {
     cropUserImage = (file, maxWidth, maxHeight, imageType) => {
         this.props.onDeactivateCropper()
+        console.log(file)
         setTimeout(()=>{
             if (file !== undefined){
                 this.props.onActivateCropper(file, maxWidth, maxHeight, imageType)
@@ -57,6 +58,18 @@ class ImageCropper extends Component {
         return new Blob([u8arr], {type:mime});
     }
 
+    urlLinkToBlob = (url) =>{
+        
+        return fetch(url,{
+            headers : { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Control-Allow-Headers':'*',
+                'Access-Control-Allow-Origin': '*',
+            },  
+        }).then(r => console.log(r))
+    }
+
     loadUserImage = (e, imageType) =>{
         const file = e.target.files[0];
         this.loadImageToFirebase(file, imageType)
@@ -66,18 +79,23 @@ class ImageCropper extends Component {
         this.props.onDeactivateCropper()
     }
 
+    componentDidMount(){
+        console.log('cropper mounted')
+        this.urlLinkToBlob(this.props.cropperFile)
+
+    }
+
     render() {
         let file
         if (!this.props.cropperFile){
             if(this.props.cropperData.imageType === 'avatar'){
-                file = 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'
+                this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54')
             }
-            else file = 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-background.png?alt=media&token=1c91f99c-c236-4a28-b291-bfc2263df45b'
+            else this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-background.png?alt=media&token=1c91f99c-c236-4a28-b291-bfc2263df45b')
         }
-        else{
-            file = this.props.cropperFile
-        }
-        return this.props.cropperActive ? (
+
+
+        return this.props.cropperActive && this.props.cropperFile ? (
             <div className="cropper-block">
                 <div
                     className={"cropper__img-preview " + this.props.cropperData.imageType}
@@ -89,7 +107,7 @@ class ImageCropper extends Component {
                 aspectRatio={this.props.cropperMaxWidth / this.props.cropperMaxHeight}
 
                 preview=".cropper__img-preview"
-                src={file}
+                src={this.props.cropperFile}
                 viewMode={1}
                 dragMode='move'
                 guides={true}
@@ -98,7 +116,7 @@ class ImageCropper extends Component {
                 background={false}
                 responsive={true}
                 autoCropArea={1}
-                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                checkOrientation={false} 
                 onInitialized={(instance) => {
                     this.props.setCropperInstance(instance);
                 }}
@@ -147,7 +165,10 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onDeactivateCropper:()=>{
             dispatch({type : 'DEACTIVATE_PROFILE_REDACT_IMAGE_CROPPER', payload:null})
-        }
+        },
+        onSetCropperFile:(file) => {
+            dispatch({type : 'SET_CROPPER_FILE', payload:file})
+        },
     }
 }
 

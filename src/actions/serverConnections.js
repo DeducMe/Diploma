@@ -109,6 +109,13 @@ function deleteResumeFetchSucces() {
     }
 }
 
+function getSearchFetchSucces(data){
+    return{
+        type:'GET_SEARCH_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -347,6 +354,7 @@ export const getUserVacancies = (userId) => (dispatch) => {
 }
 
 export const addVacancy = (data) => (dispatch) => {
+    console.log(data)
     return fetch(url + '/vacancy/',{
         method: 'POST',
         body: JSON.stringify(data),  
@@ -365,6 +373,7 @@ export const addVacancy = (data) => (dispatch) => {
         else return dispatch(notFoundError(data))
     })
 }
+
 
 export const deleteVacancy = (id) => (dispatch) => {
     return fetch(url + '/vacancy/' + id,{
@@ -395,6 +404,24 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
         console.log(data)
         if (data !== '404')
         return dispatch(redactVacancyFetchSucces())
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const getSearchQueries = (options, searchType) => (dispatch) => {
+    console.log(options)
+    return fetch(url + '/'+ searchType + '/search?'+ options,{
+        method: 'GET',
+    })  
+    .then(response => {
+        if (response.status !== 404)
+        return response.json()
+        else return response.status
+    })
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(getSearchFetchSucces(data))
         else return dispatch(notFoundError(data))
     })
 }
