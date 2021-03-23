@@ -2,6 +2,9 @@ import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {getSearchQueries} from '../../../actions/serverConnections'
+import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
+import fileUploader from '../../../actions/fileUploader';
+
 
 class SearchMain extends Component {
 
@@ -35,14 +38,14 @@ class SearchMain extends Component {
                 break;
 
             case 'dateAsc':
-                this.sortByValue(values, 'date', 'asc')
+                this.sortByValue(values, 'pub-date', 'asc')
                 break;
 
             case 'dateDesc':
-                this.sortByValue(values, 'date', 'desc')
+                this.sortByValue(values, 'pub-date', 'desc')
                 break;
         }
-
+        this.props.onNullifyValues()
         this.props.onUpdateValues(values)
     }
 
@@ -61,56 +64,87 @@ class SearchMain extends Component {
         this.props.onUpdateValues(this.props.searchValues)
     }
 
+    getAvatarFromFirebase(id, index){   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+        const storageRef = fileUploader.storage().ref()
+        const fileRef = storageRef.child('user-avatar' + id)
+        fileRef.getDownloadURL()
+        .then((response) => this.props.onSetValuePhoto(response, index))
+        .catch(err => this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', index)) 
+        
+    }
+
     render() {
         return (
             <section className="search-main">
-                {/* <div className="search-main__sort-controls">
-                    <select name="searchValueSort" id="searchValueSort" onChange={this.sortSearch.bind(this)}>
-                        <option value="dateDesc">Сначала новые</option>
-                        <option value="dateAsc">Сначала старые</option>
-                        <option value="salaryDesc">По возрастанию зарплаты</option>
-                        <option value="salaryAsc">По убыванию зарплаты</option>
-                    </select>
-                </div> */}
                 <div className="search-main__controls">
-                    <form onSubmit={this.getSearchValues.bind(this)}>
-                        <input type="text" id="search-main__controls__query-input" name="search-main__controls__query-input" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} value={this.props.searchOptions.phrase}/>
-                        <button type="submit">Найти</button>
+                    <form className="search-main__controls-form rounded" onSubmit={this.getSearchValues.bind(this)}>
+                        <div className="search-input rounded">
+                            <input type="text" id="queryInput" name="queryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} value={this.props.searchOptions.phrase}/>
+                            <button type="submit" className="sup-btn">Найти</button>
+                        </div>
+
+                        <select className="search-main__controls__sort-type-select" name="salarySortType" id="" onChange={this.sortSearch.bind(this)}>
+                            <option value="salaryAsc">по возрастанию зарплаты</option>
+                            <option value="salaryDesc">по убыванию зарплаты</option>
+                        </select>
+
+                        <select className="search-main__controls__sort-type-select" name="dateSortType" id="" onChange={this.sortSearch.bind(this)}>
+                            <option value="dateAsc">начиная с новых</option>
+                            <option value="dateDesc">начиная со старых</option>
+                        </select>
+                        <div className="search-main__controls__check-container check-container">
+                            <input type="checkbox" className="search-main__controls__sort-type-check" name="strictCheckBox" id=""/>
+                            <label htmlFor="strictCheckBox">Строгий поиск</label>
+                        </div>
+                        
                     </form>
                 </div>
                 <ul className="search-main__search-items-list">
                     {this.props.searchValues.map((item, index) => {
+                        if (item.photo_url === "")this.getAvatarFromFirebase(item.owner_id, index)
+
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
                                 <section className="resume-main">
-                                    <div className={"resume__header white top-rounded " }>
+                                    <div className={"resume__header white top-rounded" }>
                                     {/* + this.props.item.bg_header_color */}
+                                        
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
-                                            <p><span className="resume__header__salary bold f-medium">{item.salary}</span><span className="bold f-medium"> руб.</span></p>
+                                            <p>
+                                                {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
+                                                <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
+                                            </p>
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{item.grade}</p>
                                             <p className="resume__publication-date sup">{item.pub_date.slice(0, 10)}</p>
                                         </div>
+                                        
                                     </div>
             
-                                    <div className="resume__main-info rounded">
-                                        <p className="resume__industry f-pre">{item.industry}</p>
+                                    <div className="resume__main-info rounded flex">
+                                        <div className="resume__main-info__text">
+                                            <p className="resume__industry f-pre">{item.industry}</p>
             
-                                        <p className="resume__work-type">{item.work_type.join(', ')}</p>
-            
-                                        <p className="resume__about">{item.about}</p>
+                                            <p className="resume__work-type">{item.work_type.join(', ')}</p>
+
+                                            <p className="resume__about">{item.about}</p>
+                                        </div>
+                                        
             
                                         {/* <ul className="resume__tags-list">
                                             {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
                                         </ul> */}
+                                        <div className="resume__main-info__avatar-name-block">
+                                            <img className="avatar-name-block__small-avatar" src={item.photo_url} alt="аватар"/>
+                                            <p>{item.owner}</p>
+                                        </div>
                                     </div>
                                 </section>
                             </li>
                         )
                     })}
-                    
                 </ul>
             </section>
         )
@@ -146,7 +180,10 @@ const mapDispatchToProps = (dispatch) =>{
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
                 }
             })
-        } 
+        },
+        onSetValuePhoto: (photo, id) => {
+            dispatch({type : 'SEARCH_UPDATE_VALUES_PHOTO', payload:{photo:photo, id:id}})
+        },
     }
 }
   

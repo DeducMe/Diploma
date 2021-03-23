@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import SearchSide from './SearchSide/SearchSide.js'
 import SearchMain from './SearchMain/SearchMain.js'
 
+import './search.css'
+
 import {getSearchQueries} from '../../actions/serverConnections'
 
 
@@ -24,14 +26,20 @@ class Search extends Component {
         if (this.props.searchOptions.searchType === 'vacancy'){
             return 'вакансий'
         }
+        if (this.props.searchOptions.searchType === 'cv'){
+            return 'резюме'
+        }
     }
 
     render() {
         return (
             <div className="container">
-                <h2>По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchValues.length} {this.checkSearchType()}</h2>
-                <SearchSide></SearchSide>
-                <SearchMain></SearchMain>
+                <h2 className="search-query-header">По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchValues.length} {this.checkSearchType()}</h2>
+
+                <div className="search-page">
+                    <SearchSide></SearchSide>
+                    <SearchMain></SearchMain>
+                </div>
             </div>
         )
     }

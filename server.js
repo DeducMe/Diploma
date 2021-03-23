@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const cors = require('cors');
+var cors = require('cors');
 const PORT = 4000;
 app.use(cors());
 
@@ -14,7 +14,10 @@ app.listen(PORT, ()=>{
 
 app.use(cors(), function (req, res, next) {
     console.log('a')
-    // Website you wish to allow to connect
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "GET");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    res.set("Access-Control-Max-Age", "3600");
     res.header("Access-Control-Allow-Origin", "http://localhost:4000");
     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, PATCH, OPTIONS");
     res.header("Access-Control-Allow-Headers", "*, Origin, X-Requested-With, Content-Type, Accept, Authorization, access-control-allow-origin, Access-Control-Allow-Origin");

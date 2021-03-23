@@ -58,17 +58,6 @@ class ImageCropper extends Component {
         return new Blob([u8arr], {type:mime});
     }
 
-    urlLinkToBlob = (url) =>{
-        
-        return fetch(url,{
-            headers : { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Access-Control-Allow-Headers':'*',
-                'Access-Control-Allow-Origin': '*',
-            },  
-        }).then(r => console.log(r))
-    }
 
     loadUserImage = (e, imageType) =>{
         const file = e.target.files[0];
@@ -79,14 +68,7 @@ class ImageCropper extends Component {
         this.props.onDeactivateCropper()
     }
 
-    componentDidMount(){
-        console.log('cropper mounted')
-        this.urlLinkToBlob(this.props.cropperFile)
-
-    }
-
     render() {
-        let file
         if (!this.props.cropperFile){
             if(this.props.cropperData.imageType === 'avatar'){
                 this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54')

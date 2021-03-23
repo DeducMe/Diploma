@@ -1,5 +1,4 @@
 const initialState = {
-
     searchValues:[],
     searchOptions:{
         searchType:'vacancy',
@@ -39,12 +38,27 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'SEARCH_UPDATE_VALUES_PHOTO'){
+        state.searchValues[action.payload.id].photo_url = action.payload.photo
+        state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+
+        return {
+            ...state
+        };
+    }
     if (action.type === 'CHANGE_SEARCH_QUERY'){
         state.searchOptions.phrase = action.payload;
         return {
             ...state
         };
     }
+    if (action.type === 'CHANGE_SEARCH_TYPE'){
+        state.searchOptions.searchType = action.payload;
+        return {
+            ...state
+        };
+    }
+    
     if (action.type === 'SEARCH_NULLIFY_VALUES'){
         state.searchValues = []
         return {
