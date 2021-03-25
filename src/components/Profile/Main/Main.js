@@ -61,7 +61,7 @@ class Main extends Component {
                             </div>
                         </div>
                         
-                        {this.props.userData.phone.length !== 0 ? (
+                        {this.props.userData.phone.length !== 0  ? (
                             <div className="info__contacts">
                                 <p>Контакты:</p>
                                 <div className="info__contacts__phones">
@@ -115,7 +115,6 @@ class Main extends Component {
         }
         
         else if (this.props.userState.user.id === this.props.userData.user){
-        console.log('dsdsd')
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>

@@ -129,7 +129,7 @@ class SearchMain extends Component {
             
                                             <p className="resume__work-type">{item.work_type.join(', ')}</p>
 
-                                            <p className="resume__about">{item.about}</p>
+                                            <p className="resume__about">{item.about || item.leading}</p>
                                         </div>
                                         
             

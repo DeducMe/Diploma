@@ -45,7 +45,7 @@ class ProfileRedactPopup extends Component {
 
     render() {
         return (
-            <div className={"rounded profile-redact " + this.props.profileState.state}>
+            <div className={"no-fix-blur-box rounded profile-redact " + this.props.profileState.state}>
                 <div className="profile-redact__popup-wrapper">
                     <MainPlaceholder></MainPlaceholder>
                     <div className="profile-redact__form">

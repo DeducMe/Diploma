@@ -63,7 +63,11 @@ const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate,
     }
 
     return returnValue
-}
+  }
+
+  function getUserProfileLink() {
+    return "/"+(userState.user.user_type === 'employee' ? 'profile' : 'company')+"/"+userState.user.id
+  }
   
   useEffect(() => {
     if (location === '/landing')
@@ -107,7 +111,7 @@ const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate,
             </button>
             <div className="nav__profile-data nav-el">
               <div className="nav__profile-data__main link-anim" onClick={dropdownToggle}>
-                <Link to={"/profile/"+userState.user.id} className="f-medium semi flex">
+                <Link to={getUserProfileLink()} className="f-medium semi flex">
                   <img className="nav__profile-data__avatar" src={checkOnEmpty(userData.photo_url, placeholderAvatar)} alt="аватар"/>
                 </Link>
                 <button className="nav__profile-data__options-btn">{userState.user.name}</button>
@@ -116,10 +120,10 @@ const Nav = ({logged, navState, onSearchActivate, userState, onSearchDeactivate,
               <div className={"nav__profile-data__dropdown bottom-rounded " + navState.dropDownState}>
                 <ul className="dropdown__list">
                   <li className="dropdown__list-el">
-                    <Link to={"/profile/"+userState.user.id} className="semi">Моя страница</Link>
+                    <Link to={getUserProfileLink()} className="semi">Моя страница</Link>
                   </li>
                   <li className="dropdown__list-el" onClick={optionsPopupToggle}>
-                    <button to={"/profile/"+userState.user.id} className="semi">Настройки</button>
+                    <button to={getUserProfileLink()} className="semi">Настройки</button>
                   </li>
                   <li className="dropdown__list-el" onClick={logoutHandleFormSubmit}>
                     <button className="semi">Выход</button>
