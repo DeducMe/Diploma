@@ -93,8 +93,8 @@ class Main extends Component {
         )
         else return (
             <div className="main rounded">
-                <section className="personal top-rounded" style={{backgroundImage: `url(${personalBackground})`}}>
-                    <img className="personal__avatar" src={placeholderAvatar} alt="аватар"/>
+                <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
+                    <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
                 </section>
                 <section className="info">
                     <div className="info-head">

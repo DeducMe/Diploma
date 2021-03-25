@@ -6,6 +6,8 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
     "esri-leaflet": "^3.0.1",
     "esri-leaflet-geocoder": "^3.0.0",
     "firebase": "^8.2.4",
