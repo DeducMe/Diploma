@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import "./searchPanel.css"
 import {getSearchQueries} from '../../../actions/serverConnections'
+import fileUploader from '../../../actions/fileUploader';
+import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
 
 class SearchPanel extends Component {
@@ -12,12 +14,24 @@ class SearchPanel extends Component {
         .join('')
     }
 
-    redirectToSearch = (e) => {
+    getAvatarFromFirebase = (id, pk) =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+        const storageRef = fileUploader.storage().ref()
+        const fileRef = storageRef.child('user-avatar' + id)
+        fileRef.getDownloadURL()
+        .then((response) => this.props.onSetValuePhoto(response, pk))
+        .catch(err => this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', pk))
+    }
+
+
+    redirectToSearch = (nullify, e) => {
         e.preventDefault()
         this.props.onSetSearchOptions({searchType:e.target.searchPanelSearchType.value, phrase: e.target.searchPanelQueryInput.value})
-        this.props.onNullifyValues()
-        this.props.onGetSearchQueries(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType)
-
+        if (nullify) this.props.onNullifyValues()
+        if (this.props.searchState.searchLoading === false){
+            
+            this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
+            
+        }
         this.props.history.push("/search");
     }
 
@@ -32,7 +46,7 @@ class SearchPanel extends Component {
 
     render() {
         return (
-            <form className="search-form" onSubmit={this.redirectToSearch.bind(this)}>
+            <form className="search-form" onSubmit={this.redirectToSearch.bind(this, true)}>
                 <input type="text" className="search-form__input" id="searchPanelQueryInput" name="searchPanelQueryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} />
 
                 <select className="search-form__dropdown-menu f-medium semi" id="searchPanelSearchType" name="searchPanelSearchType" onChange={this.changeSearchType.bind(this)}>
@@ -43,7 +57,7 @@ class SearchPanel extends Component {
 
                 <input className="search-form__submit highlighted" type="submit" value="Поиск"/>
 
-                <button className="more-filters-btn" onClick={this.redirectToSearch.bind(this)}></button>
+                <button className="more-filters-btn" onClick={this.redirectToSearch.bind(this, true)}></button>
 
             </form>
 
@@ -54,7 +68,8 @@ class SearchPanel extends Component {
 const mapStateToProps = (state, ownProps) =>{
     return {
         history:ownProps.history,
-        searchOptions:state.search.searchOptions
+        searchOptions:state.search.searchOptions,
+        searchState:state.search
     }
   }
   
@@ -75,6 +90,26 @@ const mapStateToProps = (state, ownProps) =>{
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
                 }
             })
+        },
+        onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
+            dispatch(searchLoaderActivate())
+            dispatch(getSearchQueries(options, searchType, next))
+            .then((data)=>{
+                if (data.data !== null && data.data !== 404){
+                    dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
+                    dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
+                    dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
+                    data.data.results.map((item) => {
+                        if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
+                    })
+                }
+            })
+            .then(response => dispatch(searchLoaderDeactivate()))
+            
+        },
+        onSetValuePhoto: (photo, id) => {
+            console.log('photo')
+            dispatch({type : 'SEARCH_UPDATE_VALUES_PHOTO', payload:{photo:photo, id:id}})
         },
         onChangeSearchQuery: (query) => {
             dispatch({type : 'CHANGE_SEARCH_QUERY', payload:query})

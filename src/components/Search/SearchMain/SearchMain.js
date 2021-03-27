@@ -7,9 +7,12 @@ import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asy
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues} from '../../../scripts/commonScripts'
+import { InView } from "react-intersection-observer";
+
 
 
 class SearchMain extends Component {
+   
 
     sortByValue(arr, value, sortMethod){
         sortMethod === 'asc' ? (
@@ -56,41 +59,38 @@ class SearchMain extends Component {
         this.props.onChangeSearchQuery(e.target.value)
     }
 
-    getSearchValues = (e) => {
+    searchBtnClick = (e) =>{
         e.preventDefault()
-        this.props.onNullifyValues()
-        if (this.props.searchState.searchLoading === false){
-            this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType)
-            console.log('b')
-        }
-        // this.props.onGetSearchQueries(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType)
+        this.getSearchValues(true)
+    }
 
+    getSearchValues = (nullify) => {
+        if (nullify) this.props.onNullifyValues()
+        if (this.props.searchState.searchLoading === false){
+            
+            this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
+            
+        }
     }
 
     componentDidMount(){
-        this.props.onUpdateValues(this.props.searchValues)
+        this.getSearchValues(true)
     }
 
-    getAvatarFromFirebase(id, index){   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
-        try{
-            const storageRef = fileUploader.storage().ref()
-            const fileRef = storageRef.child('user-avatar' + id)
-            fileRef.getDownloadURL()
-            .then((response) => this.props.onSetValuePhoto(response, index))
-            .catch(err=>this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', index))
-        }
-        catch{
-            this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', index)
-        }
 
-        
+    getAvatarFromFirebase = (id, pk) =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+        const storageRef = fileUploader.storage().ref()
+        const fileRef = storageRef.child('user-avatar' + id)
+        fileRef.getDownloadURL()
+        .then((response) => this.props.onSetValuePhoto(response, pk))
+        .catch(err => this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', pk))
     }
 
     render() {
         return (
             <section className="search-main">
                 <div className="search-main__controls">
-                    <form className="search-main__controls-form rounded" onSubmit={this.getSearchValues.bind(this)}>
+                    <form className="search-main__controls-form rounded" onSubmit={this.searchBtnClick.bind(this)}>
                         <div className="search-input rounded">
                             <input type="text" id="queryInput" name="queryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} value={this.props.searchOptions.phrase}/>
                             <button type="submit" className="sup-btn">Найти</button>
@@ -114,7 +114,6 @@ class SearchMain extends Component {
                 </div>
                 <ul className="search-main__search-items-list">
                     {this.props.searchValues.map((item, index) => {
-                        if (item.photo_url === "") this.getAvatarFromFirebase(item.owner_id, index)
 
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
@@ -159,6 +158,12 @@ class SearchMain extends Component {
                         )
                     })}
                 </ul>
+                <InView as="div" onChange={(inView, entry) => {
+                    console.log(inView)
+                    
+                    if (inView) this.getSearchValues(false)}}>
+                </InView>
+
             </section>
         )
     }
@@ -192,19 +197,24 @@ const mapDispatchToProps = (dispatch) =>{
                     dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
                 }
+                return null
             })
         },
-        onGetSearchResponse:(options,searchType)=>{
+        onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())
-            dispatch(getSearchQueries(options, searchType))
+            dispatch(getSearchQueries(options, searchType, next))
             .then((data)=>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
+                    dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
+                    data.data.results.map((item) => {
+                        if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
+                    })
                 }
-                return null
             })
             .then(response => dispatch(searchLoaderDeactivate()))
+            
         },
         onSetValuePhoto: (photo, id) => {
             console.log('photo')

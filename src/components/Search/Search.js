@@ -4,12 +4,15 @@ import { connect } from 'react-redux'
 import SearchSide from './SearchSide/SearchSide.js'
 import SearchMain from './SearchMain/SearchMain.js'
 
+
 import './search.css'
 
 import {getSearchQueries} from '../../actions/serverConnections'
 
 
 class Search extends Component {
+    
+
     parseOptions(options){
         return Object
         .keys(options)
@@ -29,7 +32,7 @@ class Search extends Component {
     render() {
         return (
             <div className="container">
-                <h2 className="search-query-header">По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchValues.length} {this.checkSearchType()}</h2>
+                <h2 className="search-query-header">По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchState.searchCount} {this.checkSearchType()}</h2>
 
                 <div className="search-page">
                     <SearchSide></SearchSide>
@@ -44,7 +47,9 @@ const mapStateToProps = (state) => {
     return {
         cropperMaxWidth:state.profile.buf.cropper.maxWidth,
         searchValues:state.search.searchValues,
-        searchOptions:state.search.searchOptions
+        searchOptions:state.search.searchOptions,
+        searchState:state.search,
+
 
     }
 }

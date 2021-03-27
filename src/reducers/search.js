@@ -1,5 +1,7 @@
 const initialState = {
     searchLoading:false,
+    next:'initial',
+    searchCount: 0,
     searchValues:[],
     searchOptions:{
         searchType:'vacancy',
@@ -40,7 +42,8 @@ export default function userState(state = initialState, action){
         };
     }
     if (action.type === 'SEARCH_UPDATE_VALUES_PHOTO'){
-        if (state.searchValues[action.payload.id] !== undefined) state.searchValues[action.payload.id].photo_url = action.payload.photo
+        let value = state.searchValues.find(x => x.pk === action.payload.id)
+        if (value !== undefined) value.photo_url = action.payload.photo
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
 
         return {
@@ -73,6 +76,8 @@ export default function userState(state = initialState, action){
     }
     if (action.type === 'SEARCH_NULLIFY_VALUES'){
         state.searchValues = []
+        state.next = 'initial'
+        state.searchCount = 0
         return {
             ...state
         };
@@ -84,8 +89,19 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'GET_SEARCH_QUERY_FETCH_SUCCES'){
+        state.next = action.data.next
+        return {
+            ...state
+        };
+    }
     
-    
+    if (action.type === 'SEARCH_UPDATE_RESULTS_COUNT'){
+        state.searchCount = action.payload
+        return {
+            ...state
+        };
+    }
     
     return state;
 }

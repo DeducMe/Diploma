@@ -116,6 +116,13 @@ function getSearchFetchSucces(data){
     }
 }
 
+function getSearchNone(data){
+    return{
+        type:'GET_SEARCH_QUERY_NONE',
+        data
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -408,20 +415,27 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
     })
 }
 
-export const getSearchQueries = (options, searchType) => (dispatch) => {
-    console.log(options)
-    return fetch(url + '/'+ searchType + '/search?'+ options,{
-        method: 'GET',
-    })  
-    .then(response => {
-        if (response.status !== 404)
-        return response.json()
-        else return response.status
-    })
-    .then(data => {
-        console.log(data)
-        if (data !== '404')
-        return dispatch(getSearchFetchSucces(data))
-        else return dispatch(notFoundError(data))
-    })
+export const getSearchQueries = (options, searchType, next) => (dispatch) => {
+    let fetchUrl = url + '/'+ searchType + '/search?'+ options
+    console.log(fetchUrl)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getSearchFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getSearchNone(null)))})
+    
 }
