@@ -1,4 +1,5 @@
 const initialState = {
+    searchLoading:false,
     searchValues:[],
     searchOptions:{
         searchType:'vacancy',
@@ -58,7 +59,18 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    
+    if (action.type === 'SEARCH_START_LOADING'){
+        state.searchLoading = true;
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_STOP_LOADING'){
+        state.searchLoading = false;
+        return {
+            ...state
+        };
+    }
     if (action.type === 'SEARCH_NULLIFY_VALUES'){
         state.searchValues = []
         return {
