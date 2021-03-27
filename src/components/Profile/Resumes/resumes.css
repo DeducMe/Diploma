@@ -53,7 +53,7 @@
 }
 
 .resume__header__grade-input{
-    width: 100%;
+    background-color:#1e1f26;
 }
 
 .resume__header-color{
@@ -129,10 +129,24 @@
     color: #254e8f;
 }
 
+.input-label{
+    display: block;
+    width: 100%;
+}
+
 .resume__tags-list,
 .resume__work-type-list{
     display: flex;
     flex-wrap: wrap;
+}
+
+.resume__work-type{
+    display: block;
+    width: 100%;
+}
+
+.resume__work-type .select-input{
+    margin-left: 10px;
 }
 
 .resume__experience{

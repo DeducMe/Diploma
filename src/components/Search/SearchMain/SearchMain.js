@@ -159,8 +159,6 @@ class SearchMain extends Component {
                     })}
                 </ul>
                 <InView as="div" onChange={(inView, entry) => {
-                    console.log(inView)
-                    
                     if (inView) this.getSearchValues(false)}}>
                 </InView>
 

@@ -6,7 +6,8 @@ import closeIcon from '../../../../img/close.svg'
 import deleteIcon from '../../../../img/trash.svg'
 import editIcon from '../../../../img/edit.svg'
 
-import {checkStringInput, checkIntInput} from '../../../../scripts/commonScripts.js'
+
+import {checkStringInput, checkIntInput, getWorkTypeValues} from '../../../../scripts/commonScripts.js'
 
 
 class VacancyRedactPopup extends Component {
@@ -19,11 +20,7 @@ class VacancyRedactPopup extends Component {
     }
 
     changeGradeValue = (e) =>{
-        const check = checkStringInput(e.target.value, 40, 0, /^[a-zA-Z]*^$/);
-
-        check === "pass" ? 
-        this.props.onGradeValueChange(e.target.value, this.props.vacancyIndex):
-        (this.props.onInputMistake(check, e.target))
+        this.props.onGradeValueChange(e.target.value, this.props.vacancyIndex)
     }
 
     changeSalary = (e) =>{
@@ -47,16 +44,14 @@ class VacancyRedactPopup extends Component {
     }
 
     workTypeInput = (e) =>{
-        const value = e.target.value.split(' ').join('')
-        if (e.keyCode === 9 || e.keyCode === 32){
-            e.preventDefault()
-            if(this.props.vacancyWorkType.length > 3){
+        const value = e.target.value
+        console.log(value)
+        e.preventDefault()
+        if(this.props.vacancyWorkType.length > 5){
 
-            }
-            else if(this.props.vacancyWorkType.indexOf(value) === -1){
-                this.props.onWorkTypeAdd(value, this.props.vacancyIndex)
-                e.target.value = ''
-            }
+        }
+        else if(this.props.vacancyWorkType.indexOf(value) === -1){
+            this.props.onWorkTypeAdd(value, this.props.vacancyIndex)
         }
     }
 
@@ -202,7 +197,14 @@ class VacancyRedactPopup extends Component {
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
-                            <input required type="text" className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} placeholder="Уровень знаний" onChange={this.changeGradeValue.bind(this)} value={this.props.vacancyPlaceholder.grade}/>
+                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)}>
+                                <option value="internship">Стажер</option>
+                                <option value="junior">Начинающий специалист</option>
+                                <option value="middle">Специалист</option>
+                                <option value="senior">Главный специалист</option>
+                                <option value="director">Управляющий отдела</option>
+                                <option value="senior-director">Генеральный директор</option>
+                            </select>
                         </p>
                         <ul className="resume__header-color">
                             <button className={"resume__header-color-el bg-light-black " + (this.props.vacancyPlaceholder.bg_header_color === 'bg-light-black' ? ('selected'):(''))} onClick={this.changeVacancyHeaderColor} value="bg-light-black"/>
@@ -230,17 +232,33 @@ class VacancyRedactPopup extends Component {
                     <p className="resume__address f-pre"><input type="text" placeholder="Адрес" onChange={this.changeaddressValue.bind(this)} value={this.props.vacancyPlaceholder.address}/></p>
                     
                     <div className="resume__work-type-block input-list">
+                        <p className="input-label">Типы работ:</p>
+
                         <ul className="resume__work-type-list">
-                            {this.props.vacancyWorkType.map((tag, index)=>{
+                            {this.props.vacancyWorkType.map((value, index)=>{
                                 return (
                                     <li key={index} className="list-input-field__el-block" data-key={index}>
-                                        <span>{tag}</span>
+                                        <span>{getWorkTypeValues(value)}</span>
                                         <button className="el-block__delete-el" onClick={this.workTypeDelete}>x</button>
                                     </li>
                                 )
                             })}
                         </ul>
-                        <p className="resume__work-type input-list"><input type="text" className="input-list__input-block" placeholder="Тип работы" onKeyDown={this.workTypeInput}/></p>
+                        <div className="resume__work-type input-list">
+                            Выберите, чтобы добавить...
+                            <select className="select-input" name="workTypeInput" id="workTypeInput" onChange={this.workTypeInput.bind(this)}>
+                                <option value="part-day">неполный день</option>
+                                <option value="full-day">полный день</option>
+                                <option value="part-time">полная занятность</option>
+                                <option value="full-time">волонтерство</option>
+                                <option value="one-time-job">разовое задание</option>
+                                <option value="flexible-schedule">гибкий график</option>
+                                <option value="shift-schedule">сменный график</option>
+                                <option value="shift-method">вахтовый метод</option>
+                                <option value="remote">удаленная работа</option>
+                            </select>
+                        </div>
+                        
                     </div>
 
                     <div className="textarea-field">
