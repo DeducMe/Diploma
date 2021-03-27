@@ -105,7 +105,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                 </div>
                 
                 <div className="textarea-field">
-                    <p>Описание</p>
+                    <p>Описание профиля</p>
                     <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={changeUserDescriptionValue} value={placeholderData.description}></textarea>
                 </div>
                 

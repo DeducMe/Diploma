@@ -39,7 +39,7 @@ export default function userState(state = initialState, action){
         };
     }
     if (action.type === 'SEARCH_UPDATE_VALUES_PHOTO'){
-        state.searchValues[action.payload.id].photo_url = action.payload.photo
+        if (state.searchValues[action.payload.id] !== undefined) state.searchValues[action.payload.id].photo_url = action.payload.photo
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
 
         return {

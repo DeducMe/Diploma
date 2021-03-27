@@ -57,7 +57,7 @@ class Main extends Component {
                             {/* <LeafletMap></LeafletMap> */}
                         </div>
                         
-                        {this.props.userData.phone.length !== 0 ? (
+                        {this.props.userData.phone ? (
                             <div className="info__contacts">
                                 <p>Контакты:</p>
                                 <div className="info__contacts__phones">

@@ -17,11 +17,6 @@ class Search extends Component {
         .join('')
     }
 
-    componentDidMount(){
-        this.props.onNullifyValues()
-        this.props.onGetSearchQueries(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType)
-    }
-
     checkSearchType = () => {
         if (this.props.searchOptions.searchType === 'vacancy'){
             return 'вакансий'

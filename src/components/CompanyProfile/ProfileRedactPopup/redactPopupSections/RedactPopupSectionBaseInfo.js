@@ -51,7 +51,7 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
                 </div>
 
                 <div className="textarea-field">
-                    <p>Описание</p>
+                    <p>Описание профиля</p>
                     <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={changeUserDescriptionValue} value={state.placeholderData.about}></textarea>
                 </div>
 

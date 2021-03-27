@@ -32,7 +32,7 @@ class Vacancy extends Component {
     render() { 
         return (
             <div className="resumes-block">
-                {this.props.userState.logged ? (this.props.vacancyData.vacancies.length !== 0 ?(<h2>Ваши Резюме:</h2>):('')):(this.props.vacancyData.vacancies.length !== 0 ?(<h2>Резюме:</h2>):(''))}
+                {this.props.userState.logged ? (this.props.vacancyData.vacancies.length !== 0 ?(<h2>Ваши вакансии:</h2>):('')):(this.props.vacancyData.vacancies.length !== 0 ?(<h2>Вакансии:</h2>):(''))}
                 <ul className="resumes-list">
                     {this.props.vacancyData.vacancies.length !== 0 ? 
                     (this.props.vacancyData.vacancies.map((el, index)=>
@@ -80,7 +80,7 @@ class Vacancy extends Component {
                 </ul>
                 {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user && this.props.vacancyData.newVacancy.state!=='active' ? (
                     <div className="resume-add">
-                        <p>Добавить резюме:</p>
+                        <p>Добавить вакансию:</p>
                         <button className="resume-add-btn" onClick={this.addVacancy.bind(this, 0)}>
                             <img src={plusIcon} alt="plusIcon"/>
                         </button>
