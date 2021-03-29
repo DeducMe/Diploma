@@ -1,14 +1,33 @@
 .search-main{
-    width: 1000px;
+    width: 900px;
 }
 
 .search-side{
     position: sticky;
-
-    width: 300px;
+    padding: 20px;
+    width: 500px;
     min-height: 400px;
 
     background-color: #fff;
+}
+
+.search-side__block{
+    margin-bottom: 20px;
+
+}
+
+.search-side__salary-placeholder{
+    display:flex;
+    justify-content: space-between;
+}
+
+.search-side__grade{
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-block > input{
+    margin-right: 15px;
 }
 
 .search-page{

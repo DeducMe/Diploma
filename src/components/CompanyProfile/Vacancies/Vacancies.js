@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './vacancy.css'
 import { addVacancy} from '../../../actions/serverConnections'
+import {getWorkTypeValues, getGradeValues} from '../../../scripts/commonScripts'
+
 import plusIcon from '../../../img/plusIcon.svg'
 import VacancyRedactPopup from './VacancyRedactPopup/VacancyRedactPopup'
 import editIcon from '../../../img/edit.svg'
@@ -46,7 +48,8 @@ class Vacancy extends Component {
                                             <p><span className="resume__header__salary bold f-medium">{el.salary}</span><span className="bold f-medium"> руб.</span></p>
                                         </div>
                                         <div className="resume__header-bottom">
-                                            <p className="resume__header__grade">{el.grade}</p>
+                                            <p className="resume__header__grade">{getGradeValues(el.grade)}</p>
+
                                             <p className="resume__publication-date sup">{el.pub_date.slice(0,10)}</p>
                                         </div>
                                     </div>
@@ -54,7 +57,7 @@ class Vacancy extends Component {
                                     <div className="resume__main-info rounded">
                                         <p className="resume__industry f-pre">{el.industry}</p>
             
-                                        <p className="resume__work-type">{el.work_type.join(', ')}</p>
+                                        <p className="resume__work-type">{el.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
             
                                         <p className="resume__about">{el.about}</p>
             

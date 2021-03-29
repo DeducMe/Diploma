@@ -8,12 +8,10 @@ import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues} from '../../../scripts/commonScripts'
 import { InView } from "react-intersection-observer";
-
+import { Link } from 'react-router-dom'
 
 
 class SearchMain extends Component {
-   
-
     sortByValue(arr, value, sortMethod){
         sortMethod === 'asc' ? (
             arr.sort((a, b) => a[value] - b[value])
@@ -26,7 +24,13 @@ class SearchMain extends Component {
     parseOptions(options){
         return Object
         .keys(options)
-        .map(k => (options[k] !== null && k !== 'searchType') ? encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&': null)
+        .map(k => {
+            if (options[k] !== null && k !== 'searchType'){
+                if (Array.isArray(options[k]) && options[k].length === 0) return null
+                return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
+            }
+            return null   
+        })
         .join('')
     }
 
@@ -51,8 +55,7 @@ class SearchMain extends Component {
                 this.sortByValue(values, 'pub-date', 'desc')
                 break;
         }
-        this.props.onNullifyValues()
-        this.props.onUpdateValues(values)
+        this.props.onSortValues(values)
     }
 
     changeSearchQuery(e){
@@ -105,10 +108,10 @@ class SearchMain extends Component {
                             <option value="dateAsc">начиная с новых</option>
                             <option value="dateDesc">начиная со старых</option>
                         </select>
-                        <div className="search-main__controls__check-container check-container">
-                            <input type="checkbox" className="search-main__controls__sort-type-check" name="strictCheckBox" id=""/>
+                        {/* <div className="search-main__controls__check-container check-container">
+                            <input type="checkbox" className="search-main__controls__sort-type-check" name="strictCheckBox" id="strictCheckBox"/>
                             <label htmlFor="strictCheckBox">Строгий поиск</label>
-                        </div>
+                        </div> */}
                         
                     </form>
                 </div>
@@ -118,9 +121,7 @@ class SearchMain extends Component {
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
                                 <section className="resume-main">
-                                    <div className={"resume__header white top-rounded" }>
-                                    {/* + this.props.item.bg_header_color */}
-                                        
+                                    <div className={"resume__header white top-rounded " + item.bg_header_color }>
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
                                             <p>
@@ -148,10 +149,10 @@ class SearchMain extends Component {
                                         {/* <ul className="resume__tags-list">
                                             {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
                                         </ul> */}
-                                        <div className="resume__main-info__avatar-name-block">
+                                        <Link className="resume__main-info__avatar-name-block" to={"/company/" + item.owner_id}>
                                             <img className="avatar-name-block__small-avatar" src={item.photo_url} alt="аватар"/>
                                             <p>{item.owner}</p>
-                                        </div>
+                                        </Link>
                                     </div>
                                 </section>
                             </li>
@@ -185,19 +186,13 @@ const mapDispatchToProps = (dispatch) =>{
         onUpdateValues: (values) => {
             dispatch({type : 'SEARCH_UPDATE_VALUES', payload:values})
         },
+        onSortValues: (values) => {
+            dispatch({type : 'SEARCH_SORT_VALUES', payload:values})
+        },
         onChangeSearchQuery: (query) => {
             dispatch({type : 'CHANGE_SEARCH_QUERY', payload:query})
         },
-        onGetSearchQueries: (options, searchType) => {
-            dispatch(getSearchQueries(options, searchType))
-            .then((data)=>{
-                if (data.data !== null && data.data !== 404){
-                    dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
-                    dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                }
-                return null
-            })
-        },
+        
         onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())
             dispatch(getSearchQueries(options, searchType, next))

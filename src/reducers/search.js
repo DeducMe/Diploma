@@ -6,10 +6,10 @@ const initialState = {
     searchOptions:{
         searchType:'vacancy',
         phrase:'',
-        'max-salary':null,
-        'min-salary':null,
-        grade: null,
-        'work-type':null,
+        'max-salary':400000,
+        'min-salary':0,
+        grades: [],
+        'work-type':[],
         tag:null,
         industry:null
     },
@@ -22,8 +22,8 @@ const initialState = {
         salary_max:123,
         salary_min:10,
         pub_date_min:'03-03-2020',
-        max_grade: 'middle',
-        min_grade: 'junior',
+        max_grades: 'middle',
+        min_grades: 'junior',
         work_type:[],
         experience:'',
         tags:[],
@@ -35,6 +35,14 @@ const initialState = {
 export default function userState(state = initialState, action){
     if (action.type === 'SEARCH_UPDATE_VALUES'){
         action.payload.map((item)=>{state.searchValues.push(item)});
+        state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_SORT_VALUES'){
+        state.searchValues = action.payload;
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
 
         return {
@@ -85,6 +93,39 @@ export default function userState(state = initialState, action){
     if (action.type === 'SEARCH_SET_OPTIONS'){
         state.searchOptions = {...state.searchOptions, ...action.payload}
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_OPTIONS_ADD_GRADE'){
+        console.log(state.searchOptions.grades.includes(action.payload))
+        if (!state.searchOptions.grades.includes(action.payload)) state.searchOptions.grades.push(action.payload)
+        state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_OPTIONS_DELETE_GRADE'){
+        if (state.searchOptions.grades.includes(action.payload)) state.searchOptions.grades.splice(state.searchOptions.grades.indexOf(action.payload), 1)
+        state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_OPTIONS_ADD_WORK_TYPE'){
+        if (!state.searchOptions['work-type'].includes(action.payload)) state.searchOptions['work-type'].push(action.payload)
+        state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'SEARCH_OPTIONS_DELETE_WORK_TYPE'){
+        if (state.searchOptions['work-type'].includes(action.payload)) state.searchOptions['work-type'].splice(state.searchOptions['work-type'].indexOf(action.payload), 1)
+        state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+
         return {
             ...state
         };

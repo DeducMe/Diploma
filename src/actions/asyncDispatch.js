@@ -1,5 +1,3 @@
-import {getSearchQueries} from './serverConnections'
-
 export const searchLoaderActivate = () => (dispatch) => {
     return dispatch({
         type:'SEARCH_START_LOADING'
@@ -12,3 +10,13 @@ export const searchLoaderDeactivate = () => (dispatch) => {
     })
 }
 
+export const getSearchNext =  () => (dispatch, getState) => {
+    const { search } = getState();
+    return search.next;
+}
+
+export const getSearchLoadingState =  () => (dispatch, getState) => {
+    const { search } = getState();
+    
+    return search.searchLoading;
+}

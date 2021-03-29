@@ -10,7 +10,13 @@ class SearchPanel extends Component {
     parseOptions(options){
         return Object
         .keys(options)
-        .map(k => (options[k] !== null && k !== 'searchType') ? encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&': null)
+        .map(k => {
+            if (options[k] !== null && k !== 'searchType'){
+                if (Array.isArray(options[k]) && options[k].length === 0) return null
+                return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
+            }
+            return null   
+        })
         .join('')
     }
 
@@ -81,15 +87,6 @@ const mapStateToProps = (state, ownProps) =>{
         },
         onNullifyValues: () => {
             dispatch({type : 'SEARCH_NULLIFY_VALUES', payload:null})
-        },
-        onGetSearchQueries: (options, searchType) => {
-            dispatch(getSearchQueries(options, searchType))
-            .then((data)=>{
-                if (data.data !== null && data.data !== 404){
-                    dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
-                    dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                }
-            })
         },
         onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())
