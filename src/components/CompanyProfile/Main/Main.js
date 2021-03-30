@@ -32,7 +32,7 @@ class Main extends Component {
     }
     
     render() {
-        if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user){
+        if (this.props.userState.hasProfile){
             return (
                 <div className="main rounded">
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>

@@ -35,6 +35,13 @@ function loginUserFetchSucces(data){
     }
 }
 
+function changePasswordUserFetchSucces(data){
+    return{
+        type:'CHANGE_PASSWORD_USER_FETCH_SUCCES',
+        data
+    }
+}
+
 function createNewEmployerFetchSucces(){
     return{
         type:'CREATE_NEW_EMPLOYER_FETCH_SUCCES'
@@ -259,6 +266,27 @@ export const logout = () => (dispatch) => {
     .then(data => {
         console.log(data)
         return dispatch(logoutUserFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const changePassword = (password) => (dispatch) => {
+    return fetch(url + '/auth/password/change/',{
+        method: 'POST',  
+        body: JSON.stringify({
+            "new_password1": password,
+            "new_password2": password
+        }),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        } 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return dispatch(changePasswordUserFetchSucces(data))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }

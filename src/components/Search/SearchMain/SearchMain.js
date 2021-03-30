@@ -27,6 +27,11 @@ class SearchMain extends Component {
         .map(k => {
             if (options[k] !== null && k !== 'searchType'){
                 if (Array.isArray(options[k]) && options[k].length === 0) return null
+                if (Array.isArray(options[k])){
+                    return (options[k].map((item)=>{
+                        return encodeURIComponent(k) + '=' + encodeURIComponent(item) + '&'
+                    })).join('')
+                }
                 return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
             }
             return null   

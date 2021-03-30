@@ -16,7 +16,7 @@ class ResumeRedactPopup extends Component {
     }
 
     changeGradeValue = (e) =>{
-        this.props.onGradeValueChange(e.target.value, this.props.vacancyIndex)
+        this.props.onGradeValueChange(e.target.value, this.props.resumeIndex)
     }
 
     changeSalary = (e) =>{
