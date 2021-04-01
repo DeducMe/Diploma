@@ -97,6 +97,22 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'SEARCH_NULLIFY_OPTIONS'){
+        state.searchOptions = {
+                searchType:'vacancy',
+                phrase:'',
+                'max-salary':400000,
+                'min-salary':0,
+                grades: [],
+                'work-type':[],
+                tag:null,
+                industry:null
+        }
+        return {
+            ...state
+        };
+    }
+    
     if (action.type === 'SEARCH_OPTIONS_ADD_GRADE'){
         console.log(state.searchOptions.grades.includes(action.payload))
         if (!state.searchOptions.grades.includes(action.payload)) state.searchOptions.grades.push(action.payload)
@@ -130,6 +146,16 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'SEARCH_OPTIONS_CHANGE_INDUSTRY'){
+        state.searchOptions.industry = action.payload
+        state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
+
+
+        return {
+            ...state
+        };
+    }
+    
     if (action.type === 'GET_SEARCH_QUERY_FETCH_SUCCES'){
         state.next = action.data.next
         return {

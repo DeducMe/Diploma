@@ -6,7 +6,7 @@ import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asy
 
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
-import {getGradeValues, getWorkTypeValues} from '../../../scripts/commonScripts'
+import {getGradeValues, getWorkTypeValues, parseOptions, searchTypeToUserType} from '../../../scripts/commonScripts'
 import { InView } from "react-intersection-observer";
 import { Link } from 'react-router-dom'
 
@@ -18,25 +18,6 @@ class SearchMain extends Component {
         ) : (
             arr.sort((a, b) => b[value] - a[value])
         )
-        
-    }
-
-    parseOptions(options){
-        return Object
-        .keys(options)
-        .map(k => {
-            if (options[k] !== null && k !== 'searchType'){
-                if (Array.isArray(options[k]) && options[k].length === 0) return null
-                if (Array.isArray(options[k])){
-                    return (options[k].map((item)=>{
-                        return encodeURIComponent(k) + '=' + encodeURIComponent(item) + '&'
-                    })).join('')
-                }
-                return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
-            }
-            return null   
-        })
-        .join('')
     }
 
     sortSearch = (e) => {
@@ -76,7 +57,7 @@ class SearchMain extends Component {
         if (nullify) this.props.onNullifyValues()
         if (this.props.searchState.searchLoading === false){
             
-            this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
+            this.props.onGetSearchResponse(parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
             
         }
     }
@@ -154,11 +135,24 @@ class SearchMain extends Component {
                                         {/* <ul className="resume__tags-list">
                                             {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
                                         </ul> */}
-                                        <Link className="resume__main-info__avatar-name-block" to={"/company/" + item.owner_id}>
+                                        <Link className="resume__main-info__avatar-name-block" to={"/"+searchTypeToUserType(this.props.searchOptions.searchType)+"/" + item.owner_id}>
                                             <img className="avatar-name-block__small-avatar" src={item.photo_url} alt="аватар"/>
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
+                                    {this.props.searchOptions.searchType === 'vacancy' && this.props.userState.userType === 'employee' ?
+                                        <div className="vacancy-control-block">
+                                            <p className="underline-link">Откликнуться</p>
+                                            <p className="underline-link">Добавить в избранное</p>
+                                        </div>
+                                    : this.props.searchOptions.searchType === 'cv' && this.props.userState.userType === 'employer' ?
+                                        <div className="vacancy-control-block">
+                                            <p className="underline-link">Пригласить</p>
+                                            <p className="underline-link">Добавить в избранное</p>
+
+                                        </div>
+                                    : ''
+                                    }
                                 </section>
                             </li>
                         )
@@ -179,6 +173,8 @@ const mapStateToProps = (state) =>{
         searchState:state.search,
         searchOptions:state.search.searchOptions,
         searchValues:state.search.searchValues,
+        userState:state.user.user
+
 
     }
   }

@@ -6,12 +6,18 @@ import {getSearchQueries} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 import fileUploader from '../../../actions/fileUploader';
 import {getSearchNext, getSearchLoadingState} from '../../../actions/asyncDispatch';
-
-
+import {parseOptions} from '../../../scripts/commonScripts'
+import industriesData from '../../../jsonFiles/industries.json'
+import { NavItem } from 'react-materialize';
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 class SearchSide extends Component {
+    changeIndustry = (e) => {
+        if (e.target.value!==0){
+            this.props.onChangeIndustry(e.target.value)
+        }
+    }
 
     ChangeSlider = (values) =>{
         if (this.props.searchOptions['min-salary'] !== values[0]) this.props.onSetSearchOptions({'min-salary': values[0]})
@@ -28,19 +34,6 @@ class SearchSide extends Component {
         else this.props.onDeleteWorkType(e.target.value)
     }
 
-    parseOptions(options){
-        return Object
-        .keys(options)
-        .map(k => {
-            if (options[k] !== null && k !== 'searchType'){
-                if (Array.isArray(options[k]) && options[k].length === 0) return null
-                return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
-            }
-            return null   
-        })
-        .join('')
-    }
-
     getAvatarFromFirebase = (id, pk) =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
         const storageRef = fileUploader.storage().ref()
         const fileRef = storageRef.child('user-avatar' + id)
@@ -52,7 +45,7 @@ class SearchSide extends Component {
     getSearchValues = (nullify) => {
         if (nullify) this.props.onNullifyValues()
             
-        this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.getAvatarFromFirebase)
+        this.props.onGetSearchResponse(parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.getAvatarFromFirebase)
     }
     
     componentDidUpdate(){
@@ -82,32 +75,32 @@ class SearchSide extends Component {
                         <h3>Уровень компетенции</h3>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-internship" value="internship" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-internship" value="internship" id="search-options__grade-internship" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-internship">Стажер</label>
                         </div>
                         
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-junior" value="junior" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-junior" value="junior" id="search-options__grade-junior" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-junior">Начинающий специалист</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-middle" value="middle" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-middle" value="middle" id="search-options__grade-middle" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-middle">Специалист</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-senior" value="senior" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-senior" value="senior" id="search-options__grade-senior" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-senior">Главный специалист</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-director" value="director" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-director" value="director" id="search-options__grade-director" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-director">Управляющий отдела</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__grade-senior-director" value="senior-director" onChange={this.gradeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__grade-senior-director" value="senior-director" id="search-options__grade-senior-director" onChange={this.gradeChange.bind(this)}/>
                             <label htmlFor="search-options__grade-senior-director">Генеральный директор</label>
                         </div>
                     </div>
@@ -115,57 +108,64 @@ class SearchSide extends Component {
                         <h3>Типы работ</h3>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-part-day" value="part-day" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-part-day" value="part-day" id="search-options__work-type-part-day" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-part-day">неполный день</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-full-day" value="full-day" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-full-day" value="full-day" id="search-options__work-type-full-day" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-full-day">полный день</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-part-time" value="part-time" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-part-time" value="part-time" id="search-options__work-type-part-time" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-part-time">неполная занятость</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-full-time" value="full-time" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-full-time" value="full-time" id="search-options__work-type-full-time" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-full-time">полная занятность</label>
                         </div>
                         
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-volunteer" value="volunteer" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-volunteer" value="volunteer" id="search-options__work-type-volunteer" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-volunteer">волонтерство</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-one-time-job" value="one-time-job" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-one-time-job" value="one-time-job" id="search-options__work-type-one-time-job" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-one-time-job">разовое задание</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-flexible-schedule" value="flexible-schedule" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-flexible-schedule" value="flexible-schedule" id="search-options__work-type-flexible-schedule" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-flexible-schedule">гибкий график</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-shift-schedule" value="shift-schedule" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-shift-schedule" value="shift-schedule" id="search-options__work-type-shift-schedule" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-shift-schedule">сменный график</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-shift-method" value="shift-method" onChange={this.workTypeChange.bind(this)}/>
+                            <input type="checkbox" name="search-options__work-type-shift-method" value="shift-method" id="search-options__work-type-shift-method" onChange={this.workTypeChange.bind(this)}/>
                             <label htmlFor="search-options__work-type-shift-method">вахтовый метод</label>
                         </div>
 
                         <div className="checkbox-block">
-                            <input type="checkbox" name="search-options__work-type-remote" value="remote" onChange={this.workTypeChange.bind(this)}/>
-                            <label htmlFor="search-options__work-type-remote">удаленная работа</label>
+                            <input type="checkbox" name="search-options__work-type-remote" id="search-options__work-type-remote" value="remote" onClick={this.workTypeChange.bind(this)}/>
+                            <label htmlFor="search-options__work-type-remote" >удаленная работа</label>
                         </div>
                     </div>
                     <h3>Отрасли</h3>
-
+                        <div className="selectbox-block">
+                            <select id="searchSideIndustry" name="searchSideIndustry" onChange={this.changeIndustry.bind(this)}>
+                                {industriesData.map((item)=>{
+                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                })}
+                            </select>
+                            
+                        </div>
                 </form>
             </div>
         )
@@ -178,6 +178,7 @@ const mapStateToProps = (state, ownProps) =>{
     return {
         history:ownProps.history,
         searchOptions:state.search.searchOptions,
+
         // searchLoading:state.search.searchLoading,
     }
 }
@@ -222,7 +223,10 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onDeleteWorkType: (value) => {
             dispatch({type : 'SEARCH_OPTIONS_DELETE_WORK_TYPE', payload:value})
-        }
+        },
+        onChangeIndustry: (value) => {
+            dispatch({type : 'SEARCH_OPTIONS_CHANGE_INDUSTRY', payload:value})
+        },
     }
   }
   

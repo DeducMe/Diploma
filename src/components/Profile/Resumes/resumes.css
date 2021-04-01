@@ -35,6 +35,7 @@
 
 .resume__header-top,
 .resume__header-bottom{
+    align-items: center;
     display: flex;
     justify-content: space-between;
 }

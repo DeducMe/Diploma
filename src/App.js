@@ -9,12 +9,42 @@ import { connect } from 'react-redux'
 
 
 class App extends Component {
+  runOnScroll = () => {
+    if (this.props.location === '/landing'){
+      if (window.pageYOffset > 620){
+          this.props.onNavBgChangeToNormal()
+      }
+      else{
+          this.props.onNavBgChangeToTransparent()
+
+      }}
+  }
+
+  checkLocation(){
+    if (this.props.location === '/landing'){
+      window.addEventListener("scroll", this.runOnScroll, false)
+
+      this.props.onNavBgChangeToTransparent()
+      this.props.onNavPositionChangeToFixed()
+    }
+    else {
+      window.removeEventListener("scroll", this.runOnScroll, false)
+
+      this.props.onNavPositionChangeToNone()
+      this.props.onNavBgChangeToNormal()
+      
+    }
+  }
+
+  componentDidUpdate(){
+    this.checkLocation()
+  }
   
   render() {
    
     return (
       <div>
-        <Nav></Nav>
+        <Nav ownProps={this.props.ownProps}></Nav>
       </div>
       
     )
@@ -23,13 +53,27 @@ class App extends Component {
 
 const mapStateToProps = (state, ownProps) =>{
   return {
-    ownProps
+    ownProps,
+    history:ownProps.history,
+    location:ownProps.location.pathname,
+    
   }
 }
 
 const mapDispatchToProps = (dispatch) =>{
   return{
-    
+    onNavPositionChangeToNone: () => {
+      dispatch({type : 'CHANGE_NAV_POSITION_TO_NONE', payload:null})
+    },
+    onNavPositionChangeToFixed: () => {
+      dispatch({type : 'CHANGE_NAV_POSITION_TO_FIXED', payload:null})
+    },
+    onNavBgChangeToTransparent: () => {
+      dispatch({type : 'CHANGE_NAV_BG_TO_TRANSPARENT', payload:null})
+    },
+    onNavBgChangeToNormal: () => {
+      dispatch({type : 'CHANGE_NAV_BG_TO_NORMAL', payload:null})
+    },
   }
 }
 

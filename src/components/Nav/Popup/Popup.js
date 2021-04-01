@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
 import Loader from '../../Loader/Loader'
+import fileUploader from '../../../actions/fileUploader';
+
 
 class Popup extends Component {
   
@@ -44,6 +46,8 @@ class Popup extends Component {
 
   redirectUser = (userId) =>{
     this.props.onLoginUser();
+    this.getAvatarFromFirebase()
+
     if (this.props.userState.user_type === 'employee'){
       this.props.history.push("/profile/" + userId);
     }
@@ -55,6 +59,7 @@ class Popup extends Component {
   }
 
   loginUser(login, password){
+
     this.props.onLoginUserCheck({
       "email": login,
       "password": password
@@ -124,6 +129,16 @@ class Popup extends Component {
       this.props.onPopupClose();
     }
   }
+
+  
+  getAvatarFromFirebase = () =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+    const storageRef = fileUploader.storage().ref()
+    const fileRef = storageRef.child('user-avatar' + this.props.userState.id)
+    fileRef.getDownloadURL()
+    .then((response) => this.props.onSetUserMiniAvatar(response))
+    .catch(err => this.props.onSetUserMiniAvatar('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'))
+  }
+  
 
   componentDidMount(){
     window.addEventListener('keydown', this.handleEsc)
@@ -255,6 +270,9 @@ const mapStateToProps = (state, ownProps) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return{
+    onSetUserMiniAvatar: (photo) => {
+      dispatch({type : 'SET_USER_MINI_AVATAR', payload:photo})
+    },
     onSubjectChangeToEmployer: () => {
       dispatch({type : 'CHANGE_SUBJECT_TO_EMPLOYER', payload:null})
     },

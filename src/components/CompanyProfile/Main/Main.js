@@ -12,6 +12,20 @@ import editIcon from '../../../img/edit.svg'
 import LeafletMap from '../../leafletMap/LeafletMap'
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            mapPopupState:''
+        };
+    }
+
+    toggleMapPopup = () =>{
+        if (this.state.mapPopupState === ''){
+            this.setState({mapPopupState:'active'})
+        }
+        else this.setState({mapPopupState:''})
+    }
+
     goPhrase(){
         if (this.props.userState.user.user_type === "employee"){
             return <p className="info__go-phrase highlighted">Пора начать свою карьеру!</p>
@@ -52,10 +66,20 @@ class Main extends Component {
                         
                         <p className="info__description">{this.props.userData.about}</p>
 
+                        {this.props.userData.address?
                         <div className="info__common-info">
-                            <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
-                            {/* <LeafletMap></LeafletMap> */}
-                        </div>
+                            <div className="address__popup-block">
+                                <span className="living__place underline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</span>
+
+                                {this.state.mapPopupState === 'active' ? 
+                                    <div className ={"map-popup rounded"}>
+                                        <button className="map-popup__closer-btn" onClick={this.toggleMapPopup}>x</button>
+                                        <LeafletMap address={this.props.userData.address}></LeafletMap>
+                                    </div>
+                                 : ''}
+                            </div>
+                        </div>:''}
+                        
                         
                         {this.props.userData.phone ? (
                             <div className="info__contacts">

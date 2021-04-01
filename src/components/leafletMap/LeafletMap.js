@@ -90,7 +90,7 @@ function MapComp ({address, onChangeMapPosition}) {
         map.addControl(searchControl);
     }
 
-    const center = (!address && address !== undefined) ? [address.lat, address.lng] : [0, 0];
+    const center = (address !== undefined && address !== null) ? [address.lat, address.lng] : [0, 0];
     return (
         <MapContainer 
             style={{ height: "30vh" }}
@@ -98,7 +98,7 @@ function MapComp ({address, onChangeMapPosition}) {
             zoom="10"
             whenCreated={map=>{
                 initMap(map)
-                if (!address && address !== undefined) findStartPosition(address, map)
+                if (address !== undefined && address !== null) findStartPosition(address, map)
             }}
         >
             <TileLayer

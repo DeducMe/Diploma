@@ -5,6 +5,31 @@
     background-size: cover;
 }
 
+.landing__main{
+    text-align: center;
+    padding-top: 20vh;
+    margin-bottom: 80vh;
+}
+
+.landing__recomendations{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+    width: 80%;
+}
+
+.resumes-landing-list-el{
+    width: 48%;
+    margin-bottom: 30px;
+}
+
+.main-header{
+    margin: 0 auto;
+    width: 70%;
+
+}
+
 /* .nav{
     position: fixed;
     top: 0;

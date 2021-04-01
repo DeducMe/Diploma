@@ -10,6 +10,12 @@ export const searchLoaderDeactivate = () => (dispatch) => {
     })
 }
 
+export const searchNullifyValues = () => (dispatch) => {
+    return dispatch({
+        type:'SEARCH_NULLIFY_VALUES'
+    })
+}
+
 export const getSearchNext =  () => (dispatch, getState) => {
     const { search } = getState();
     return search.next;

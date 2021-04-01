@@ -8,6 +8,23 @@ const mistakes = {
 
 }
 
+export const parseOptions = (options) => {
+    return Object
+    .keys(options)
+    .map(k => {
+        if (options[k] !== null && k !== 'searchType'){
+            if (Array.isArray(options[k]) && options[k].length === 0) return null
+            if (Array.isArray(options[k])){
+                return (options[k].map((item)=>{
+                    return encodeURIComponent(k) + '=' + encodeURIComponent(item) + '&'
+                })).join('')
+            }
+            return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
+        }
+        return null   
+    })
+    .join('')
+}
 
 export const checkStringInput = (str, max, min, re = /./) => {
     if (str.length > max){
@@ -124,6 +141,19 @@ export const getLanguageValues = (language) => {
         case 'C2':  
             return 'C2 - Владение в совершенстве (Mastery)'
         
+        default:
+            break
+    }
+}
+
+export const searchTypeToUserType = (searchType) => {
+    switch(searchType) {
+        case 'vacancy':
+            return 'company'
+        case 'employers':
+            return 'company'
+        case 'cv':
+            return 'profile'
         default:
             break
     }

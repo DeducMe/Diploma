@@ -33,7 +33,7 @@ const history = syncHistoryWithStore(hashHistory, store);
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>  
-      <Route path="/" component={Nav}/>
+      <Route path="/" component={App}/>
 
       <Switch>
           <Route path="/landing" component={Landing}/>

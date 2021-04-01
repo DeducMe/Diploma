@@ -6,11 +6,26 @@ import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import './main.css'
 import photoRedactIcon from '../../../img/photovector.svg'
 import personalBackground from'../../../img/personal-background.png'
+import LeafletMap from '../../leafletMap/LeafletMap'
 
 import editIcon from '../../../img/edit.svg'
 
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            mapPopupState:''
+        };
+    }
+
+    toggleMapPopup = () =>{
+        if (this.state.mapPopupState === ''){
+            this.setState({mapPopupState:'active'})
+        }
+        else this.setState({mapPopupState:''})
+    }
+    
     goPhrase(){
         if (this.props.userState.user.user_type === "employee"){
             return <p className="info__go-phrase highlighted">Пора начать свою карьеру!</p>
@@ -57,11 +72,20 @@ class Main extends Component {
                         <div className="info__common-info">
                             <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
                             <p className={"info__common-info__gender " + this.props.userData.gender}></p>
+                            {this.props.userData.address ?
+                                <div className="info__common-info__living">
 
-                            <div className="info__common-info__living">
-                                <p className="living__place">{this.props.userData.address?this.props.userData.address.name:''}</p>
-                                <p className="living__cz">{this.props.userData.citizenship}</p>
-                            </div>
+                                    <p className="living__place undeline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</p>
+                                    {this.state.mapPopupState === 'active' ? 
+                                        <div className ={"map-popup rounded"}>
+                                            <button className="map-popup__closer-btn" onClick={this.toggleMapPopup}>x</button>
+                                            <LeafletMap address={this.props.userData.address}></LeafletMap>
+                                        </div>
+                                    : ''}
+                                </div>
+                            : ''}
+                            <p className="living__cz">{this.props.userData.citizenship}</p>
+
                         </div>
                         
                         {this.props.userData.phone.length !== 0  ? (

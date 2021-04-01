@@ -3,23 +3,12 @@ import { connect } from 'react-redux'
 import "./searchPanel.css"
 import {getSearchQueries} from '../../../actions/serverConnections'
 import fileUploader from '../../../actions/fileUploader';
-import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
+import {searchLoaderDeactivate, searchLoaderActivate, searchNullifyValues} from '../../../actions/asyncDispatch'
+import {parseOptions} from '../../../scripts/commonScripts'
+import {Link} from 'react-router-dom'
 
 
 class SearchPanel extends Component {
-    parseOptions(options){
-        return Object
-        .keys(options)
-        .map(k => {
-            if (options[k] !== null && k !== 'searchType'){
-                if (Array.isArray(options[k]) && options[k].length === 0) return null
-                return encodeURIComponent(k) + '=' + encodeURIComponent(options[k]) + '&'
-            }
-            return null   
-        })
-        .join('')
-    }
-
     getAvatarFromFirebase = (id, pk) =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
         const storageRef = fileUploader.storage().ref()
         const fileRef = storageRef.child('user-avatar' + id)
@@ -29,15 +18,10 @@ class SearchPanel extends Component {
     }
 
 
-    redirectToSearch = (nullify, e) => {
+    redirectToSearch = (e) => {
         e.preventDefault()
         this.props.onSetSearchOptions({searchType:e.target.searchPanelSearchType.value, phrase: e.target.searchPanelQueryInput.value})
-        if (nullify) this.props.onNullifyValues()
-        if (this.props.searchState.searchLoading === false){
-            
-            this.props.onGetSearchResponse(this.parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
-            
-        }
+
         this.props.history.push("/search");
     }
 
@@ -52,7 +36,7 @@ class SearchPanel extends Component {
 
     render() {
         return (
-            <form className="search-form" onSubmit={this.redirectToSearch.bind(this, true)}>
+            <form className="search-form" onSubmit={this.redirectToSearch.bind(this)}>
                 <input type="text" className="search-form__input" id="searchPanelQueryInput" name="searchPanelQueryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} />
 
                 <select className="search-form__dropdown-menu f-medium semi" id="searchPanelSearchType" name="searchPanelSearchType" onChange={this.changeSearchType.bind(this)}>
@@ -60,11 +44,11 @@ class SearchPanel extends Component {
                     <option value="cv">Резюме</option>
                     <option value="employers">Компании</option>
                 </select>
-
+                
                 <input className="search-form__submit highlighted" type="submit" value="Поиск"/>
-
-                <button className="more-filters-btn" onClick={this.redirectToSearch.bind(this, true)}></button>
-
+                <Link to="/search">
+                    <button className="more-filters-btn"></button>
+                </Link>
             </form>
 
         )
@@ -84,9 +68,6 @@ const mapStateToProps = (state, ownProps) =>{
          
         onSetSearchOptions: (options) => {
             dispatch({type : 'SEARCH_SET_OPTIONS', payload:options})
-        },
-        onNullifyValues: () => {
-            dispatch({type : 'SEARCH_NULLIFY_VALUES', payload:null})
         },
         onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())
