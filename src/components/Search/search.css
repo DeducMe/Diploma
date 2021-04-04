@@ -17,15 +17,15 @@
 
 .response-form-popup{
     position: absolute;
-    right: -355px;
+    right: -385px;
     bottom: 30px;
 
     display: flex;
     flex-direction: column;
 
-    width: 350px;
+    width: 380px;
     height: 320px;
-    padding: 10px 20px;
+    padding: 10px 30px;
 
     border: 3px solid #000;
     background-color: #eff5ff;
@@ -36,16 +36,18 @@
     max-height: 200px;
     margin-bottom: 20px;
     padding: 5px;
-
+    background-color: #fff;
     resize: vertical;
 }
 .response-form-popup input[type='submit']{
     margin-top: 20px;
+    background-color: #fff;
+
 }
 
 .response-form-popup .close-popup-btn{
     top: 0;
-    right: 10px;
+    right: 5px;
 }
 
 .search-side{

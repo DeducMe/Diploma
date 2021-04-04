@@ -7,6 +7,7 @@ import {userTypeToUrlUserType} from '../../scripts/commonScripts'
 import fileUploader from '../../actions/fileUploader';
 import { Link } from 'react-router-dom'
 import './responses.css'
+import dropdownArrow from '../../img/right-arrow.svg'
 
 // здесь пришлось делать два запроса на одной странице, потому что бекендер ленивое чмо (ОБА ЕЩЕ И ЧЕРЕЗ ПАГИНАЦИЮ)
 // с пагинацией пока не очень понятно что делать. 
@@ -53,17 +54,17 @@ class Responses extends Component {
                     <div className="responses__header">
                         <h2 className="f-extra-large bold">Ваши отклики и приглашения:</h2>
                     </div>
-                    <ul className="responses__list">
+                    <ul className="responses__list rounded">
                         {this.props.responseState.responseValues.map((item, index)=>{
                         return (
-                        <li key={index} className="responses__list-el">
+                        <li key={index} className="responses__list-el rounded">
                             <div className="responses__list-el__header">
                                 <Link className="responses__list-el__header__link">
-                                    <h3>Frontend junior developer</h3>
+                                    <h3 className="underline-link f-medium semi">Frontend junior developer</h3>
                                 </Link>
                                 <button className="responses__list-el__header__btn"></button>
 
-                                <p className="responses__list-el__header__response-date">{item.date_response}</p>
+                                <p className="responses__list-el__header__response-date semi">{item.date_response}</p>
                                 {item.state === 'sent' ? 
                                 <p>Вакансия не просмотрена</p>
                                 : item.state === 'viewed' ?
@@ -76,41 +77,26 @@ class Responses extends Component {
                             </div>
 
                             <div className="responses__list-el__body opened">
-                                {item.state === 'sent' ? 
                                 <div className="responses__reciever">
-                                    <p className="responses__message">Ответа пока нет :(</p>
-
                                     <Link to={"/"+userTypeToUrlUserType(this.invertUserType(this.props.userState.user_type))+"/" + item.reciever}>
                                         <img className="responses__avatar" src="" alt="" />
                                     </Link>
+                                    {item.state === 'sent' ? 
+                                        <p className="responses__message">Ответа пока нет :(</p>
+                                    : item.state === 'viewed' ?
+                                        <p className="responses__message">Ответа пока нет, но резюме уже посмотрели!</p>
+                                    : item.state === 'rejected' ? 
+                                        <p className="responses__message responded">{this.props.responseState.responseAnswers.find(answer => answer.reciever === item.sender)}</p>
+                                    : item.state === 'accepted' ? 
+                                        <p className="responses__message responded">{this.props.responseState.responseAnswers.find(answer => answer.reciever === item.sender)}</p>
+                                    : ''}
+                                    
                                 </div>
-                                : item.state === 'viewed' ?
-                                <div className="responses__reciever">
-                                    <p className="responses__message">Ответа пока нет, но резюме уже посмотрели!</p>
-
-                                    <Link to={"/"+userTypeToUrlUserType(this.invertUserType(this.props.userState.user_type))+"/" + item.reciever}>
-                                        <img className="responses__avatar" src="" alt="" />
-                                    </Link>
+                                <div className="responses-control-block">
+                                    <img className="responses-control-block__arrow" src={dropdownArrow} alt="dropdown-arrow" />
+                                    <button>Развернуть</button>
+                                    
                                 </div>
-                                : item.state === 'rejected' ? 
-                                <div className="responses__reciever">
-                                    <p className="responses__message responded">{this.props.responseState.responseAnswers.find(answer => answer.reciever === item.sender)}</p>
-
-                                    <Link to={"/"+userTypeToUrlUserType(this.invertUserType(this.props.userState.user_type))+"/" + item.reciever}>
-                                        <img className="responses__avatar" src="" alt="" />
-                                    </Link>
-                                </div>
-                                : item.state === 'accepted' ? 
-                                <div className="responses__reciever">
-                                    <p className="responses__message responded">{this.props.responseState.responseAnswers.find(answer => answer.reciever === item.sender)}</p>
-
-                                    <Link to={"/"+userTypeToUrlUserType(this.invertUserType(this.props.userState.user_type))+"/" + item.reciever}>
-                                        <img className="responses__avatar" src="" alt="" />
-                                    </Link>
-                                </div>
-                                : ''}
-                                
-                                <button>Свернуть</button>
                                 {this.props.responseState.responseAnswers.find(answer => answer.reciever === item.sender) === -1 && item.state !== 'rejected' && item.state !== 'accepted'?
                                 <div className="responses__sender">
                                     <button>принять</button>
@@ -119,12 +105,11 @@ class Responses extends Component {
                                 </div>
                                 :
                                 <div className="responses__sender">
-                                    <p className="responses__message responded">
+                                    <p className="responses__message rounded responded">
                                         {item.message}
                                     </p>
-
                                     <Link to={"/" + userTypeToUrlUserType(this.props.userState.user_type) + "/" + item.reciever}>
-                                        <img className="responses__avatar" src="" alt="" />
+                                        <img className="responses__avatar" src={this.props.userAvatar} alt="" />
                                     </Link>
                                 </div>}
                                 
@@ -143,6 +128,7 @@ const mapStateToProps = (state) =>{
     return {
         userState:state.user.user,
         responseState:state.response,
+        userAvatar:state.nav.avatar
     }
 }
   

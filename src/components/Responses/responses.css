@@ -3,9 +3,116 @@
 
 }
 
-.responses__main__header__link,
-.responses__main__header__btn,
-.responses__main__header__response-date{
+.responses{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.responses__list{
+    background-color: #fff;
+    padding: 30px 20px;
+}
+
+.responses__list-el{
+    padding: 10px 20px;
+    border: 2px solid #000;
+    margin-bottom: 20px;
+}
+
+.responses__list-el__header{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.responses__list-el__body{
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.responses__reciever,
+.responses__sender{
+    display: flex;
+    width: 42%;
+    height: 100%;
+}
+
+.responses__message{
+    word-break: break-all;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.responses__message:nth-child(1){
     margin-right: 20px;
 }
+.responses__message:nth-child(2){
+    margin-left: 20px;
+}
+
+.responses__message:not(.responded){
+    display: flex;
+    align-items: center;
+}
+
+.responses__message.responded{
+    background-color: #EFF5FF;
+    position: relative;
+}
+
+.responses__sender .responses__message.responded:after{
+    position: absolute;
+    content: '';
+    right: -10px;
+    bottom: 0;
+    margin-left: -20px;
+    border: 20px solid transparent;
+    border-left: 10px solid #EFF5FF;
+    border-bottom: 20px solid #EFF5FF;
+}
+
+.responses__reciever .responses__message.responded:after{
+    position: absolute;
+    content: '';
+    left: -10px;
+    bottom: 0;
+    margin-right: -20px;
+    border: 20px solid transparent;
+    border-right: 10px solid #EFF5FF;
+    border-bottom: 20px solid #EFF5FF;
+}
+
+.responses-control-block{
+    width: 10%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.responses-control-block__arrow{
+    width: 40px;
+    height: 40px;
+    transform: rotate(90deg);
+}
+
+.responses__avatar{
+    margin-top: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.responses__list-el__body.opened{
+    height: 100%;
+}
+
+.responses__list-el__header__link,
+.responses__list-el__header__btn,
+.responses__list-el__header__response-date{
+    margin-right: 20px;
+}
+
 

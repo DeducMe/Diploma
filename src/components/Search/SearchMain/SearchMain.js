@@ -164,7 +164,6 @@ class SearchMain extends Component {
                                                 {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
                                              <p className="underline-link">Добавить в избранное</p>
-
                                         </div>
                                     : ''
                                     }

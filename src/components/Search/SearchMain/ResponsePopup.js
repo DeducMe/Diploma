@@ -57,7 +57,7 @@ class ResponsePopup extends Component {
             <form className="response-form-popup rounded" onSubmit={this.makeResponse.bind(this)}>
                 <button className="close-popup-btn" onClick={this.popupClose} tabIndex="-1">x</button>
 
-                <textarea className="response-form-popup__textarea" type="text" name="responseMessageInput" placeholder="Сопроводительное письмо"></textarea>
+                <textarea className="response-form-popup__textarea rounded" type="text" name="responseMessageInput" placeholder="Сопроводительное письмо"></textarea>
                 <select id="responseWorkValueInput" name="responseWorkValueInput" onChange={this.changeWorkValue.bind(this)}>
                     <option value={-1}>Выберите сопроводительную вакансию</option>
                     

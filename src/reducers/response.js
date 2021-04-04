@@ -10,7 +10,7 @@ const initialState = {
   
 export default function userState(state = initialState, action){
     if (action.type === 'RESPONSE_UPDATE_VALUES'){
-        action.payload.map((item)=>{state.responseValues.push(item)});
+        action.payload.map((item) => state.responseValues.push(item));
         state.responseValues = Object.assign([], state.responseValues, [...state.responseValues]);
 
         return {
@@ -18,7 +18,7 @@ export default function userState(state = initialState, action){
         };
     }
     if (action.type === 'RESPONSE_UPDATE_ANSWERS'){
-        action.payload.map((item)=>{state.responseAnswers.push(item)});
+        action.payload.map((item) => state.responseAnswers.push(item));
         state.responseAnswers = Object.assign([], state.responseAnswers, [...state.responseAnswers]);
 
         return {
