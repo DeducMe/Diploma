@@ -158,3 +158,28 @@ export const searchTypeToUserType = (searchType) => {
             break
     }
 }
+
+export const userTypeToSearchType = (userType) => {
+    switch(userType) {
+        case 'employer':
+            return 'vacancy'
+        case 'worker':
+            return 'cv'
+        default:
+            break
+    }
+}
+
+export const userTypeToUrlUserType = (userType) => {
+    switch(userType) {
+        case 'worker':
+            return 'profile'
+        case 'employee':
+            return 'profile'
+        case 'employer':
+            return 'company'
+        default:
+            break
+    }
+}
+

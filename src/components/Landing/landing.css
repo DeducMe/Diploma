@@ -1,14 +1,14 @@
 .landing-wrapper{
     background-color: #253957;
-    height: 100vh;
     background-image: url('../../img/landingBg.png');
     background-size: cover;
+    background-repeat: repeat
 }
 
 .landing__main{
     text-align: center;
     padding-top: 20vh;
-    margin-bottom: 80vh;
+    margin-bottom: 30vh;
 }
 
 .landing__recomendations{
@@ -22,6 +22,16 @@
 .resumes-landing-list-el{
     width: 48%;
     margin-bottom: 30px;
+}
+
+.resumes-landing-list-el .resume-main{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.resumes-landing-list-el .resume-main .resume__main-info{
+    flex:1
 }
 
 .main-header{

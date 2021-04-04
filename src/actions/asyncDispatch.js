@@ -10,6 +10,30 @@ export const searchLoaderDeactivate = () => (dispatch) => {
     })
 }
 
+export const responseLoaderActivate = () => (dispatch) => {
+    return dispatch({
+        type:'RESPONSE_START_LOADING'
+    })
+}
+
+export const responseLoaderDeactivate = () => (dispatch) => {
+    return dispatch({
+        type:'RESPONSE_STOP_LOADING'
+    })
+}
+
+export const answersLoaderActivate = () => (dispatch) => {
+    return dispatch({
+        type:'ANSWERS_START_LOADING'
+    })
+}
+
+export const answersLoaderDeactivate = () => (dispatch) => {
+    return dispatch({
+        type:'ANSWERS_STOP_LOADING'
+    })
+}
+
 export const searchNullifyValues = () => (dispatch) => {
     return dispatch({
         type:'SEARCH_NULLIFY_VALUES'

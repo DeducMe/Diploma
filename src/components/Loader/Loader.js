@@ -17,7 +17,6 @@ export default function Loader(active) {
                         <span></span>
                         <span></span>
                         <span></span>
-
                     </div>
                 </div>
 

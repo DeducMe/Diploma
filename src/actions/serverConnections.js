@@ -130,6 +130,40 @@ function getSearchNone(data){
     }
 }
 
+function getResponseFetchSucces(data){
+    return{
+        type:'GET_RESPONSE_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getResponseNone(data){
+    return{
+        type:'GET_RESPONSE_QUERY_NONE',
+        data
+    }
+}
+
+function getAnswersFetchSucces(data){
+    return{
+        type:'GET_ANSWERS_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getAnswersNone(data){
+    return{
+        type:'GET_ANSWERS_QUERY_NONE',
+        data
+    }
+}
+
+function onCreateResponse(){
+    return{
+        type:'CREATE_REPONSE'
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -465,5 +499,72 @@ export const getSearchQueries = (options, searchType, next) => (dispatch) => {
         })
     }
     else return new Promise(function(resolve){resolve(dispatch(getSearchNone(null)))})
-    
+}
+
+export const getUserResponses = (userType, next, userId) => (dispatch) => {
+    let fetchUrl = url + '/'+ (userType === 'employer' ? 'vacancy' : 'cv') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getResponseFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getResponseNone(null)))})
+}
+
+export const getUserAnswers = (userType, next, userId) => (dispatch) => {
+    let fetchUrl = url + '/' + (userType === 'employer' ? 'cv' : 'vacancy') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getAnswersFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getAnswersNone(null)))})
+}
+
+export const createResponse = (type, data) => (dispatch) => {
+    return fetch(url + '/' + type + '/response/',{
+        method: 'POST',
+        body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(onCreateResponse())
+        else return dispatch(notFoundError(data))
+    })
 }

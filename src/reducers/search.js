@@ -2,6 +2,7 @@ const initialState = {
     searchLoading:false,
     next:'initial',
     searchCount: 0,
+    openedResponseId:-1,
     searchValues:[],
     searchOptions:{
         searchType:'vacancy',
@@ -53,6 +54,20 @@ export default function userState(state = initialState, action){
         let value = state.searchValues.find(x => x.pk === action.payload.id)
         if (value !== undefined) value.photo_url = action.payload.photo
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'CLOSE_RESPONSE_POPUP'){
+        state.openedResponseId = -1;
+
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'OPEN_RESPONSE_POPUP'){
+        state.openedResponseId = action.payload;
 
         return {
             ...state

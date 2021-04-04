@@ -6,6 +6,8 @@ import cvs from './cvs'
 import user from './user'
 import search from './search'
 import vacancy from './vacancy'
+import response from './response'
+
 import buf from './buf'
 
 
@@ -25,5 +27,6 @@ export default combineReducers({
     cvs,
     search,
     vacancy,
-    userData
+    userData,
+    response
 })

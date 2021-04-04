@@ -1,9 +1,10 @@
 import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {getSearchQueries} from '../../../actions/serverConnections'
+import {getSearchQueries, createResponse} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
+import ResponsePopup from './ResponsePopup'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues, parseOptions, searchTypeToUserType} from '../../../scripts/commonScripts'
@@ -12,6 +13,8 @@ import { Link } from 'react-router-dom'
 
 
 class SearchMain extends Component {
+    
+
     sortByValue(arr, value, sortMethod){
         sortMethod === 'asc' ? (
             arr.sort((a, b) => a[value] - b[value])
@@ -60,6 +63,11 @@ class SearchMain extends Component {
             this.props.onGetSearchResponse(parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
             
         }
+    }
+    
+    openResponsePopup = (index) => {
+        this.props.onOpenResponsePopup(index)
+
     }
 
     componentDidMount(){
@@ -122,7 +130,7 @@ class SearchMain extends Component {
                                         
                                     </div>
             
-                                    <div className="resume__main-info rounded flex">
+                                    <div className="resume__main-info bottom-rounded flex">
                                         <div className="resume__main-info__text">
                                             <p className="resume__industry f-pre">{item.industry}</p>
             
@@ -140,15 +148,22 @@ class SearchMain extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    {this.props.searchOptions.searchType === 'vacancy' && this.props.userState.userType === 'employee' ?
+                                    {console.log(this.props.searchOptions.searchType, this.props.userState.user_type)}
+                                    {this.props.searchOptions.searchType === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
-                                            <p className="underline-link">Откликнуться</p>
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
+                                            </div>
                                             <p className="underline-link">Добавить в избранное</p>
                                         </div>
-                                    : this.props.searchOptions.searchType === 'cv' && this.props.userState.userType === 'employer' ?
+                                    : this.props.searchOptions.searchType === 'cv' && this.props.userState.user_type === 'employer' ?
                                         <div className="vacancy-control-block">
-                                            <p className="underline-link">Пригласить</p>
-                                            <p className="underline-link">Добавить в избранное</p>
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
+                                                {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
+                                            </div>
+                                             <p className="underline-link">Добавить в избранное</p>
 
                                         </div>
                                     : ''
@@ -173,9 +188,7 @@ const mapStateToProps = (state) =>{
         searchState:state.search,
         searchOptions:state.search.searchOptions,
         searchValues:state.search.searchValues,
-        userState:state.user.user
-
-
+        userState:state.user.user,
     }
   }
   
@@ -193,7 +206,9 @@ const mapDispatchToProps = (dispatch) =>{
         onChangeSearchQuery: (query) => {
             dispatch({type : 'CHANGE_SEARCH_QUERY', payload:query})
         },
-        
+        onOpenResponsePopup: (index) => {
+            dispatch({type : 'OPEN_RESPONSE_POPUP', payload:index})
+        },
         onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())
             dispatch(getSearchQueries(options, searchType, next))

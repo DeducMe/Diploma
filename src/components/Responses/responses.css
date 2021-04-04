@@ -1,0 +1,11 @@
+.responses__main__header{
+    display:flex;
+
+}
+
+.responses__main__header__link,
+.responses__main__header__btn,
+.responses__main__header__response-date{
+    margin-right: 20px;
+}
+

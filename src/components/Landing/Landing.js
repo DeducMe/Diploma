@@ -60,7 +60,7 @@ class Landing extends Component {
                                 
                             </div>
     
-                            <div className="resume__main-info rounded flex">
+                            <div className="resume__main-info bottom-rounded flex">
                                 <div className="resume__main-info__text">
                                     <p className="resume__industry f-pre">{item.industry}</p>
     

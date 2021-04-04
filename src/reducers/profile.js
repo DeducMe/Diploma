@@ -13,7 +13,7 @@ const initialState = {
       photo_url: '',
       profile_background: ''
     },
-    address:{},
+    address:null,
     userPhones: [],
     language:[],
     education: [],

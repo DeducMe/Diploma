@@ -30,6 +30,7 @@ input[type='submit']{
 
 .underline-link{
     color:#2f56b0;
+    position: relative;
     cursor:pointer;
 }
 
@@ -256,7 +257,6 @@ input[type='submit']{
     right: -315px;
 
     width: 300px;
-    height: 200px;
     padding: 20px;
 
     background-color: #fff;

@@ -15,9 +15,6 @@ import {Link} from 'react-router-dom'
 import {logout} from '../../actions/serverConnections'
 import placeholderAvatar from '../../img/placeholder-avatar.jpg'
 
-
-
-
 class Nav extends Component {
   searchToggle = () => {
     if (this.props.navState.searchActive){

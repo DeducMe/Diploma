@@ -38,7 +38,7 @@ class Profile extends Component {
                     photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
                     profile_background: this.checkIfNotNull(this.props.userData.profile_background, '')
                 },
-                address: this.checkIfNotNull(this.props.userData.address, {}),
+                address: this.props.userData.address,
                 userPhones: this.checkIfNotNull(this.props.userData.phone, []),
                 language: this.checkIfNotNull(this.props.userData.language, []),
                 education: this.checkIfNotNull(this.props.userData.education, []),
@@ -70,7 +70,7 @@ class Profile extends Component {
                     photo_url: '',
                     profile_background: ''
                 },
-                address: {},
+                address: null,
                 userPhones: [],
                 language:[],
                 education: [],

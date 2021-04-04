@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 class App extends Component {
   runOnScroll = () => {
     if (this.props.location === '/landing'){
-      if (window.pageYOffset > 620){
+      if (window.pageYOffset > 400){
           this.props.onNavBgChangeToNormal()
       }
       else{

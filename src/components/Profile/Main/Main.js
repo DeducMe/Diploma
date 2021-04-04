@@ -73,9 +73,9 @@ class Main extends Component {
                             <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
                             <p className={"info__common-info__gender " + this.props.userData.gender}></p>
                             {this.props.userData.address ?
-                                <div className="info__common-info__living">
+                                <div className="address__popup-block">
+                                    <span className="living__place underline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</span>
 
-                                    <p className="living__place undeline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</p>
                                     {this.state.mapPopupState === 'active' ? 
                                         <div className ={"map-popup rounded"}>
                                             <button className="map-popup__closer-btn" onClick={this.toggleMapPopup}>x</button>
@@ -83,6 +83,7 @@ class Main extends Component {
                                         </div>
                                     : ''}
                                 </div>
+                                
                             : ''}
                             <p className="living__cz">{this.props.userData.citizenship}</p>
 
