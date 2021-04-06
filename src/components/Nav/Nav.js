@@ -82,7 +82,7 @@ class Nav extends Component {
                 <img src={logo} alt="logo"/>
               </Link>
 
-              <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link>
+              {/* <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link> */}
 
               <Link to="/responses" className="f-medium semi link-anim nav-el">Отклики</Link>
 
@@ -93,13 +93,13 @@ class Nav extends Component {
             </div>
 
             <div className="nav__right-side">
-              <button  className="icon-anim nav-el">
+              {/* <button  className="icon-anim nav-el">
                 <img src={bell} alt="notifications"/>
               </button>
 
               <button  className="icon-anim nav-el">
                 <img src={star} alt="favourites"/>
-              </button>
+              </button> */}
               <div className="nav__profile-data nav-el">
                 <div className="nav__profile-data__main link-anim" onClick={this.dropdownToggle}>
                   <Link to={this.getUserProfileLink()} className="f-medium semi flex">

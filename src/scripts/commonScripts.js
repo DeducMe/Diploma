@@ -165,6 +165,8 @@ export const userTypeToSearchType = (userType) => {
             return 'vacancy'
         case 'worker':
             return 'cv'
+        case 'employee':
+            return 'cv'
         default:
             break
     }
@@ -183,3 +185,7 @@ export const userTypeToUrlUserType = (userType) => {
     }
 }
 
+export const getNormalUserType = (userType) => {
+    if (userType === 'employee') return 'worker'
+    else return userType
+}

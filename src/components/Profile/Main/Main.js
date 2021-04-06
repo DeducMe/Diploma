@@ -47,7 +47,6 @@ class Main extends Component {
 
     
     render() {
-
         if (this.props.userState.hasProfile){
             return (
                 <div className="main rounded">
@@ -83,7 +82,6 @@ class Main extends Component {
                                         </div>
                                     : ''}
                                 </div>
-                                
                             : ''}
                             <p className="living__cz">{this.props.userData.citizenship}</p>
 

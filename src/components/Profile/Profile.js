@@ -94,6 +94,7 @@ class Profile extends Component {
     }
 
     componentDidMount(){
+
         if (this.props.userState.logged && this.props.userFetchId === String(this.props.userState.user.id)){
             console.log(this.props.userState.user)
             this.props.onGetLoggedUserFetch(this.props.userFetchId,this.props.onHasProfile, this.initPlaceholder, this.props.history)
@@ -101,7 +102,6 @@ class Profile extends Component {
         else{
             this.props.onGetUserFetch(this.props.userFetchId, this.props.history)
         }        
-        console.log(this.props.userFetchId)
         this.props.onGetResumes(this.props.userFetchId)
     }
     

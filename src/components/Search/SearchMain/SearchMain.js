@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import {getSearchQueries, createResponse} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
-import ResponsePopup from './ResponsePopup'
+import ResponsePopup from '../../ResponsePopup/ResponsePopup'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues, parseOptions, searchTypeToUserType} from '../../../scripts/commonScripts'

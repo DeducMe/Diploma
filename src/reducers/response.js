@@ -4,7 +4,9 @@ const initialState = {
     nextValues:'initial',
     nextAnswers:'initial',
     responseValues:[],
-    responseAnswers:[]    
+    responseAnswers:[],
+    openedResponseId:-1,
+    responseSendState:''
 };
   
   
@@ -70,16 +72,14 @@ export default function userState(state = initialState, action){
     }
     if (action.type === 'RESPONSE_NULLIFY_VALUES'){
         state.responseValues = []
-        state.next = 'initial'
-        state.responseCount = 0
+        state.nextValues = 'initial'
         return {
             ...state
         };
     }
-    if (action.type === 'ANSWERS_NULLIFY_VALUES'){
-        state.responseValues = []
-        state.next = 'initial'
-        state.responseCount = 0
+    if (action.type === 'RESPONSE_NULLIFY_ANSWERS'){
+        state.responseAnswers = []
+        state.nextAnswers = 'initial'
         return {
             ...state
         };
@@ -96,7 +96,21 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    if (action.type === 'RESPONSE_OPEN_RESPONSE_POPUP'){
+        state.openedResponseId = action.payload.index;
+        state.responseSendState = action.payload.state;
 
+        return {
+            ...state
+        };
+    }
+    if (action.type === 'CLOSE_RESPONSE_POPUP'){
+        state.openedResponseId = -1;
+        state.responseSendState = ''
+        return {
+            ...state
+        };
+    }
     
     return state;
 }

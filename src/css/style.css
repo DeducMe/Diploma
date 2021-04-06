@@ -173,6 +173,18 @@ input[type='submit']{
     color: #fff;
 }
 
+.green{
+    color: #18AC00;
+}
+
+.red{
+    color: #E40000;
+}
+
+.yellow{
+    color: #C99100;
+}
+
 .flex{
     display: flex;
     flex-direction: row;
