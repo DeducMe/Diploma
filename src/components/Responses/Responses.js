@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import Loader from '../Loader/Loader'
 import {getUserResponses, getUserAnswers} from '../../actions/serverConnections'
 import {responseLoaderActivate, responseLoaderDeactivate, answersLoaderActivate, answersLoaderDeactivate} from '../../actions/asyncDispatch'
-import {userTypeToUrlUserType, getNormalUserType, userTypeToSearchType} from '../../scripts/commonScripts'
+import {userTypeToUrlUserType, getNormalUserType, userTypeToSearchType, simplifyDate} from '../../scripts/commonScripts'
 import fileUploader from '../../actions/fileUploader';
 import { Link } from 'react-router-dom'
 import './responses.css'
 import dropdownArrow from '../../img/right-arrow.svg'
 import ResponsePopup from './ResponsePopup'
+import VacancyPopup from '../VacancyPopup/VacancyPopup'
 
 
 // здесь пришлось делать два запроса на одной странице, потому что бекендер ленивое чмо (ОБА ЕЩЕ И ЧЕРЕЗ ПАГИНАЦИЮ)
@@ -19,7 +20,7 @@ class Responses extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            openedId:0
+            openedId:-1
         };
     }
 
@@ -35,10 +36,8 @@ class Responses extends Component {
         return type === 'employer' ? 'worker' : 'employer'
     }
 
-    openResponseInfo = (index) =>{
-        this.setState({
-            openedId:index
-        })
+    openVacancyInfo = (id) =>{
+        this.props.onOpenVacancyInfo(id)
     }
     
     openResponsePopup = (index, state) => {
@@ -76,12 +75,12 @@ class Responses extends Component {
                         {this.getInvites().map((item, index)=> 
                             <li key={index} className="responses__list-el rounded">
                             <div className="responses__list-el__header">
-                                <Link className="responses__list-el__header__link">
+                                <button className="responses__list-el__header__link" onClick={this.openVacancyInfo.bind(this, item.vacancy)}>
                                     <h3 className="underline-link f-medium semi">{item.vacancy_name}</h3>
-                                </Link>
+                                </button>
                                 <button className="responses__list-el__header__btn"></button>
 
-                                <p className="responses__list-el__header__response-date semi">{item.date_response}</p>
+                                <p className="responses__list-el__header__response-date semi">{simplifyDate(item.date_response)}</p>
                                 
                                 <p className="green">Приглашение</p>
                             </div>
@@ -122,12 +121,12 @@ class Responses extends Component {
                         return (
                         <li key={index} className="responses__list-el rounded">
                             <div className="responses__list-el__header">
-                                <Link className="responses__list-el__header__link">
+                                <button className="responses__list-el__header__link" onClick={this.openVacancyInfo.bind(this, item.vacancy)}>
                                     <h3 className="underline-link f-medium semi">{item.vacancy_name}</h3>
-                                </Link>
+                                </button>
                                 <button className="responses__list-el__header__btn"></button>
 
-                                <p className="responses__list-el__header__response-date semi">{item.date_response}</p>
+                                <p className="responses__list-el__header__response-date semi">{simplifyDate(item.date_response)}</p>
                                 {item.state === 'sent' ? 
                                 <p>Вакансия не просмотрена</p>
                                 : item.state === 'viewed' ?
@@ -182,6 +181,7 @@ class Responses extends Component {
 
                     </ul>
                     : <p>Откликов нет :(</p>}
+                    {this.props.responseState.openedVacancyId !== -1 ? <VacancyPopup id={this.props.responseState.openedVacancyId}></VacancyPopup> : <p>cringe</p>}
                 </section>
             )
     }
@@ -238,6 +238,10 @@ const mapDispatchToProps = (dispatch) =>{
             console.log(index)
             dispatch({type : 'RESPONSE_OPEN_RESPONSE_POPUP', payload:{index:index, state:state}})
         },
+        onOpenVacancyInfo: (id) =>{
+            dispatch({type : 'OPEN_VACANCY_POPUP', payload:id})
+        }
+
     }
 }
   

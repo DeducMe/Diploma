@@ -68,6 +68,14 @@ function getUserVacanciesFetchSuccess(data){
     }
 }
 
+function getVacancyFetchSucces(data){
+    return{
+        type:'GET_VACANCY_FETCH_SUCCES',
+        data
+    }
+}
+
+
 function addVacancyFetchSucces(){
     return{
         type:'ADD_RESUME_FETCH_SUCCES'
@@ -566,5 +574,20 @@ export const createResponse = (type, data) => (dispatch) => {
         if (data !== '404')
         return dispatch(onCreateResponse())
         else return dispatch(notFoundError(data))
+    })
+}
+
+export const getVacancy = (vacancyId) => (dispatch) =>{
+    return fetch(url + '/vacancy/'+vacancyId,{
+        method: 'GET',
+    })  
+    .then(response => {
+        if (response.status !== 404)
+        return response.json()
+        else return response.status
+    })
+    .then(data => {
+        console.log(data)
+        return dispatch(getVacancyFetchSucces(data))
     })
 }

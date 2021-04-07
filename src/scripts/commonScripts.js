@@ -5,8 +5,21 @@ const mistakes = {
     3: "regular not passed",
     4: "number too big",
     5: "number too small",
-
 }
+
+const months = [
+    'Января',
+    'Февраля',
+    'Марта',
+    'Апреля',
+    'Мая',
+    'Июня',
+    'Июля',
+    'Августа',
+    'Сентября',
+    'Ноября',
+    'Декабря',
+];
 
 export const parseOptions = (options) => {
     return Object
@@ -47,6 +60,10 @@ export const checkIntInput = (num, maxNum, minNum) => {
         return mistakes[5]
     }
     return mistakes[0]
+}
+
+export const simplifyDate = (date) => {
+    return parseInt(date.slice(5, 7)) + ' ' + months[parseInt(date.slice(8, 10))] 
 }
 
 

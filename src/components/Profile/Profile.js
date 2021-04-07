@@ -106,7 +106,6 @@ class Profile extends Component {
     }
     
     render() {
-        console.log(Object.keys(this.props.userData).length)
         if (Object.keys(this.props.userData).length !== 0)
         return (
             <div className="small-container profile-wrapper">

@@ -41,6 +41,8 @@
 
 .resume__header__name{
     width: 76%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .resume__header__salary{
@@ -51,7 +53,6 @@
 .resume__header__grade{
     width: 70%;
 }
-
 
 
 .resume__header-color{

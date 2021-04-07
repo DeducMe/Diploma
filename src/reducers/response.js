@@ -6,7 +6,7 @@ const initialState = {
     responseValues:[],
     responseAnswers:[],
     openedResponseId:-1,
-    responseSendState:''
+    openedVacancyId:-1
 };
   
   
@@ -98,7 +98,6 @@ export default function userState(state = initialState, action){
     }
     if (action.type === 'RESPONSE_OPEN_RESPONSE_POPUP'){
         state.openedResponseId = action.payload.index;
-        state.responseSendState = action.payload.state;
 
         return {
             ...state
@@ -106,9 +105,20 @@ export default function userState(state = initialState, action){
     }
     if (action.type === 'CLOSE_RESPONSE_POPUP'){
         state.openedResponseId = -1;
-        state.responseSendState = ''
         return {
             ...state
+        };
+    }
+    if (action.type === 'OPEN_VACANCY_POPUP'){
+        state.openedVacancyId = action.payload;
+        return {
+        ...state
+        };
+    }
+    if (action.type === 'CLOSE_VACANCY_POPUP'){
+        state.openedVacancyId = -1;
+        return {
+        ...state
         };
     }
     
