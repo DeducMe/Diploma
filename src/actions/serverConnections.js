@@ -329,7 +329,7 @@ export const registrateNewUser = (data) => (dispatch) => {
 }
 
 export const logout = () => (dispatch) => {
-    return fetch(url + '/auth/logout',{
+    return fetch(url + '/auth/logout/',{
         method: 'POST', 
         headers : { 
             'Content-Type': 'application/json',
