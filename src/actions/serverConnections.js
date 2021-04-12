@@ -324,7 +324,12 @@ export const registrateNewUser = (data) => (dispatch) => {
 
 export const logout = () => (dispatch) => {
     return fetch(url + '/auth/logout',{
-        method: 'DELETE',  
+        method: 'DELETE', 
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        } 
     })
     .then(response => response.json())
     .then(data => {
