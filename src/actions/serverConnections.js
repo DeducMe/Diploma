@@ -274,7 +274,7 @@ export const redactResume = (data, cvId) => (dispatch) => {
 export const verify = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
     return fetch(url + '/auth/user/',{
-        method: 'POST',  
+        method: 'GET',  
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
