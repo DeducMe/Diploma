@@ -72,6 +72,7 @@ class Nav extends Component {
 
   componentDidMount = () => {
     this.props.onVerifyToken()
+    
   }
   
   render(){
@@ -232,6 +233,11 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onVerifyToken: ()=>{
       dispatch(verify())
+      .then((data)=>{
+        if(data.data !== null){
+          dispatch({type : 'USER_LOGIN', payload:null})
+        }
+      })
       
     },
     onLogout: ()=>{
