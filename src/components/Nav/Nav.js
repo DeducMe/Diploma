@@ -234,7 +234,7 @@ const mapDispatchToProps = (dispatch) =>{
     onVerifyToken: ()=>{
       dispatch(verify())
       .then((data)=>{
-        if(data.data !== null){
+        if(data.data.detail !== "Authentication credentials were not provided."){
           dispatch({type : 'USER_LOGIN', payload:null})
         }
       })
