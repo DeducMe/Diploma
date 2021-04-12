@@ -65,6 +65,13 @@ export default function userState(state = initialState, action){
         ...state
       };
     }
+    else if(action.type === 'VERIFY_SUCCES'){
+      state.user = action.payload
+      return {
+        ...state
+      };
+    }
+    
     // else if(action.type === 'UPDATE_EMPLOYER'){
     //   state.hasProfile = true;
     //   return {

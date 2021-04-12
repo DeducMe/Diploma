@@ -35,6 +35,20 @@ function loginUserFetchSucces(data){
     }
 }
 
+function verifyUserFetchSucces(data){
+    return{
+        type:'VERIFY_USER_FETCH_SUCCES',
+        data
+    }
+}
+
+function changePasswordUserFetchSucces(data){
+    return{
+        type:'CHANGE_PASSWORD_USER_FETCH_SUCCES',
+        data
+    }
+}
+
 function createNewEmployerFetchSucces(){
     return{
         type:'CREATE_NEW_EMPLOYER_FETCH_SUCCES'
@@ -60,6 +74,14 @@ function getUserVacanciesFetchSuccess(data){
         data
     }
 }
+
+function getVacancyFetchSucces(data){
+    return{
+        type:'GET_VACANCY_FETCH_SUCCES',
+        data
+    }
+}
+
 
 function addVacancyFetchSucces(){
     return{
@@ -109,6 +131,54 @@ function deleteResumeFetchSucces() {
     }
 }
 
+function getSearchFetchSucces(data){
+    return{
+        type:'GET_SEARCH_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getSearchNone(data){
+    return{
+        type:'GET_SEARCH_QUERY_NONE',
+        data
+    }
+}
+
+function getResponseFetchSucces(data){
+    return{
+        type:'GET_RESPONSE_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getResponseNone(data){
+    return{
+        type:'GET_RESPONSE_QUERY_NONE',
+        data
+    }
+}
+
+function getAnswersFetchSucces(data){
+    return{
+        type:'GET_ANSWERS_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getAnswersNone(data){
+    return{
+        type:'GET_ANSWERS_QUERY_NONE',
+        data
+    }
+}
+
+function onCreateResponse(){
+    return{
+        type:'CREATE_REPONSE'
+    }
+}
+
 function notFoundError(userData){
     return{
         type:'404_ERROR',
@@ -133,7 +203,7 @@ export const getUserData = (userId) => (dispatch) => {
 
 export const getUserResumes = (userId) => (dispatch) => {
     console.log(userId)
-    return fetch(url + '/cv/'+userId,{
+    return fetch(url + '/cv/user/'+userId,{
         method: 'GET',
         
     })  //userId
@@ -148,9 +218,14 @@ export const getUserResumes = (userId) => (dispatch) => {
 
 export const addResume = (data) => (dispatch) => {
     console.log(data)
-    return fetch(url + '/cv',{
+    return fetch(url + '/cv/',{
         method: 'POST',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())
@@ -181,7 +256,11 @@ export const redactResume = (data, cvId) => (dispatch) => {
     return fetch(url + '/cv/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
-        
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
     })  
     .then(response => response.json())
     .then(data => {
@@ -192,25 +271,51 @@ export const redactResume = (data, cvId) => (dispatch) => {
     })
 }
 
-export const loginUser = (data) => (dispatch) => {
+export const verify = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
-    return fetch(url + '/login',{
+    return fetch(url + '/auth/user/',{
         method: 'POST',  
-        body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         return dispatch(loginUserFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
+export const loginUser = (data) => (dispatch) => {
+    console.log(JSON.stringify(data))
+    return fetch(url + '/auth/login/',{
+        method: 'POST',  
+        body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        return dispatch(loginUserFetchSucces(data.user))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 
 export const registrateNewUser = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
-    return fetch(url + '/register',{
+    return fetch(url + '/register/',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
     })
     .then(response => response.json())
     .then(data => dispatch(registarteUserFetchSucces(data)))
@@ -218,7 +323,7 @@ export const registrateNewUser = (data) => (dispatch) => {
 }
 
 export const logout = () => (dispatch) => {
-    return fetch(url + '/logout',{
+    return fetch(url + '/auth/logout',{
         method: 'DELETE',  
     })
     .then(response => response.json())
@@ -229,10 +334,36 @@ export const logout = () => (dispatch) => {
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 
+export const changePassword = (password) => (dispatch) => {
+    return fetch(url + '/auth/password/change/',{
+        method: 'POST',  
+        body: JSON.stringify({
+            "new_password1": password,
+            "new_password2": password
+        }),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        } 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        return dispatch(changePasswordUserFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
+}
+
 export const createNewEmployee = (data) => (dispatch) => {
     return fetch(url + '/workers',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -247,6 +378,11 @@ export const updateEmployee = (data, userId) => (dispatch) => {
     return fetch(url + '/workers/' + userId,{
         method: 'PUT',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -262,6 +398,11 @@ export const createNewEmployer = (data) => (dispatch) => {
     return fetch(url + '/employers',{
         method: 'POST',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => dispatch(createNewEmployerFetchSucces()))
@@ -282,6 +423,11 @@ export const updateEmployer = (data, userId) => (dispatch) => {
     return fetch(url + '/employers/' + userId,{
         method: 'PUT',  
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
@@ -293,7 +439,7 @@ export const updateEmployer = (data, userId) => (dispatch) => {
 
 export const getUserVacancies = (userId) => (dispatch) => {
     console.log(userId)
-    return fetch(url + '/vacancy/' + userId,{
+    return fetch(url + '/vacancy/user/' + userId,{
         method: 'GET',
         
     })  //userId
@@ -307,9 +453,15 @@ export const getUserVacancies = (userId) => (dispatch) => {
 }
 
 export const addVacancy = (data) => (dispatch) => {
-    return fetch(url + '/vacancy',{
+    console.log(data)
+    return fetch(url + '/vacancy/',{
         method: 'POST',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())
@@ -320,6 +472,7 @@ export const addVacancy = (data) => (dispatch) => {
         else return dispatch(notFoundError(data))
     })
 }
+
 
 export const deleteVacancy = (id) => (dispatch) => {
     return fetch(url + '/vacancy/' + id,{
@@ -338,6 +491,11 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
     return fetch(url + '/vacancy/'+cvId,{
         method: 'PUT',
         body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })  
     .then(response => response.json())
@@ -346,5 +504,134 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
         if (data !== '404')
         return dispatch(redactVacancyFetchSucces())
         else return dispatch(notFoundError(data))
+    })
+}
+
+export const getSearchQueries = (options, searchType, next) => (dispatch) => {
+    let fetchUrl = url + '/'+ searchType + '/search?'+ options
+    console.log(fetchUrl)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getSearchFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getSearchNone(null)))})
+}
+
+export const getUserResponses = (userType, next, userId) => (dispatch) => {
+    let fetchUrl = url + '/'+ (userType === 'employer' ? 'cv' : 'vacancy') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl, next)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getResponseFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getResponseNone(null)))})
+}
+
+export const getUserAnswers = (userType, next, userId) => (dispatch) => {
+    let fetchUrl = url + '/' + (userType === 'employer' ? 'vacancy' : 'cv') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl, next)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getAnswersFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getAnswersNone(null)))})
+}
+
+export const createResponse = (type, data) => (dispatch) => {
+    return fetch(url + '/' + type + '/response/',{
+        method: 'POST',
+        body: JSON.stringify(data),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(onCreateResponse())
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const changeAnswer = (id, responseType, type) => (dispatch) => {
+    return fetch(url + '/' + responseType + '/response/',{
+        method: 'PUT',
+        body: JSON.stringify({'state':type, 'id':id}),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(onCreateResponse())
+        else return dispatch(notFoundError(data))
+    })
+}
+
+
+
+export const getVacancy = (vacancyId) => (dispatch) =>{
+    return fetch(url + '/vacancy/'+vacancyId,{
+        method: 'GET',
+    })  
+    .then(response => {
+        if (response.status !== 404)
+        return response.json()
+        else return response.status
+    })
+    .then(data => {
+        console.log(data)
+        return dispatch(getVacancyFetchSucces(data))
     })
 }

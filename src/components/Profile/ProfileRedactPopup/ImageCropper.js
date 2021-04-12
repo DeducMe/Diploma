@@ -11,6 +11,7 @@ import uploadIcon from '../../../img/upload.svg';
 class ImageCropper extends Component {
     cropUserImage = (file, maxWidth, maxHeight, imageType) => {
         this.props.onDeactivateCropper()
+        console.log(file)
         setTimeout(()=>{
             if (file !== undefined){
                 this.props.onActivateCropper(file, maxWidth, maxHeight, imageType)
@@ -57,6 +58,7 @@ class ImageCropper extends Component {
         return new Blob([u8arr], {type:mime});
     }
 
+
     loadUserImage = (e, imageType) =>{
         const file = e.target.files[0];
         this.loadImageToFirebase(file, imageType)
@@ -67,9 +69,16 @@ class ImageCropper extends Component {
     }
 
     render() {
-        return this.props.cropperActive ? (
+        if (!this.props.cropperFile){
+            if(this.props.cropperData.imageType === 'avatar'){
+                this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54')
+            }
+            else this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-background.png?alt=media&token=1c91f99c-c236-4a28-b291-bfc2263df45b')
+        }
+
+
+        return this.props.cropperActive && this.props.cropperFile ? (
             <div className="cropper-block">
-                {console.log(this.props.cropperFile)}
                 <div
                     className={"cropper__img-preview " + this.props.cropperData.imageType}
                     style={{ width: this.props.cropperMaxWidth, height: this.props.cropperMaxHeight, overflow:"hidden"}}
@@ -89,7 +98,7 @@ class ImageCropper extends Component {
                 background={false}
                 responsive={true}
                 autoCropArea={1}
-                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                checkOrientation={false} 
                 onInitialized={(instance) => {
                     this.props.setCropperInstance(instance);
                 }}
@@ -138,7 +147,10 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onDeactivateCropper:()=>{
             dispatch({type : 'DEACTIVATE_PROFILE_REDACT_IMAGE_CROPPER', payload:null})
-        }
+        },
+        onSetCropperFile:(file) => {
+            dispatch({type : 'SET_CROPPER_FILE', payload:file})
+        },
     }
 }
 

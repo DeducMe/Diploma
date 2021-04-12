@@ -67,6 +67,13 @@ class ImageCropper extends Component {
     }
 
     render() {
+        if (!this.props.cropperFile){
+            if(this.props.cropperData.imageType === 'avatar'){
+                this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54')
+            }
+            else this.props.onSetCropperFile('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-background.png?alt=media&token=1c91f99c-c236-4a28-b291-bfc2263df45b')
+        }
+
         return this.props.cropperActive ? (
             <div className="cropper-block">
                 {console.log(this.props.cropperFile)}
@@ -138,7 +145,10 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onDeactivateCropper:()=>{
             dispatch({type : 'PROFILE_EMPLOYER_REDACT_DEACTIVATE_IMAGE_CROPPER', payload:null})
-        }
+        },
+        onSetCropperFile:(file) => {
+            dispatch({type : 'SET_CROPPER_FILE', payload:file})
+        },
     }
 }
 

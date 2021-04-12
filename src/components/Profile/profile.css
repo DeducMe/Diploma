@@ -1,0 +1,25 @@
+.profile__main,
+.profile__side{
+    margin-top: 30px;
+}
+
+.profile__side{
+    margin-left: 40px;
+}
+
+.profile-wrapper{
+    display: flex;
+    position: relative;
+}
+
+.living__place{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: pre;
+
+}
+
+.address__popup-block{
+    width: 70%;
+    height: 1.25rem;
+}

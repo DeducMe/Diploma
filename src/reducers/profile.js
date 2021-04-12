@@ -8,16 +8,16 @@ const initialState = {
       gender: '',
       personalBackground: '',
       birthday: '',
-      cz:'',
-      city: '',
+      citizenship:'',
       profile_link: '',
       photo_url: '',
       profile_background: ''
     },
+    address:null,
     userPhones: [],
     language:[],
     education: [],
-    exp : [],
+    experience : [],
     social_links: [],
     buf:{
       languageGrade:'A1',
@@ -60,6 +60,13 @@ export default function profileState(state = initialState, action){
         ...state
       };
     }
+    else if (action.type === 'SET_CROPPER_FILE'){
+      state.buf.cropper.file = action.payload;
+      return {
+        ...state
+      };
+    }
+    
     
     
     // else if(action.type === 'ACTIVATE_PROFILE_REDACT_LOADER'){
@@ -144,16 +151,16 @@ export default function profileState(state = initialState, action){
       }
     }
     else if (action.type === 'POPUP_REDACT_DELETE_EXPERIENCE'){
-      state.exp.splice(state.exp.indexOf(action.payload), 1);
-      state.exp = Object.assign([], state.exp, [...state.exp]);
+      state.experience.splice(state.experience.indexOf(action.payload), 1);
+      state.experience = Object.assign([], state.experience, [...state.experience]);
       return {
         ...state,
 
       };
     }
     else if (action.type === 'POPUP_REDACT_ADD_EXPERIENCE'){
-      state.exp.push(action.payload);
-      state.exp = Object.assign([], state.exp, [...state.exp]);
+      state.experience.push(action.payload);
+      state.experience = Object.assign([], state.experience, [...state.experience]);
 
       return {
         ...state,
@@ -179,13 +186,13 @@ export default function profileState(state = initialState, action){
       };
     }
     else if (action.type === 'POPUP_REDACT_CITIZENSHIP_CHANGE'){
-      state.placeholder.cz = action.payload;
+      state.placeholder.citizenship = action.payload;
       return {
         ...state
       };
     }
-    else if (action.type === 'POPUP_REDACT_CITY_CHANGE'){
-      state.placeholder.city = action.payload;
+    else if (action.type === 'POPUP_REDACT_ADDRESS_CHANGE'){
+      state.address = action.payload;
       return {
         ...state
       };
@@ -210,6 +217,7 @@ export default function profileState(state = initialState, action){
       };
     }
     else if(action.type === 'ACTIVATE_PROFILE_REDACT_IMAGE_CROPPER'){
+      console.log(action.payload)
       state.buf.cropper.state = true;
       state.buf.cropper.file = action.payload[0]
       state.buf.cropper.maxWidth = action.payload[1]

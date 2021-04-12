@@ -1,0 +1,12 @@
+.resumes-list-el.popup-wrapper{
+    border: 2px solid #000;
+}
+
+.vacancy__about__body-list__points-list{
+    list-style: inside;
+}
+
+.resume .close-popup-btn{
+    right: 5px;
+    top: 0;
+}

@@ -7,6 +7,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 import Profile from './components/Profile/Profile'
 import CompanyProfile from './components/CompanyProfile/CompanyProfile'
+import Search from './components/Search/Search'
 
 import {
   Route,
@@ -16,6 +17,8 @@ import {
 import thunk from 'redux-thunk';
 import App from './App';
 import Nav from './components/Nav/Nav'
+import Response from './components/Responses/Responses'
+
 import { syncHistoryWithStore } from 'react-router-redux';
 import Landing from './components/Landing/Landing';
 
@@ -32,10 +35,12 @@ const history = syncHistoryWithStore(hashHistory, store);
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>  
-      <Route path="/" component={Nav}/>
+      <Route path="/" component={App}/>
 
       <Switch>
           <Route path="/landing" component={Landing}/>
+          <Route path="/search" component={Search}/>
+          <Route path="/responses" component={Response}/>
           <Route path="/profile/:id" component={Profile}/>
           <Route path="/company/:id" component={CompanyProfile}/>
           <Redirect from="*" to="/landing"/>

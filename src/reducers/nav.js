@@ -2,6 +2,7 @@ const initialState = {
     searchActive: '',
     position: '',
     dropDownState: '',
+    transparency:'',
     optionsPopup:{
         optionsPopupState: '',
         loaderActive:false
@@ -82,6 +83,19 @@ export default function navState(state = initialState, action){
             ...state
         }
     }
+    else if (action.type === 'CHANGE_NAV_BG_TO_TRANSPARENT'){
+        state.transparency = 'transparent';
+        return{
+            ...state
+        }
+    }
+    else if (action.type === 'CHANGE_NAV_BG_TO_NORMAL'){
+        state.transparency = '';
+        return{
+            ...state
+        }
+    }
+    
     else if(action.type === 'WRONG_EMAIL_INPUT'){
         state.popup.wrongEmail = 'active';
         state.popup.wrongEmailError = action.payload
@@ -115,7 +129,12 @@ export default function navState(state = initialState, action){
             ...state
         }
     }
-
+    else if(action.type === 'SET_USER_MINI_AVATAR'){
+        state.avatar = action.payload;
+        return{
+            ...state
+        }
+    }
 
     if (action.type === 'OPTIONS_POPUP_ACTIVATE'){
         state.optionsPopup.optionsPopupState = 'active';

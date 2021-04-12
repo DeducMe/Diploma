@@ -96,7 +96,6 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch(getEmployer(userId))
             .then((data)=>{
                 if (data.userData !== null && data.userData!=='404'){
-                    console.log(data.userData)
                     if (data.userData.profile_link !== "empty"){
                         onHasProfile()
                     }

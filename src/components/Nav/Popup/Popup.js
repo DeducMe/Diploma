@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
 import Loader from '../../Loader/Loader'
+import fileUploader from '../../../actions/fileUploader';
+
 
 class Popup extends Component {
   
@@ -44,6 +46,8 @@ class Popup extends Component {
 
   redirectUser = (userId) =>{
     this.props.onLoginUser();
+    this.getAvatarFromFirebase()
+    localStorage['user'] = JSON.stringify(this.props.userState)
     if (this.props.userState.user_type === 'employee'){
       this.props.history.push("/profile/" + userId);
     }
@@ -55,6 +59,7 @@ class Popup extends Component {
   }
 
   loginUser(login, password){
+
     this.props.onLoginUserCheck({
       "email": login,
       "password": password
@@ -63,7 +68,7 @@ class Popup extends Component {
   }
 
   registrateUser(data){
-    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError)
+    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
     this.props.onActivateLoader()
   }
 
@@ -81,55 +86,14 @@ class Popup extends Component {
   }
 
   async registrationJsonCreate(login, password, username, type){
-    const user = {
+    return {
       "name": username,
       "email": login,
       "password": password,
       "user_type": type
     }
-    if (user["user_type"] === 'employee'){
-      return fetch('new_worker.json', {
-        headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-          data.name = user.name
-          return data
-      })
-      .then(data =>{
-        return {
-          "user":user,
-          "worker":data
-        }
-      })
-    }
-    else{
-      return fetch('new_employer.json', {
-        headers : { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-          data.name = user.name
-          console.log(data)
-          return data
-      })
-      .then(data =>{
-        return {
-          "user":user,
-          "employer":data
-        }
-      })
-    }
-    
     
   }
-
 
   handleFormSubmit = (e) => {
     e.preventDefault();
@@ -166,6 +130,16 @@ class Popup extends Component {
     }
   }
 
+  
+  getAvatarFromFirebase = () =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+    const storageRef = fileUploader.storage().ref()
+    const fileRef = storageRef.child('user-avatar' + this.props.userState.id)
+    fileRef.getDownloadURL()
+    .then((response) => this.props.onSetUserMiniAvatar(response))
+    .catch(err => this.props.onSetUserMiniAvatar('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'))
+  }
+  checkZoneClick(){}
+
   componentDidMount(){
     window.addEventListener('keydown', this.handleEsc)
   }
@@ -178,7 +152,7 @@ class Popup extends Component {
     if (this.props.popupState.type === 'login')
       return (
 
-    <div className={"blur-box " + this.props.popupState.state}>
+    <div className={"blur-box " + this.props.popupState.state} onClick={this.checkZoneClick.bind(this)}>
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Вход</h2>
 
@@ -296,6 +270,9 @@ const mapStateToProps = (state, ownProps) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return{
+    onSetUserMiniAvatar: (photo) => {
+      dispatch({type : 'SET_USER_MINI_AVATAR', payload:photo})
+    },
     onSubjectChangeToEmployer: () => {
       dispatch({type : 'CHANGE_SUBJECT_TO_EMPLOYER', payload:null})
     },
@@ -323,7 +300,7 @@ const mapDispatchToProps = (dispatch) =>{
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
           redirectUser(data.data.id)
         }
         else{
@@ -331,15 +308,14 @@ const mapDispatchToProps = (dispatch) =>{
         }
       })
     },
-    onRegistrationUserFetch: (data, redirectUser, fetchError)=> {
+    onRegistrationUserFetch: (data, redirectUser, fetchError, onLoginUserCheck) => {
+      const userCredentials = data
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-      dispatch(registrateNewUser(data))
+      dispatch(registrateNewUser(userCredentials))
       .then(data => {
         console.log(data)
-        if (data.data !== null && data.data !== 0){
-          let userId = data.data.id
-          let name = data.data.name
-          redirectUser(userId)
+        if (data.data !== null && data.data !== 0 && data.data !== undefined){
+          onLoginUserCheck(userCredentials, redirectUser, fetchError)
         }
         else{
           fetchError('email-occupied')

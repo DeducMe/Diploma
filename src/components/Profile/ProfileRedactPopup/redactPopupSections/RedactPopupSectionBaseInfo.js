@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import LeafletMap from '../../../leafletMap/LeafletMap'
 
-const RedactPopupSectionBaseInfo = (state, placeholderData, profileState, onUsernameChange, onDescriptionChange, onBDayChange, onCzChange, onCityChange, onChangeGenderToMale, onChangeGenderToFemale, onLanguageDelete, onLanguageGradeChange, onLanguageAdd, onPhoneDelete, onPhoneAdd) => {
+
+const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, profileState, onUsernameChange,onSaveNewAddress, onDescriptionChange, onBDayChange, onCzChange, onCityChange, onChangeGenderToMale, onChangeGenderToFemale, onLanguageDelete, onLanguageGradeChange, onLanguageAdd, onPhoneDelete, onPhoneAdd) => {
     const changeUserNameValue = (e) => {
         let input = e.target.value
         state.onUsernameChange(input)
@@ -19,8 +21,13 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, profileState, onUser
         state.onCzChange(e.target.value)
     }
 
-    const changeCityValue = (e) => {
-        state.onCityChange(e.target.value)
+    const saveNewAddress = (e) => {
+        state.onSaveNewAddress({
+            name:state.LeafletMapData.name,
+            lat:state.LeafletMapData.lat,
+            lng:state.LeafletMapData.lng
+
+        })
     }
 
     const changeGender = (e) => {
@@ -98,7 +105,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, profileState, onUser
                 </div>
                 
                 <div className="textarea-field">
-                    <p>Описание</p>
+                    <p>Описание профиля</p>
                     <textarea className="popup__textarea-input" name="descriptionInput" id="descriptionInput" onChange={changeUserDescriptionValue} value={placeholderData.description}></textarea>
                 </div>
                 
@@ -111,15 +118,15 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, profileState, onUser
                     <input className="popup__text-input" id="czInput" name="czInput" type="text" placeholder=" " onChange={changeCzValue} value={placeholderData.cz}/>
                     <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
                 </div>
-
-                <div className="input-field underlined">
-                    <input className="popup__text-input" id="addressInput" name="addressInput" type="text" placeholder=" " onChange={changeCityValue} value={placeholderData.city}/>
-                    <label className="popup__text-label" htmlFor="addressInput">Адрес</label>
+                <div className="address-input">
+                    <LeafletMap address={state.profileState.address}></LeafletMap>
+                    <button className="highlighted sup-btn" onClick={saveNewAddress}>Сохранить</button>
                 </div>
+                
             </div>
 
             <div className="list-input-field popup__input-block">
-                <p>Телефоны</p>
+                <p>Контакты</p>
                 
                 {state.profileState.userPhones.map((phone, index)=>{
                     return (
@@ -165,7 +172,8 @@ const mapStateToProps = (state) =>{
         state:state,
         profileState: state.profile,
         userState: state.user,
-        placeholderData: state.profile.placeholder
+        placeholderData: state.profile.placeholder,
+        LeafletMapData:state.buf.leafletMap.data
     }
 }
 
@@ -184,9 +192,12 @@ const mapDispatchToProps = (dispatch) =>{
         onCzChange: (text)=>{
             dispatch({type : 'POPUP_REDACT_CITIZENSHIP_CHANGE', payload:text})
         },
-        onCityChange: (text)=>{
-            dispatch({type : 'POPUP_REDACT_CITY_CHANGE', payload:text})
-        },        
+        onAddressChange: (text)=>{
+            dispatch({type : 'POPUP_REDACT_ADDRESS_NAME_CHANGE', payload:text})
+        }, 
+        onSaveNewAddress:(address)=>{
+            dispatch({type : 'POPUP_REDACT_ADDRESS_CHANGE', payload:address})
+        },       
         onChangeGenderToMale: () => {
             dispatch({type : 'CHANGE_GENDER_TO_MALE', payload:null})
         },

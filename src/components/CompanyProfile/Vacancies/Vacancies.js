@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './vacancy.css'
 import { addVacancy} from '../../../actions/serverConnections'
+import {getWorkTypeValues, getGradeValues} from '../../../scripts/commonScripts'
+
 import plusIcon from '../../../img/plusIcon.svg'
 import VacancyRedactPopup from './VacancyRedactPopup/VacancyRedactPopup'
 import editIcon from '../../../img/edit.svg'
@@ -32,7 +34,7 @@ class Vacancy extends Component {
     render() { 
         return (
             <div className="resumes-block">
-                {this.props.userState.logged ? (this.props.vacancyData.vacancies.length !== 0 ?(<h2>Ваши Резюме:</h2>):('')):(this.props.vacancyData.vacancies.length !== 0 ?(<h2>Резюме:</h2>):(''))}
+                {this.props.userState.logged ? (this.props.vacancyData.vacancies.length !== 0 ?(<h2>Ваши вакансии:</h2>):('')):(this.props.vacancyData.vacancies.length !== 0 ?(<h2>Вакансии:</h2>):(''))}
                 <ul className="resumes-list">
                     {this.props.vacancyData.vacancies.length !== 0 ? 
                     (this.props.vacancyData.vacancies.map((el, index)=>
@@ -46,15 +48,16 @@ class Vacancy extends Component {
                                             <p><span className="resume__header__salary bold f-medium">{el.salary}</span><span className="bold f-medium"> руб.</span></p>
                                         </div>
                                         <div className="resume__header-bottom">
-                                            <p className="resume__header__grade">{el.grade}</p>
-                                            <p className="resume__publication-date sup">{el.pub_date}</p>
+                                            <p className="resume__header__grade">{getGradeValues(el.grade)}</p>
+
+                                            <p className="resume__publication-date sup">{el.pub_date.slice(0,10)}</p>
                                         </div>
                                     </div>
             
                                     <div className="resume__main-info rounded">
                                         <p className="resume__industry f-pre">{el.industry}</p>
             
-                                        <p className="resume__work-type">{el.work_type.join(', ')}</p>
+                                        <p className="resume__work-type">{el.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
             
                                         <p className="resume__about">{el.about}</p>
             
@@ -65,7 +68,7 @@ class Vacancy extends Component {
                                         </ul>
                                     </div>
                                 </section>
-                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id?(
+                                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user?(
                                     <button className="resume-redact-btn"  onClick={this.redactVacancy.bind(this, index)}>
                                         <img src={editIcon} alt="editIcon"/>
                                     </button>
@@ -78,9 +81,9 @@ class Vacancy extends Component {
 
                     {this.props.vacancyData.newVacancy.length!==0 ? (this.props.vacancyData.newVacancy.state==='active' ? (<VacancyRedactPopup index={this.props.vacancyData.vacancies.length}></VacancyRedactPopup>) : ('')) : ('')}
                 </ul>
-                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user_id && this.props.vacancyData.newVacancy.state!=='active' ? (
+                {this.props.userState.logged && this.props.userState.user.id === this.props.userData.user && this.props.vacancyData.newVacancy.state!=='active' ? (
                     <div className="resume-add">
-                        <p>Добавить резюме:</p>
+                        <p>Добавить вакансию:</p>
                         <button className="resume-add-btn" onClick={this.addVacancy.bind(this, 0)}>
                             <img src={plusIcon} alt="plusIcon"/>
                         </button>

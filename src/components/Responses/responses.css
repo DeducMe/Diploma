@@ -1,0 +1,147 @@
+.responses__main__header{
+    display:flex;
+
+}
+
+.responses{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.responses__list{
+    background-color: #fff;
+    padding: 30px 20px;
+}
+
+.responses__list-el{
+    padding: 10px 20px;
+    border: 2px solid #000;
+    margin-bottom: 20px;
+}
+
+.responses__list-el__header{
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.responses__list-el__body{
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.responses__reciever,
+.responses__sender{
+    display: flex;
+    position: relative;
+    width: 42%;
+    height: 100%;
+}
+
+.responses__sender.controls{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.responses__message{
+    text-overflow: ellipsis;
+    word-break: break-all;
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.responses__message:nth-child(1){
+    margin-right: 20px;
+}
+.responses__message:nth-child(2){
+    margin-left: 20px;
+}
+
+.responses__message:not(.responded){
+    display: flex;
+    align-items: center;
+}
+
+.responses__reciever.responded .responses__message,
+.responses__sender.responded .responses__message
+{
+    background-color: #EFF5FF;
+    position: relative;
+}
+
+.responses__list-el__body.opened  .responses__message
+{
+    min-height: 60px;
+
+    height:100%
+}
+
+
+.responses__sender.responded span{
+    position: absolute;
+    content: '';
+    right: 70px;
+    bottom: 27px;
+    margin-left: -20px;
+    border: 20px solid transparent;
+    border-left: 1px solid #EFF5FF;
+    border-bottom: 20px solid #EFF5FF;
+}
+
+.responses__reciever.responded span{
+    position: absolute;
+    content: '';
+    left: 70px;
+    bottom: 27px;
+    margin-right: -20px;
+    border: 20px solid transparent;
+    border-right: 1px solid #EFF5FF;
+    border-bottom: 20px solid #EFF5FF
+}
+
+.responses__sender.controls{
+    position: relative;
+}
+
+.responses__sender.controls .response-form-popup{
+    right: 0;
+    bottom: unset;
+    z-index: 2;
+
+}
+
+.responses-control-block{
+    width: 10%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.responses-control-block__arrow{
+    width: 40px;
+    height: 40px;
+    transform: rotate(90deg);
+}
+
+.responses__avatar{
+    margin-top: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.responses__list-el__body.opened{
+    height: 100%;
+}
+
+.responses__list-el__header__link,
+.responses__list-el__header__btn,
+.responses__list-el__header__response-date{
+    margin-right: 20px;
+}
+
+

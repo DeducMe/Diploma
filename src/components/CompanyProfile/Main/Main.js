@@ -9,8 +9,23 @@ import personalBackground from'../../../img/personal-background.png'
 
 import editIcon from '../../../img/edit.svg'
 
+import LeafletMap from '../../leafletMap/LeafletMap'
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            mapPopupState:''
+        };
+    }
+
+    toggleMapPopup = () =>{
+        if (this.state.mapPopupState === ''){
+            this.setState({mapPopupState:'active'})
+        }
+        else this.setState({mapPopupState:''})
+    }
+
     goPhrase(){
         if (this.props.userState.user.user_type === "employee"){
             return <p className="info__go-phrase highlighted">Пора начать свою карьеру!</p>
@@ -29,7 +44,6 @@ class Main extends Component {
     redactProfile = () =>{
         this.props.onPopupRedactProfileActivate()
     }
-
     
     render() {
         if (this.props.userState.hasProfile){
@@ -38,7 +52,7 @@ class Main extends Component {
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
                         <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
 
-                        {this.props.userState.user.id === this.props.userData.user_id ? (
+                        {this.props.userState.user.id === this.props.userData.user ? (
                             <button className="profile-redact-btn"  onClick={this.redactProfile}>
                                 <img src={editIcon} alt="editIcon"/>
                             </button>
@@ -52,11 +66,22 @@ class Main extends Component {
                         
                         <p className="info__description">{this.props.userData.about}</p>
 
+                        {this.props.userData.address?
                         <div className="info__common-info">
-                            <p className="living__place">{this.props.userData.address}</p>
-                        </div>
+                            <div className="address__popup-block">
+                                <span className="living__place underline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</span>
+
+                                {this.state.mapPopupState === 'active' ? 
+                                    <div className ={"map-popup rounded"}>
+                                        <button className="map-popup__closer-btn" onClick={this.toggleMapPopup}>x</button>
+                                        <LeafletMap address={this.props.userData.address}></LeafletMap>
+                                    </div>
+                                 : ''}
+                            </div>
+                        </div>:''}
                         
-                        {this.props.userData.phone.length !== 0 ? (
+                        
+                        {this.props.userData.phone ? (
                             <div className="info__contacts">
                                 <p>Контакты:</p>
                                 <div className="info__contacts__phones">
@@ -69,7 +94,7 @@ class Main extends Component {
             )
         }
         
-        else if (this.props.userState.user.id === this.props.userData.user_id)
+        else if (this.props.userState.user.id === this.props.userData.user)
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
@@ -92,8 +117,8 @@ class Main extends Component {
         )
         else return (
             <div className="main rounded">
-                <section className="personal top-rounded" style={{backgroundImage: `url(${personalBackground})`}}>
-                    <img className="personal__avatar" src={placeholderAvatar} alt="аватар"/>
+                <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
+                    <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
                 </section>
                 <section className="info">
                     <div className="info-head">

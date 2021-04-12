@@ -37,7 +37,7 @@ export class MainPlaceholder extends Component {
                             <p className={'info__common-info__gender ' + this.props.userGender}></p>
                             <div className="info__common-info__living">
                                 <p className="living__cz">{this.props.userCz}</p>
-                                <p className="living__place">{this.props.userCity}</p>
+                                <p className="living__place">{this.props.userAddress ? this.props.userAddress.name:''}</p>
                             </div>
                             
                         </div>
@@ -108,12 +108,12 @@ const mapStateToProps = (state) => {
         userDescription: state.profile.placeholder.description,
         userBirthday: state.profile.placeholder.birthday,
         userGender:state.profile.placeholder.gender,
-        userCity:state.profile.placeholder.city,
-        userCz:state.profile.placeholder.cz,
+        userAddress:state.profile.address,
+        userCz:state.profile.placeholder.citizenship,
         userPhones:state.profile.userPhones,
         userLanguages: state.profile.language,
         userEducation:state.profile.education,
-        userExperience:state.profile.exp,
+        userExperience:state.profile.experience,
     }
 }
 

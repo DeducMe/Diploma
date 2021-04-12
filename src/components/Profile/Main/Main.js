@@ -6,11 +6,26 @@ import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import './main.css'
 import photoRedactIcon from '../../../img/photovector.svg'
 import personalBackground from'../../../img/personal-background.png'
+import LeafletMap from '../../leafletMap/LeafletMap'
 
 import editIcon from '../../../img/edit.svg'
 
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            mapPopupState:''
+        };
+    }
+
+    toggleMapPopup = () =>{
+        if (this.state.mapPopupState === ''){
+            this.setState({mapPopupState:'active'})
+        }
+        else this.setState({mapPopupState:''})
+    }
+    
     goPhrase(){
         if (this.props.userState.user.user_type === "employee"){
             return <p className="info__go-phrase highlighted">Пора начать свою карьеру!</p>
@@ -32,16 +47,18 @@ class Main extends Component {
 
     
     render() {
-
-        if (this.props.userState.hasProfile && this.props.userState.user.id === this.props.userData.user_id){
+        if (this.props.userState.hasProfile){
             return (
                 <div className="main rounded">
                     <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
                         <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
+                        
+                        {this.props.userState.user.id === this.props.userData.user ? (
+                            <button className="profile-redact-btn"  onClick={this.redactProfile}>
+                                <img src={editIcon} alt="editIcon"/>
+                            </button>
+                        ) : ('')}
 
-                        <button className="profile-redact-btn"  onClick={this.redactProfile}>
-                            <img src={editIcon} alt="editIcon"/>
-                        </button>
                     </section>
     
                     <section className="info">
@@ -54,60 +71,72 @@ class Main extends Component {
                         <div className="info__common-info">
                             <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
                             <p className={"info__common-info__gender " + this.props.userData.gender}></p>
+                            {this.props.userData.address ?
+                                <div className="address__popup-block">
+                                    <span className="living__place underline-link" onClick={this.toggleMapPopup}>{this.props.userData.address.name}</span>
 
-                            <div className="info__common-info__living">
-                                <p className="living__place">{this.props.userData.city}</p>
-                                <p className="living__cz">{this.props.userData.cz}</p>
-                            </div>
-                        </div>
-                        
-                        {this.props.userData.phone.length !== 0 ? (
-                            <div className="info__contacts">
-                                <p>Контакты:</p>
-                                <div className="info__contacts__phones">
-                                    {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                    {this.state.mapPopupState === 'active' ? 
+                                        <div className ={"map-popup rounded"}>
+                                            <button className="map-popup__closer-btn" onClick={this.toggleMapPopup}>x</button>
+                                            <LeafletMap address={this.props.userData.address}></LeafletMap>
+                                        </div>
+                                    : ''}
                                 </div>
-                            </div>):('')}
+                            : ''}
+                            <p className="living__cz">{this.props.userData.citizenship}</p>
 
-                        {this.props.userData.language.length !== 0 ? (
-                        <div className="info__languages">
-                            <p>Владение языками:</p>
-                            {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
-                        </div>):('')}
+                        </div>
+                        {this.props.userData.phone && this.props.userData.language && this.props.userData.education && this.props.userData.experience ?
+                            <div>
+                                {this.props.userData.phone.length !== 0 ? (
+                                <div className="info__contacts">
+                                    <p>Контакты:</p>
+                                    <div className="info__contacts__phones">
+                                        {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                    </div>
+                                </div>):('')}
+
+                            {this.props.userData.language.length !== 0 ? (
+                            <div className="info__languages">
+                                <p>Владение языками:</p>
+                                {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
+                            </div>):('')}
+                            {this.props.userData.education.length!== 0 ?(
+                                <div className="info__education">
+                                    <h3 className="education-head bold headed">Образование:</h3>
+                                    {this.props.userData.education.map((el, index)=>{
+                                        return (
+                                            <div className="education-block" key={index}>
+                                                <p className="education-name highlighted">{el.profession}</p>
+                                                <div className="education-place">
+                                                    <p className="education-place__institution">{el.university},</p>
+                                                    <p className="education-place__grade">&nbsp;{el.type}</p>     
+                                                    <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>):('')}
+                                                
+                            {this.props.userData.experience.length!== 0 ? (
+                                <div className="info__work-experience">
+                                    <h3 className="courses-head bold headed">Опыт Работы:</h3>
+                                    {this.props.userData.experience.map((el, index)=>{
+                                        return (
+                                            <div className="education-block" key={index}>
+                                                <p className="education-name highlighted">{el.position}</p>
+                                                <div className="education-place">
+                                                    <p className="education-place__institution">{el.company},</p>
+                                                    <p className="education-place__grade">&nbsp;{el.type},</p>     
+                                                    <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>):('')}
+                            </div>
+                         : ''}
                         
-                        {this.props.userData.education.length!== 0 ?(
-                            <div className="info__education">
-                                <h3 className="education-head bold headed">Образование:</h3>
-                                {this.props.userData.education.map((el, index)=>{
-                                    return (
-                                        <div className="education-block" key={index}>
-                                            <p className="education-name highlighted">{el.profession}</p>
-                                            <div className="education-place">
-                                                <p className="education-place__institution">{el.university},</p>
-                                                <p className="education-place__grade">&nbsp;{el.type}</p>     
-                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>):('')}
-                                               
-                        {this.props.userData.exp.length!== 0 ? (
-                            <div className="info__work-experience">
-                                <h3 className="courses-head bold headed">Опыт Работы:</h3>
-                                {this.props.userData.exp.map((el, index)=>{
-                                    return (
-                                        <div className="education-block" key={index}>
-                                            <p className="education-name highlighted">{el.position}</p>
-                                            <div className="education-place">
-                                                <p className="education-place__institution">{el.company},</p>
-                                                <p className="education-place__grade">&nbsp;{el.type},</p>     
-                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>):('')}
                         
                     </section>
                 </div>
@@ -115,7 +144,7 @@ class Main extends Component {
             )
         }
         
-        else if (this.props.userState.user.id === this.props.userData.user_id)
+        else if (this.props.userState.user.id === this.props.userData.user){
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
@@ -135,79 +164,21 @@ class Main extends Component {
                     </div>
                 </section>
             </div>
-        )
+        )}
         else
         return(
             <div className="main rounded">
                 <section className="personal top-rounded" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.userData.profile_background, personalBackground)})`}}>
                     <img className="personal__avatar" src={this.checkOnEmpty(this.props.userData.photo_url, placeholderAvatar)} alt="аватар"/>
-
                 </section>
 
                 <section className="info">
                     <div className="info-head">
                         <h2 className="info__name bold">{this.props.userData.name}</h2>
                     </div>
-                    
-                    <p className="info__description">{this.props.userData.about}</p>
-
-                    <div className="info__common-info">
-                        <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
-                        <p className={"info__common-info__gender " + this.props.userData.gender}></p>
-
-                        <div className="info__common-info__living">
-                            <p className="living__place">{this.props.userData.city}</p>
-                            <p className="living__cz">{this.props.userData.cz}</p>
-                        </div>
+                    <div>
+                        <p className="info__description">Профиль пуст!</p>
                     </div>
-                    
-                    {(this.props.userData.phone.length !== 0 && this.props.userData.phone !== null) ? (
-                        <div className="info__contacts">
-                            <p>Контакты:</p>
-                            <div className="info__contacts__phones">
-                                {this.props.userData.phone.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
-                            </div>
-                        </div>):('')}
-                        
-                    {(this.props.userData.language.length !== 0 && this.props.userData.language !== null)  ? (
-                    <div className="info__languages">
-                        <p>Владение языками:</p>
-                        {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
-                    </div>):('')}
-                    
-                    {this.props.userData.education.length!== 0 ?(
-                        <div className="info__education">
-                            <h3 className="education-head bold headed">Образование:</h3>
-                            {this.props.userData.education.map((el, index)=>{
-                                return (
-                                    <div className="education-block" key={index}>
-                                        <p className="education-name highlighted">{el.profession}</p>
-                                        <div className="education-place">
-                                            <p className="education-place__institution">{el.university},</p>
-                                            <p className="education-place__grade">&nbsp;{el.type}</p>     
-                                            <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>):('')}
-                                            
-                    {this.props.userData.exp.length!== 0 ? (
-                        <div className="info__work-experience">
-                            <h3 className="courses-head bold headed">Опыт Работы:</h3>
-                            {this.props.userData.exp.map((el, index)=>{
-                                return (
-                                    <div className="education-block" key={index}>
-                                        <p className="education-name highlighted">{el.position}</p>
-                                        <div className="education-place">
-                                            <p className="education-place__institution">{el.company},</p>
-                                            <p className="education-place__grade">&nbsp;{el.type},</p>     
-                                            <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        </div>):('')}
                 </section>
             </div>
         )
