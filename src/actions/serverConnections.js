@@ -273,7 +273,7 @@ export const redactResume = (data, cvId) => (dispatch) => {
 
 export const verify = (data) => (dispatch) => {
     console.log(JSON.stringify(data))
-    return fetch(url + '/auth/token/verify/',{
+    return fetch(url + '/auth/user/',{
         method: 'POST',  
         headers : { 
             'Content-Type': 'application/json',
@@ -283,7 +283,7 @@ export const verify = (data) => (dispatch) => {
     })
     .then(response => response.json())
     .then(data => {
-        return dispatch(verifyUserFetchSucces(data))
+        return dispatch(loginUserFetchSucces(data))
     })
     .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }

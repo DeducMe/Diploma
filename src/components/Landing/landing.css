@@ -40,6 +40,9 @@
 
 }
 
+.resumes-landing-list-el .resume-main .resume__main-info {
+    width: 100%;
+}
 /* .nav{
     position: fixed;
     top: 0;

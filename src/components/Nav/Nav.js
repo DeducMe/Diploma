@@ -232,12 +232,7 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onVerifyToken: ()=>{
       dispatch(verify())
-      .then((response)=>{
-        if (response.data === 200){
-          console.log(response.data)
-          dispatch({type : 'VERIFY_SUCCES', payload:localStorage['user']})
-        }
-      })
+      
     },
     onLogout: ()=>{
       dispatch(logout())
