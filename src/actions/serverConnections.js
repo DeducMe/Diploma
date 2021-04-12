@@ -281,7 +281,13 @@ export const verify = (data) => (dispatch) => {
             'X-CSRFToken': document.cookie.split('=')[1]
         }
     })
-    .then(response => response.json())
+    .then(response => 
+        {
+            if (response.status !== 403)
+            return response.json()
+            else return response.status;
+        }
+    )
     .then(data => {
         return dispatch(loginUserFetchSucces(data))
     })
@@ -324,7 +330,7 @@ export const registrateNewUser = (data) => (dispatch) => {
 
 export const logout = () => (dispatch) => {
     return fetch(url + '/auth/logout',{
-        method: 'DELETE', 
+        method: 'POST', 
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
