@@ -4,6 +4,7 @@ import { addResume, redactResume, getUserResumes, deleteResume } from '../../../
 import closeIcon from '../../../../img/close.svg'
 import deleteIcon from '../../../../img/trash.svg'
 import {checkStringInput, checkIntInput} from '../../../../scripts/commonScripts.js'
+import industries from '../../../../jsonFiles/industries.json'
 
 
 class ResumeRedactPopup extends Component {
@@ -158,8 +159,15 @@ class ResumeRedactPopup extends Component {
                 
 
                 <div className="resume__main-info rounded">
-                    <p className="resume__industry f-pre"><input type="text" placeholder="Отрасль"  onChange={this.changeIndustryValue.bind(this)} value={this.props.resumePlaceholder.industry}/></p>
-                    
+                    <p className="resume__industry f-pre">
+                        <span>Отрасль: </span>
+                        <select required id={"resume-industryInput-"+this.props.index} name={"resume-industryInput-"+this.props.index} onChange={this.changeIndustryValue.bind(this)}>
+                            {industries.map((item)=>{
+                                return <option value={item.name}>{item.name}</option>
+                            })}
+                        </select>
+                    </p>
+
                     <div className="resume__work-type-block input-list">
                         <p className="input-label">Типы работ:</p>
 

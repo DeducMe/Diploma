@@ -9,7 +9,6 @@
 .resume__main-info{
     min-height: 100px;
     padding: 20px;
-
     background-color: #fff;
 }
 
@@ -125,7 +124,16 @@
 }
 
 .resume__industry{
+    width: 85%;
     color: #254e8f;
+}
+
+.resume-main .resume__main-info{
+    width: 85%;
+}
+
+.resume-main.muted .resume__main-info{
+    width: 100%;
 }
 
 .resume__tags-list,
@@ -141,6 +149,15 @@
     border: 1px solid #000;
 }
 
+.resume__address{
+    margin: 30px 0;
+}
+
+.resume__address__data-block{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
 
 .resume__experience{
     width: 80%;
@@ -168,7 +185,6 @@
 
 .body-block{
     padding: 10px;
-    width: 80%;
     border: 2px solid #000;
     margin: 15px 0;
 }

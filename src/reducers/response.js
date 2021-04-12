@@ -6,7 +6,8 @@ const initialState = {
     responseValues:[],
     responseAnswers:[],
     openedResponseId:-1,
-    openedVacancyId:-1
+    openedVacancyId:-1,
+    responseSendState: ''
 };
   
   
@@ -85,26 +86,27 @@ export default function userState(state = initialState, action){
         };
     }
     if (action.type === 'GET_RESPONSE_QUERY_FETCH_SUCCES'){
-        state.next = action.data.next
+        state.nextValues = action.data.next
         return {
             ...state
         };
     }
     if (action.type === 'GET_ANSWERS_QUERY_FETCH_SUCCES'){
-        state.next = action.data.next
+        state.nextAnswers = action.data.next
         return {
             ...state
         };
     }
     if (action.type === 'RESPONSE_OPEN_RESPONSE_POPUP'){
         state.openedResponseId = action.payload.index;
-
+        state.responseSendState = action.payload.state
         return {
             ...state
         };
     }
     if (action.type === 'CLOSE_RESPONSE_POPUP'){
         state.openedResponseId = -1;
+        state.responseSendState = ''
         return {
             ...state
         };

@@ -47,7 +47,7 @@ class Popup extends Component {
   redirectUser = (userId) =>{
     this.props.onLoginUser();
     this.getAvatarFromFirebase()
-
+    localStorage['user'] = JSON.stringify(this.props.userState)
     if (this.props.userState.user_type === 'employee'){
       this.props.history.push("/profile/" + userId);
     }
@@ -138,7 +138,7 @@ class Popup extends Component {
     .then((response) => this.props.onSetUserMiniAvatar(response))
     .catch(err => this.props.onSetUserMiniAvatar('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'))
   }
-  
+  checkZoneClick(){}
 
   componentDidMount(){
     window.addEventListener('keydown', this.handleEsc)
@@ -152,7 +152,7 @@ class Popup extends Component {
     if (this.props.popupState.type === 'login')
       return (
 
-    <div className={"blur-box " + this.props.popupState.state}>
+    <div className={"blur-box " + this.props.popupState.state} onClick={this.checkZoneClick.bind(this)}>
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Вход</h2>
 

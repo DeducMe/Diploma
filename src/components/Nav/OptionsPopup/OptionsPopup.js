@@ -19,7 +19,7 @@ class OptionsPopup extends Component {
 
     render() {
         return (
-            <div className={"options-popup " + this.props.popupActive}>
+            <div className={"options-popup " + this.props.popupActive} onClick={this.popupClose.bind(this)}>
                 <div className="popup-wrapper rounded">
                     <h2 className="popup-header">Смена пароля</h2>
                     <form onSubmit={this.changeUserPassword.bind(this)}>

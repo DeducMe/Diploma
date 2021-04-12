@@ -5,7 +5,8 @@ import plusIcon from '../../../../img/plusIcon.svg'
 import closeIcon from '../../../../img/close.svg'
 import deleteIcon from '../../../../img/trash.svg'
 import editIcon from '../../../../img/edit.svg'
-
+import industries from '../../../../jsonFiles/industries.json'
+import LeafletMap from '../../../leafletMap/LeafletMap'
 
 import {checkStringInput, checkIntInput, getWorkTypeValues} from '../../../../scripts/commonScripts.js'
 
@@ -120,8 +121,12 @@ class VacancyRedactPopup extends Component {
         this.props.onExperienceValueChange(e.target.value, this.props.vacancyIndex)
     }
 
-    changeaddressValue = (e) => {
-        this.props.onAddressValueChange(e.target.value, this.props.vacancyIndex)
+    changeAddressValue = () => {
+        this.props.onAddressValueChange({
+            name:this.props.LeafletMapData.name,
+            lat:this.props.LeafletMapData.lat,
+            lng:this.props.LeafletMapData.lng
+        }, this.props.vacancyIndex)
     }
 
     saveVacancyFormChanges = (e) => {
@@ -197,7 +202,7 @@ class VacancyRedactPopup extends Component {
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
-                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)}>
+                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)} value={this.props.vacancyPlaceholder.grade}>
                                 <option value="internship">Стажер</option>
                                 <option value="junior">Начинающий специалист</option>
                                 <option value="middle">Специалист</option>
@@ -227,9 +232,21 @@ class VacancyRedactPopup extends Component {
                 
 
                 <div className="resume__main-info rounded">
-                    <p className="resume__industry f-pre"><input type="text" placeholder="Отрасль" onChange={this.changeIndustryValue.bind(this)} value={this.props.vacancyPlaceholder.industry}/></p>
-
-                    <p className="resume__address f-pre"><input type="text" placeholder="Адрес" onChange={this.changeaddressValue.bind(this)} value={this.props.vacancyPlaceholder.address}/></p>
+                    <p className="resume__industry f-pre">
+                        <span>Отрасль: </span>
+                        <select required id={"resume-industryInput-"+this.props.index} name={"resume-industryInput-"+this.props.index} onChange={this.changeIndustryValue.bind(this)} value={this.props.vacancyPlaceholder.industry}>
+                            {industries.map((item)=>{
+                                return <option value={item.name}>{item.name}</option>
+                            })}
+                        </select>
+                    </p>
+                    <div className="resume__address">
+                        <LeafletMap address={this.props.vacancyPlaceholder.address}></LeafletMap>
+                        <div className="resume__address__data-block">
+                            <button className="highlighted sup-btn" onClick={this.changeAddressValue}>Сохранить</button>
+                            <span>{this.props.vacancyPlaceholder.address.name}</span>
+                        </div>
+                    </div>
                     
                     <div className="resume__work-type-block input-list">
                         <p className="input-label">Типы работ:</p>
@@ -288,6 +305,7 @@ class VacancyRedactPopup extends Component {
                                     <input className="semi" type="text" placeholder="Подзаголовок" name="subtitle" id="subtitle"/>
 
                                     <div className="about__points-block input-list">
+                                        {this.props.vacancyPoints.length !== 0 ?
                                         <ul className="about__points-list rounded">
                                             {this.props.vacancyPoints.map((point, index)=>{
                                                 return (
@@ -297,7 +315,8 @@ class VacancyRedactPopup extends Component {
                                                     </li>
                                                 )
                                             })}
-                                        </ul>
+                                        </ul> : ''}
+                                        
                                         <p className="about__point input-list">
                                             <input type="text" className="input-list__input-block" placeholder="Элемент списка" onKeyDown={this.pointInput}/>
                                         </p>
@@ -371,7 +390,8 @@ const mapStateToProps = (state, ownProps) =>{
         vacancyPoints: state.vacancy.buf.bufPoints,
         vacancyIndex: ownProps.index,
         vacancyBuf:state.vacancy.buf,
-        aboutBodies:vacancyPlaceholder.body
+        aboutBodies:vacancyPlaceholder.body,
+        LeafletMapData:state.buf.leafletMap.data
     }
   }
   

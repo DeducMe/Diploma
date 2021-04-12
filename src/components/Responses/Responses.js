@@ -9,8 +9,9 @@ import { Link } from 'react-router-dom'
 import './responses.css'
 import dropdownArrow from '../../img/right-arrow.svg'
 import ResponsePopup from './ResponsePopup'
-import VacancyPopup from '../VacancyPopup/VacancyPopup'
+import { InView } from "react-intersection-observer";
 
+import VacancyPopup from '../VacancyPopup/VacancyPopup'
 
 // здесь пришлось делать два запроса на одной странице, потому что бекендер ленивое чмо (ОБА ЕЩЕ И ЧЕРЕЗ ПАГИНАЦИЮ)
 // с пагинацией пока не очень понятно что делать. 
@@ -45,24 +46,34 @@ class Responses extends Component {
     }
 
     getInvites = () =>{
-        return this.props.responseState.responseAnswers.filter((item) => 
-            this.props.responseState.responseValues.find(value => value.vacancy === item.vacancy && value.cv === item.cv) === undefined
-        )
+        return this.props.responseState.responseAnswers.filter((item) => {
+            return this.props.responseState.responseValues.find(value => value.vacancy === item.vacancy && value.cv === item.cv) === undefined
+        })
     }
+
+    getResults = () =>{
+        if (this.props.responseState.nextValues !== null || this.props.responseState.nextAnswers !== null){
+            const userType = getNormalUserType(this.props.userState.user_type) // а это прекрасный костыль, чтобы обойти говнорукость бэкендера. В userState у нас тип юзера employee, а во всех юрлах нам нужен worker
+            this.props.onGetUserResponses(userType, this.props.responseState.nextValues, this.props.userState.id, this.getAvatarFromFirebase)
+            console.log(this.props.responseState.nextValues, this.props.responseState.nextAnswers)
+            this.props.onGetUserAnswers(userType, this.props.responseState.nextAnswers, this.props.userState.id, this.getAvatarFromFirebase)
+        }
+    }
+
     componentDidMount(){
         this.props.onNullifyValues()
         this.props.onNullifyAnswers()
         console.log(this.props.userState.id)
+        this.getResults()
+    }
 
-        const userType = getNormalUserType(this.props.userState.user_type) // а это прекрасный костыль, чтобы обойти говнорукость бэкендера. В userState у нас тип юзера employee, а во всех юрлах нам нужен worker
-        this.props.onGetUserResponses(userType, this.props.responseState.nextValues, this.props.userState.id, this.getAvatarFromFirebase)
-        this.props.onGetUserAnswers(userType, this.props.responseState.nextAnswers, this.props.userState.id, this.getAvatarFromFirebase)
-
+    getAnswer(item){
+        return this.props.responseState.responseAnswers.find(answer => answer.vacancy === item.vacancy && answer.cv === item.cv)
     }
 
     render() {
         if (this.props.responseState.responseLoading || this.props.responseState.answersLoading) 
-            return <Loader></Loader>
+            return <Loader active='active'></Loader>
 
         else
             return (
@@ -72,6 +83,7 @@ class Responses extends Component {
                     </div>
                     {this.props.responseState.responseValues.length !== 0 || this.props.responseState.responseAnswers.length !== 0 ? 
                         <ul className="responses__list rounded">
+                            {console.log(this.getInvites())}
                         {this.getInvites().map((item, index)=> 
                             <li key={index} className="responses__list-el rounded">
                             <div className="responses__list-el__header">
@@ -94,21 +106,17 @@ class Responses extends Component {
                                     
                                     <span className="responses__decoration"></span>
                                 </div>
-                                    
-                                {/* <div className="responses-control-block">
-                                    <img className="responses-control-block__arrow" src={dropdownArrow} alt="dropdown-arrow" />
-                                    <button onClick={this.openResponseInfo.bind(this, item.id)}>Развернуть</button>
-                                </div> */}   
-                                {/* тут я мучаюсь с индексом */}
 
                                 <div className="responses__sender controls">
                                     <button className="sup-btn" onClick={this.openResponsePopup.bind(this, index, 'accepted')}>принять</button>
-                                    <button className="sup-btn" onClick={this.openResponsePopup.bind(this, index), 'rejected'}>отказать</button>
+                                    <button className="sup-btn" onClick={this.openResponsePopup.bind(this, index, 'declined')}>отказать</button>
                                     {this.props.responseState.openedResponseId === index ? 
                                     <ResponsePopup
+                                    answerId = {item.id}
                                     item ={{
                                         'owner_id':item[this.invertUserType(this.props.userState.user_type)],
                                         'pk':item[userTypeToSearchType(this.invertUserType(this.props.userState.user_type))],
+                                        'answer':item[userTypeToSearchType(this.props.userState.user_type)],
                                         'state': this.props.responseState.responseSendState
                                     }}></ResponsePopup> : ''}
                                 </div>
@@ -127,28 +135,31 @@ class Responses extends Component {
                                 <button className="responses__list-el__header__btn"></button>
 
                                 <p className="responses__list-el__header__response-date semi">{simplifyDate(item.date_response)}</p>
-                                {item.state === 'sent' ? 
-                                <p>Вакансия не просмотрена</p>
-                                : item.state === 'viewed' ?
-                                <p className="yellow">Вакансия просмотрена</p>
-                                : item.state === 'rejected' ? 
-                                <p className="red">Отказ</p>
-                                : item.state === 'accepted' ? 
-                                <p className="green">Приглашение</p>
-                                : ''}
+                                {
+                                this.getAnswer(item) !== undefined ?
+                                    this.getAnswer(item).state === 'viewed' ?
+                                        item.state === 'accepted' ? 
+                                            <p className="green">Приглашение</p> :
+                                            <p className="red">Отказ</p> :
+                                        this.getAnswer(item).state === 'declined' ? 
+                                            <p className="red">Отказ</p>
+                                        : this.props.responseState.responseAnswers.find(answer => answer.vacancy === item.vacancy && answer.cv === item.cv).state === 'accepted' ? 
+                                            <p className="green">Приглашение</p>
+                                    : ''
+                                : ''
+                                }
                             </div>
 
                             <div className="responses__list-el__body opened">
-                                <div className={"responses__reciever " + (item.state === 'rejected' || item.state === 'accepted' ? 'responded' : '')}>
+                                <div className={"responses__reciever " + (item.state === 'declined' || item.state === 'accepted' || item.state === 'viewed' ? 'responded' : '')}>
                                     <Link to={"/"+userTypeToUrlUserType(this.invertUserType(this.props.userState.user_type))+"/" + item[this.invertUserType(this.props.userState.user_type)]}>
                                         <img className="responses__avatar" src={item[this.invertUserType(this.props.userState.user_type)+ '_avatar'] === '' ? 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54' : item[this.invertUserType(this.props.userState.user_type)+'_avatar']} alt="" />
                                     </Link>
                                     {item.state === 'sent' ? 
                                         <p className="responses__message rounded">Ответа пока нет :( </p>
-                                    : item.state === 'viewed' ?
-                                        <p className="responses__message rounded">Ответа пока нет, но резюме уже посмотрели!</p>
-                                    : item.state === 'accepted' || item.state === 'rejected' ?
-                                        <p className="responses__message rounded">{this.props.responseState.responseAnswers.find(answer => answer.vacancy === item.vacancy || answer.cv === item.cv).message}</p>
+
+                                    : item.state === 'accepted' || item.state === 'declined' || item.state === 'viewed' ?
+                                        <p className="responses__message rounded responded">{this.getAnswer(item) !== undefined ? this.getAnswer(item).message : ''}</p>
                                     :''}
                                     
                                     <span className="responses__decoration"></span>
@@ -161,7 +172,7 @@ class Responses extends Component {
                                 {/* тут я мучаюсь с индексом */}
 
                                 <div className="responses__sender responded">
-                                    <p className="responses__message rounded">
+                                    <p className="responses__message rounded responded">
                                         {item.message}
                                     </p>
                                     <span className="responses__decoration "></span>
@@ -170,18 +181,18 @@ class Responses extends Component {
                                         <img className="responses__avatar" src={this.props.userAvatar} alt="" />
                                     </Link>
                                 </div>
-                                
-
                             </div>
 
                             <div className="responses__list-el__footer"></div>
-
                         </li>)
                         })}
 
                     </ul>
                     : <p>Откликов нет :(</p>}
-                    {this.props.responseState.openedVacancyId !== -1 ? <VacancyPopup id={this.props.responseState.openedVacancyId}></VacancyPopup> : <p>cringe</p>}
+                    {this.props.responseState.openedVacancyId !== -1 ? <VacancyPopup id={this.props.responseState.openedVacancyId}></VacancyPopup> : ''}
+                    <InView as="div" onChange={(inView, entry) => {
+                        if (inView) this.getResults()}}>
+                    </InView>
                 </section>
             )
     }
@@ -206,6 +217,9 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'RESPONSE_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'RESPONSE_UPDATE_VALUES', payload:data.data.results}) 
+                    data.data.results.map((item) => {
+                        getAvatarFromFirebase(userId, item.id)
+                    })
                 }
             })
             .then(response => dispatch(responseLoaderDeactivate()))

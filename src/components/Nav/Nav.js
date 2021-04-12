@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Popup from './Popup/Popup'
 import OptionsPopup from './OptionsPopup/OptionsPopup'
 
-
 import logo from '../../img/logo.svg'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
@@ -12,7 +11,7 @@ import bell from '../../img/bell.svg'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 import {Link} from 'react-router-dom'
-import {logout} from '../../actions/serverConnections'
+import {logout, verify} from '../../actions/serverConnections'
 import placeholderAvatar from '../../img/placeholder-avatar.jpg'
 
 class Nav extends Component {
@@ -36,6 +35,7 @@ class Nav extends Component {
   logoutHandleFormSubmit = (e) => {
     e.preventDefault();
     this.props.onLogout()
+    this.dropdownToggle()
   }
 
   dropdownToggle = () => {
@@ -48,6 +48,8 @@ class Nav extends Component {
   }
 
   optionsPopupToggle = () => {
+    this.dropdownToggle()
+
     if (this.props.navState.optionsPopup.optionsPopupState === ''){
       this.props.onOptionsPopupActivate();
     }
@@ -66,6 +68,10 @@ class Nav extends Component {
 
   getUserProfileLink = () =>  {
     return "/"+(this.props.userState.user.user_type === 'employee' ? 'profile' : 'company')+"/"+this.props.userState.user.id
+  }
+
+  componentDidMount = () => {
+    this.props.onVerifyToken()
   }
   
   render(){
@@ -110,7 +116,7 @@ class Nav extends Component {
                 
                 <div className={"nav__profile-data__dropdown bottom-rounded " + this.props.navState.dropDownState}>
                   <ul className="dropdown__list">
-                    <li className="dropdown__list-el">
+                    <li className="dropdown__list-el" onClick={this.dropdownToggle}>
                       <Link to={this.getUserProfileLink()} className="semi">Моя страница</Link>
                     </li>
                     <li className="dropdown__list-el" onClick={this.optionsPopupToggle}>
@@ -149,7 +155,7 @@ class Nav extends Component {
                 <img src={logo} alt="logo"/>
               </Link>
 
-              <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link>
+              {/* <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link> */}
 
               <button  className={"nav-el nav__search " + this.props.navState.searchActive} onClick={this.searchToggle}>
                 <span className="f-medium semi" >Поиск</span> 
@@ -224,9 +230,17 @@ const mapDispatchToProps = (dispatch) =>{
     onDropDownDeactivate: () => {
       dispatch({type : 'DROPDOWN_DEACTIVATE', payload:null})
     },
-    
-    onLogout: (token)=>{
-      dispatch(logout(token))
+    onVerifyToken: ()=>{
+      dispatch(verify())
+      .then((response)=>{
+        if (response.data === 200){
+          console.log(response.data)
+          dispatch({type : 'VERIFY_SUCCES', payload:localStorage['user']})
+        }
+      })
+    },
+    onLogout: ()=>{
+      dispatch(logout())
     },
   }
 }

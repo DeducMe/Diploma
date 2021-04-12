@@ -1,7 +1,7 @@
 import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {getSearchQueries, createResponse} from '../../../actions/serverConnections'
+import {getSearchQueries} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
 import ResponsePopup from '../../ResponsePopup/ResponsePopup'
@@ -111,7 +111,6 @@ class SearchMain extends Component {
                 </div>
                 <ul className="search-main__search-items-list">
                     {this.props.searchValues.map((item, index) => {
-
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
                                 <section className="resume-main">

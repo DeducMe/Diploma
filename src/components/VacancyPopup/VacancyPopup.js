@@ -18,7 +18,7 @@ class VacancyPopup extends Component {
         console.log(Object.keys(this.props.openedVacancy).length)
         if (Object.keys(this.props.openedVacancy).length !== 0)
         return (
-            <div className="blur-box active">
+            <div className="blur-box active" onClick={this.popupClose.bind(this)}>
                 <div className="resume resumes-list-el popup-wrapper rounded">
                     <section className="resume-main">
                         <div className={"resume__header white top-rounded " + this.props.openedVacancy.bg_header_color}>
@@ -68,8 +68,9 @@ class VacancyPopup extends Component {
                     <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
                 </div>
             </div>
+        
         )
-        else return <p>cringex2</p>
+        else return ''
     }
 }
 

@@ -18,7 +18,6 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
             name:state.LeafletMapData.name,
             lat:state.LeafletMapData.lat,
             lng:state.LeafletMapData.lng
-
         })
     }
 
@@ -29,7 +28,6 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
     }
 
     const phoneInput = (e) =>{
-        console.log(e)
         const value = e.target.value.split(' ').join('')
         if (e.keyCode === 9 || e.keyCode === 32){
             e.preventDefault()
@@ -41,6 +39,10 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
                 e.target.value = ''
             }
         }
+    }
+
+    const addPhone = (e) => {
+        state.onPhoneAdd(e.target.phonesInput.value)
     }
     return (
         <section className="popup-redact-section">
@@ -72,7 +74,10 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
                     )
                 })}
 
-                <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={phoneInput} maxLength="12"/>
+                <form onSubmit={addPhone}>
+                    <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={phoneInput} maxLength="12"/>
+                    <button type="submit" className="plus-btn">+</button>
+                </form>
             </div>
 
         </section>

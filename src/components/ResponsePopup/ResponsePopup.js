@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {createResponse} from '../../actions/serverConnections'
-import {userTypeToSearchType} from '../../scripts/commonScripts'
+import {userTypeToSearchType, invertUserType} from '../../scripts/commonScripts'
+
 class ResponsePopup extends Component {
     constructor(props) {
         super(props);
@@ -47,9 +48,7 @@ class ResponsePopup extends Component {
             return
         }
         const data = this.getResponseData(e.target.responseMessageInput.value)
-        console.log(userTypeToSearchType(this.props.userState.user_type))
-        console.log(this.props.userState.user_type)
-        this.props.onMakeResponse(userTypeToSearchType(this.props.userState.user_type), data)
+        this.props.onMakeResponse(userTypeToSearchType(invertUserType(this.props.userState.user_type)), data)
 
         this.props.onCloseResponsePopup()
     }

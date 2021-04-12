@@ -259,19 +259,23 @@ input[type='submit']{
     position: relative;
 
     display: flex;
-
-    width: fit-content;
 }
 
 .map-popup{
     position: absolute;
-    top: -220px;
-    right: -315px;
-
-    width: 300px;
+    top: 45px;
+    right: -250px;
+    height: 420px;
+    width: 500px;
     padding: 20px;
-
+    z-index: 2;
+    border: 1px solid #000;
     background-color: #fff;
+}
+
+.map-popup .leaflet-container{
+    height: inherit !important;
+    max-height: 380px;
 }
 
 .map-popup__closer-btn{

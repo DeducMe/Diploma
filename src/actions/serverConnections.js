@@ -35,6 +35,13 @@ function loginUserFetchSucces(data){
     }
 }
 
+function verifyUserFetchSucces(data){
+    return{
+        type:'VERIFY_USER_FETCH_SUCCES',
+        data
+    }
+}
+
 function changePasswordUserFetchSucces(data){
     return{
         type:'CHANGE_PASSWORD_USER_FETCH_SUCCES',
@@ -253,8 +260,6 @@ export const redactResume = (data, cvId) => (dispatch) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'X-CSRFToken': document.cookie.split('=')[1]
-
-
         }
     })  
     .then(response => response.json())
@@ -264,6 +269,23 @@ export const redactResume = (data, cvId) => (dispatch) => {
         return dispatch(redactResumeFetchSucces())
         else return dispatch(notFoundError(data))
     })
+}
+
+export const verify = (data) => (dispatch) => {
+    console.log(JSON.stringify(data))
+    return fetch(url + '/auth/token/verify/',{
+        method: 'GET',  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        return dispatch(verifyUserFetchSucces(data))
+    })
+    .catch(err => dispatch({ type: 'SOME_ERROR', err }))
 }
 
 export const loginUser = (data) => (dispatch) => {
@@ -510,8 +532,8 @@ export const getSearchQueries = (options, searchType, next) => (dispatch) => {
 }
 
 export const getUserResponses = (userType, next, userId) => (dispatch) => {
-    let fetchUrl = url + '/'+ (userType === 'employer' ? 'vacancy' : 'cv') +'/response/' + userType + '/' + userId
-    console.log(fetchUrl)
+    let fetchUrl = url + '/'+ (userType === 'employer' ? 'cv' : 'vacancy') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl, next)
     if (next !== null){
         if (next !== 'initial'){
             fetchUrl = next
@@ -534,8 +556,8 @@ export const getUserResponses = (userType, next, userId) => (dispatch) => {
 }
 
 export const getUserAnswers = (userType, next, userId) => (dispatch) => {
-    let fetchUrl = url + '/' + (userType === 'employer' ? 'cv' : 'vacancy') +'/response/' + userType + '/' + userId
-    console.log(fetchUrl)
+    let fetchUrl = url + '/' + (userType === 'employer' ? 'vacancy' : 'cv') +'/response/' + userType + '/' + userId
+    console.log(fetchUrl, next)
     if (next !== null){
         if (next !== 'initial'){
             fetchUrl = next
@@ -576,6 +598,28 @@ export const createResponse = (type, data) => (dispatch) => {
         else return dispatch(notFoundError(data))
     })
 }
+
+export const changeAnswer = (id, responseType, type) => (dispatch) => {
+    return fetch(url + '/' + responseType + '/response/',{
+        method: 'PUT',
+        body: JSON.stringify({'state':type, 'id':id}),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(onCreateResponse())
+        else return dispatch(notFoundError(data))
+    })
+}
+
+
 
 export const getVacancy = (vacancyId) => (dispatch) =>{
     return fetch(url + '/vacancy/'+vacancyId,{

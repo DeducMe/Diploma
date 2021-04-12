@@ -7,31 +7,36 @@ import '../../css/geosearch.css'
 import L from "leaflet";
 import { MapContainer , TileLayer, useMapEvents, Marker, Popup, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-
-
+import leafletKnn from 'leaflet-knn'
+import {testCities} from './testCities'
 // import marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 const searchControl = new GeoSearchControl({
   provider: new OpenStreetMapProvider(),
 });
 
-const provider = new OpenStreetMapProvider();
-
-
 function DisplayPosition({onChangeMapPosition}) {
     const map = useMap()
+    console.log(searchControl.searchElement.input.value)
     
     const onMove = () => {
         const pos = map.getCenter()
+        var gj = L.geoJson(testCities);
+
+        const name = searchControl.searchElement.input.value === '' ? leafletKnn(gj).nearestLayer([pos.lng, pos.lat],1)[0].layer.feature.properties.name : searchControl.searchElement.input.value
         onChangeMapPosition({
-            name:searchControl.searchElement.input.value,
+            name: name,
             lat:pos.lat,
             lng:pos.lng
         })
+        
     }
   
     useEffect(() => {
       map.on('move', onMove)
+      map.on('geosearch_showlocation', function (result) {
+        L.marker([result.x, result.y]).addTo(map)
+      });
       return () => {
         map.off('move', onMove)
       }
@@ -41,7 +46,7 @@ function DisplayPosition({onChangeMapPosition}) {
   }
   
 
-function findStartPosition(data, map){
+function findStartPosition(data, map, onChangeMapPosition){
     // provider.search({ query: "99 Southwark St, London SE1 0JF, UK" })
     // .then(value => {})
     var lat = data.lat;
@@ -50,21 +55,19 @@ function findStartPosition(data, map){
     var marker = L.marker([lat, lng]).addTo(map)
     marker.bindPopup(label).openPopup();
     map.setView([lat, lng], 13)
-
+    const pos = map.getCenter()
+    
 }
 
-function selectPosition() {
-    // onSelectPosition()
-}
 
 function LocationMarker() {
     const [position, setPosition] = useState(null)
+
     const map = useMapEvents({
       click() {
         map.locate()
       },
       locationfound(e) {
-        setPosition(e.latlng)
         map.flyTo(e.latlng, map.getZoom())
       },
     })
@@ -72,7 +75,6 @@ function LocationMarker() {
     return position === null ? null : (
       <Marker position={position}>
         <Popup>Вы здесь</Popup>
-        <button onClick={selectPosition}>выбрать позицию</button>
       </Marker>
     )
 }
@@ -98,7 +100,7 @@ function MapComp ({address, onChangeMapPosition}) {
             zoom="10"
             whenCreated={map=>{
                 initMap(map)
-                if (address !== undefined && address !== null) findStartPosition(address, map)
+                if (address !== undefined && address !== null) findStartPosition(address, map, onChangeMapPosition)
             }}
         >
             <TileLayer

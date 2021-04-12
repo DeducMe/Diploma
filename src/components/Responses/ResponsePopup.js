@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {createResponse} from '../../actions/serverConnections'
-import {getUserResponses, getUserAnswers} from '../../actions/serverConnections'
+import {getUserResponses, getUserAnswers, changeAnswer} from '../../actions/serverConnections'
 import {responseLoaderActivate, responseLoaderDeactivate, answersLoaderActivate, answersLoaderDeactivate} from '../../actions/asyncDispatch'
-import {userTypeToSearchType , getNormalUserType} from '../../scripts/commonScripts'
+import {userTypeToSearchType , getNormalUserType, invertUserType} from '../../scripts/commonScripts'
 import fileUploader from '../../actions/fileUploader';
 
 
@@ -20,19 +20,18 @@ class ResponsePopup extends Component {
         let data = {}
         if (this.props.userState.user_type === 'employer'){
             data.employer = this.props.userState.id
-            data.vacancy = this.props.userWorkValues[0].id
+            data.vacancy = this.props.item.answer
             data.cv = this.props.item.pk
             data.worker = this.props.item.owner_id
         }
         else{
             data.employer = this.props.item.owner_id
             data.vacancy = this.props.item.pk
-            data.cv = this.props.userWorkValues[0].id
+            data.cv = this.props.item.answer
             data.worker = this.props.userState.id
         }
         data.message = msg
         data.state = this.props.item.state || 'sent'
-        console.log(data)
 
         return data
     }
@@ -57,17 +56,14 @@ class ResponsePopup extends Component {
 
     makeResponse = (e) => {
         e.preventDefault()
-        if (this.state.chosenWorkValue === -1){
-            return
-        }
+
         const data = this.getResponseData(e.target.responseMessageInput.value)
-        console.log(userTypeToSearchType(this.props.userState.user_type))
-        console.log(this.props.userState.user_type)
-        this.props.onMakeResponse(userTypeToSearchType(this.props.userState.user_type), data)
+
+        this.props.onMakeResponse(userTypeToSearchType(invertUserType(this.props.userState.user_type)), data)
+        this.props.onChangeAnswer(this.props.answerId, userTypeToSearchType(this.props.userState.user_type), 'viewed')
         this.props.onCloseResponsePopup()
         this.props.onNullifyValues()
         this.props.onNullifyAnswers()
-        console.log(this.props.userState.id)
 
         const userType = getNormalUserType(this.props.userState.user_type) // а это прекрасный костыль, чтобы обойти говнорукость бэкендера. В userState у нас тип юзера employee, а во всех юрлах нам нужен worker
         this.props.onGetUserResponses(userType, this.props.responseState.nextValues, this.props.userState.id, this.getAvatarFromFirebase)
@@ -80,13 +76,7 @@ class ResponsePopup extends Component {
                 <button className="close-popup-btn" onClick={this.popupClose} tabIndex="-1">x</button>
 
                 <textarea className="response-form-popup__textarea rounded" type="text" name="responseMessageInput" placeholder="Сопроводительное письмо"></textarea>
-                <select id="responseWorkValueInput" name="responseWorkValueInput" onChange={this.changeWorkValue.bind(this)}>
-                    <option value={-1}>Выберите сопроводительную вакансию</option>
-                    
-                    {this.props.userWorkValues.map((value)=>{
-                        return <option key={value.id} value={value.id}>{value.vacancy_name}</option>
-                    })}
-                </select>
+               
                 <input className="sup-btn" type="submit" />
             </form>
         )
@@ -94,18 +84,10 @@ class ResponsePopup extends Component {
 }
 
 const mapStateToProps = (state, ownProps) =>{
-    let userWorkValues
-    if (state.user.user.user_type === 'employer'){
-        userWorkValues = state.vacancy.vacancies
-    }
-    else{
-        userWorkValues = state.cvs.cvs
-    }
-
     return {
         userState:state.user.user,
-        userWorkValues:userWorkValues,
         item:ownProps.item,
+        answerId:ownProps.answerId,
         responseState:state.response,
     }
   }
@@ -114,6 +96,10 @@ const mapDispatchToProps = (dispatch) =>{
     return{
         onMakeResponse:(type, data)=>{
             dispatch(createResponse(type, data))
+        },
+        onChangeAnswer:(id, responseType, type) => {
+            dispatch(changeAnswer(id,responseType, type))
+
         },
         onCloseResponsePopup: () => {
             dispatch({type : 'CLOSE_RESPONSE_POPUP', payload:null})

@@ -63,7 +63,7 @@ export const checkIntInput = (num, maxNum, minNum) => {
 }
 
 export const simplifyDate = (date) => {
-    return parseInt(date.slice(5, 7)) + ' ' + months[parseInt(date.slice(8, 10))] 
+    return parseInt(date.slice(8, 10)) + ' ' + months[parseInt(date.slice(5, 7))-1] 
 }
 
 
@@ -174,6 +174,10 @@ export const searchTypeToUserType = (searchType) => {
         default:
             break
     }
+}
+
+export const invertUserType = (type) =>{
+    return type === 'employer' ? 'worker' : 'employer'
 }
 
 export const userTypeToSearchType = (userType) => {

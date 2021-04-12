@@ -126,7 +126,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
             </div>
 
             <div className="list-input-field popup__input-block">
-                <p>Телефоны</p>
+                <p>Контакты</p>
                 
                 {state.profileState.userPhones.map((phone, index)=>{
                     return (
