@@ -1,6 +1,6 @@
 {
     "user_id": 0,
-    "salary": 0,
+    "salary": null,
     "vacancy_name": "",
     "industry": "",
     "grade":"",

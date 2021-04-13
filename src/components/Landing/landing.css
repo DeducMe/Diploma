@@ -2,7 +2,8 @@
     background-color: #253957;
     background-image: url('../../img/landingBg.png');
     background-size: cover;
-    background-repeat: repeat
+    background-repeat: repeat;
+    min-height: 100vh;
 }
 
 .landing__main{

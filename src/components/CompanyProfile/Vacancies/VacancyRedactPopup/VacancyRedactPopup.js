@@ -25,14 +25,11 @@ class VacancyRedactPopup extends Component {
     }
 
     changeSalary = (e) =>{
-        console.log(e.target.value)
-        if (e.target.value !== ''){
-            const check = checkIntInput(e.target.value, 9999999, null);
-            check === "pass" ? 
-            this.props.onSalaryValueChange(parseInt(e.target.value), this.props.vacancyIndex):
-            (this.props.onInputMistake(check, e.target))
-        }
-        else this.props.onSalaryValueChange(0, this.props.vacancyIndex)
+        const check = checkIntInput(e.target.value, 9999999, null);
+        check === "pass" ? 
+        this.props.onSalaryValueChange(parseInt(e.target.value), this.props.vacancyIndex):
+        (this.props.onInputMistake(check, e.target))
+
     }
 
     changeIndustryValue = (e) =>{
@@ -131,13 +128,12 @@ class VacancyRedactPopup extends Component {
 
     saveVacancyFormChanges = (e) => {
         e.preventDefault();
-
         let data = {
             "user_id": this.props.userData.id,
             "vacancy_name": this.props.vacancyPlaceholder.vacancy_name,
-            "industry": this.props.vacancyPlaceholder.industry,
+            "industry": this.props.vacancyPlaceholder.industry || 'Не указано',
             "grade": this.props.vacancyPlaceholder.grade,
-            "salary": this.props.vacancyPlaceholder.salary,
+            "salary": this.props.vacancyPlaceholder.salary === null ? -1 : this.props.vacancyPlaceholder.salary,
             "work_type": this.props.vacancyPlaceholder.work_type,
             "experience": this.props.vacancyPlaceholder.experience,
             "address": this.props.vacancyPlaceholder.address,
@@ -198,7 +194,7 @@ class VacancyRedactPopup extends Component {
                 <div className={"resume__header white top-rounded " + this.props.vacancyPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.vacancyPlaceholder.vacancy_name}/>
-                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.vacancyPlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
+                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.vacancyPlaceholder.salary === 0 || this.props.vacancyPlaceholder.salary === -1 || this.props.vacancyPlaceholder.salary === null ? '' :this.props.vacancyPlaceholder.salary }/><span className="bold f-medium"> руб.</span></p>
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">

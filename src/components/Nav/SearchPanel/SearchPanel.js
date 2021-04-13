@@ -25,21 +25,12 @@ class SearchPanel extends Component {
         this.props.history.push("/search");
     }
 
-    changeSearchQuery = (e) =>{
-        console.log(this.props.searchOptions.phrase)
-        this.props.onChangeSearchQuery(e.target.value)
-    }
-
-    changeSearchType = (e) =>{
-        this.props.onChangeSearchType(e.target.value)
-    }
-
     render() {
         return (
             <form className="search-form" onSubmit={this.redirectToSearch.bind(this)}>
-                <input type="text" className="search-form__input" id="searchPanelQueryInput" name="searchPanelQueryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} />
+                <input type="text" className="search-form__input" id="searchPanelQueryInput" name="searchPanelQueryInput" placeholder="Поиск..." />
 
-                <select className="search-form__dropdown-menu f-medium semi" id="searchPanelSearchType" name="searchPanelSearchType" onChange={this.changeSearchType.bind(this)}>
+                <select className="search-form__dropdown-menu f-medium semi" id="searchPanelSearchType" name="searchPanelSearchType" >
                     <option value="vacancy">Вакансии</option>
                     <option value="cv">Резюме</option>
                     <option value="employers">Компании</option>

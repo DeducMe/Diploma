@@ -21,14 +21,16 @@ class ResumeRedactPopup extends Component {
     }
 
     changeSalary = (e) =>{
-        console.log(e.target.value)
-        if (e.target.value !== ''){
-            const check = checkIntInput(e.target.value, 9999999, null);
-            check === "pass" ? 
-            this.props.onSalaryValueChange(parseInt(e.target.value), this.props.resumeIndex):
-            (this.props.onInputMistake(check, e.target))
+        const check = checkIntInput(e.target.value, 9999999, null);
+
+        check === "pass" ? 
+        this.props.onSalaryValueChange(parseInt(e.target.value), this.props.resumeIndex):
+        (this.props.onInputMistake(check, e.target))
+        console.log(this.props.resumePlaceholder.salary)
+
+        if (e.target.value  === ''){
+            this.props.onSalaryValueChange(null, this.props.resumeIndex)
         }
-        else this.props.onSalaryValueChange(0, this.props.resumeIndex)
     }
 
     changeIndustryValue = (e) =>{
@@ -60,14 +62,14 @@ class ResumeRedactPopup extends Component {
 
     saveResumeFormChanges = (e) => {
         e.preventDefault();
-
+        console.log(this.props.resumePlaceholder.salary)
         let data = {
             "id":this.props.cvPlaceholder.id,
             "user_id": this.props.userData.id,
             "vacancy_name": this.props.resumePlaceholder.vacancy_name,
-            "industry": this.props.resumePlaceholder.industry,
-            "grade": this.props.resumePlaceholder.grade,
-            "salary": this.props.resumePlaceholder.salary,
+            "industry": this.props.resumePlaceholder.industry || 'Не указано',
+            "grade": this.props.resumePlaceholder.grade || 'internship',
+            "salary": this.props.resumePlaceholder.salary === null ? -1 : this.props.resumePlaceholder.salary,
             "work_type": this.props.resumePlaceholder.work_type,
             "tags": this.props.resumePlaceholder.tags,
             "about": this.props.resumePlaceholder.about,
@@ -125,11 +127,11 @@ class ResumeRedactPopup extends Component {
                 <div className={"resume__header white top-rounded "+this.props.cvPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.resumePlaceholder.vacancy_name}/>
-                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary}/><span className="bold f-medium"> руб.</span></p>
+                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary === 0 || this.props.resumePlaceholder.salary === -1 || this.props.resumePlaceholder.salary === null ? '' :this.props.resumePlaceholder.salary }/><span className="bold f-medium"> руб.</span></p>
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
-                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)}>
+                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)} value={this.props.resumePlaceholder.grade}>
                                 <option value="internship">Стажер</option>
                                 <option value="junior">Начинающий специалист</option>
                                 <option value="middle">Специалист</option>
@@ -161,7 +163,7 @@ class ResumeRedactPopup extends Component {
                 <div className="resume__main-info rounded">
                     <p className="resume__industry f-pre">
                         <span>Отрасль: </span>
-                        <select required id={"resume-industryInput-"+this.props.index} name={"resume-industryInput-"+this.props.index} onChange={this.changeIndustryValue.bind(this)}>
+                        <select required id={"resume-industryInput-"+this.props.index} name={"resume-industryInput-"+this.props.index} onChange={this.changeIndustryValue.bind(this)} value={this.props.resumePlaceholder.industry}>
                             {industries.map((item)=>{
                                 return <option value={item.name}>{item.name}</option>
                             })}
