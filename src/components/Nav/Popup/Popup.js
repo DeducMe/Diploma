@@ -20,10 +20,14 @@ class Popup extends Component {
     console.log(this.props.popupState.submitValue)
   }
 
-  popupClose(e){
-    this.props.onResetValidation()
-
+  handleCloseBtnClick(e){
     e.preventDefault()
+    this.popupClose()
+  }
+
+  popupClose(){
+    this.props.onResetValidation()
+    
     this.props.onPopupClose();
   }
 
@@ -113,12 +117,16 @@ class Popup extends Component {
       else{
         if (this.props.popupState.type === 'login'){
           this.loginUser(login, password)
+          this.popupClose()
+
         }
         else if (this.props.popupState.type === 'registration'){
           let username = e.target.nameInput.value
 
           this.registrationJsonCreate(login, password, username, this.props.popupState.subject)
           .then(data => this.registrateUser(data))
+          this.popupClose()
+
         }
       }
     },0)
@@ -126,7 +134,7 @@ class Popup extends Component {
 
   handleEsc = (e) => {
     if (e.keyCode === 27) {
-      this.props.onPopupClose();
+      this.popupClose()
     }
   }
 
@@ -138,13 +146,20 @@ class Popup extends Component {
     .then((response) => this.props.onSetUserMiniAvatar(response))
     .catch(err => this.props.onSetUserMiniAvatar('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'))
   }
-  checkZoneClick(){}
+  
+  checkZoneClick(e){
+    if (e.target.id === 'loginBlurBox' || e.target.id === 'registrationBlurBox'){
+      this.popupClose()
+    }
+  }
 
   componentDidMount(){
+    // window.addEventListener('click', this.handleAreaClick)
     window.addEventListener('keydown', this.handleEsc)
   }
 
   componentWillUnmount(){
+    // window.removeEventListener('click', this.handleAreaClick)
     window.removeEventListener('keydown', this.handleEsc)
   }
 
@@ -152,7 +167,7 @@ class Popup extends Component {
     if (this.props.popupState.type === 'login')
       return (
 
-    <div className={"blur-box " + this.props.popupState.state} onClick={this.checkZoneClick.bind(this)}>
+    <div className={"blur-box " + this.props.popupState.state} onClick={this.checkZoneClick.bind(this)} id="loginBlurBox">
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Вход</h2>
 
@@ -180,7 +195,7 @@ class Popup extends Component {
           </div>
           <Loader active={this.props.loaderActive}></Loader>
           <input className="form-submit-btn f-large rounded" type="submit" value="Войти!"/>
-          <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
+          <button className="close-popup-btn" onClick={this.handleCloseBtnClick.bind(this)} tabIndex="-1">x</button>
 
           
         </form>
@@ -189,7 +204,7 @@ class Popup extends Component {
         )
     else return (
 
-    <div className={"blur-box " + this.props.popupState.state}>
+    <div className={"blur-box " + this.props.popupState.state} onClick={this.checkZoneClick.bind(this)} id="registrationBlurBox">
       <div className="popup-wrapper rounded">
         <h2 className="popup-header">Регистрация</h2>
 
@@ -241,7 +256,7 @@ class Popup extends Component {
 
           <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
 
-          <button className="close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
+          <button className="close-popup-btn" onClick={this.handleCloseBtnClick.bind(this)}  tabIndex="-1">x</button>
 
           <p>
 Нажимая «Зарегистрироваться», вы подтверждаете, что ознакомлены, полностью согласны и принимаете условия <a href="#">«Соглашения об оказании услуг по содействию в трудоустройстве (оферта)»</a></p>

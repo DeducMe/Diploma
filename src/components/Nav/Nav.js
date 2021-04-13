@@ -35,6 +35,8 @@ class Nav extends Component {
   logoutHandleFormSubmit = (e) => {
     e.preventDefault();
     this.props.onLogout()
+    this.props.history.push('/landing')
+
     this.dropdownToggle()
   }
 
@@ -72,7 +74,6 @@ class Nav extends Component {
 
   componentDidMount = () => {
     this.props.onVerifyToken()
-    
   }
   
   render(){
@@ -242,6 +243,8 @@ const mapDispatchToProps = (dispatch) =>{
     },
     onLogout: ()=>{
       dispatch(logout())
+      dispatch({type : 'USER_LOGOUT', payload:null})
+
     },
   }
 }

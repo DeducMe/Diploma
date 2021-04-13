@@ -15,7 +15,7 @@ export default function userState(state = initialState, action){
           ...state
         };
     }
-    else if (action.type === 'USER_EXIT'){
+    else if (action.type === 'USER_LOGOUT'){
         state.logged = false;
         return {
           ...state

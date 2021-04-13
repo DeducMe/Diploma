@@ -45,7 +45,10 @@ class Resumes extends Component {
                                     <div className={"resume__header white top-rounded " + this.props.cvData.cvs[index].bg_header_color}>
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{el.vacancy_name}</h2>
-                                            <p><span className="resume__header__salary bold f-medium">{el.salary}</span><span className="bold f-medium"> руб.</span></p>
+                                            <p>
+                                                {el.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
+                                                <span className="resume__header__salary bold f-medium">{el.salary} руб.</span>}
+                                            </p>
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{getGradeValues(el.grade)}</p>

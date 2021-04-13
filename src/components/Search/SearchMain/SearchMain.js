@@ -13,8 +13,6 @@ import { Link } from 'react-router-dom'
 
 
 class SearchMain extends Component {
-    
-
     sortByValue(arr, value, sortMethod){
         sortMethod === 'asc' ? (
             arr.sort((a, b) => a[value] - b[value])
@@ -47,12 +45,9 @@ class SearchMain extends Component {
         this.props.onSortValues(values)
     }
 
-    changeSearchQuery(e){
-        this.props.onChangeSearchQuery(e.target.value)
-    }
-
     searchBtnClick = (e) =>{
         e.preventDefault()
+        this.props.onChangeSearchQuery(e.target.queryInput.value)
         this.getSearchValues(true)
     }
 
@@ -67,7 +62,6 @@ class SearchMain extends Component {
     
     openResponsePopup = (index) => {
         this.props.onOpenResponsePopup(index)
-
     }
 
     componentDidMount(){
@@ -88,10 +82,10 @@ class SearchMain extends Component {
             <section className="search-main">
                 <div className="search-main__controls">
                     <form className="search-main__controls-form rounded" onSubmit={this.searchBtnClick.bind(this)}>
-                        <div className="search-input rounded">
-                            <input type="text" id="queryInput" name="queryInput" placeholder="Поиск..." onChange={this.changeSearchQuery.bind(this)} value={this.props.searchOptions.phrase}/>
+                        {/* <div className="search-input rounded">
+                            <input type="text" id="queryInput" name="queryInput" placeholder="Поиск..." />
                             <button type="submit" className="sup-btn">Найти</button>
-                        </div>
+                        </div> */}
 
                         <select className="search-main__controls__sort-type-select" name="salarySortType" id="" onChange={this.sortSearch.bind(this)}>
                             <option value="salaryAsc">по возрастанию зарплаты</option>

@@ -13,6 +13,11 @@ import { NavItem } from 'react-materialize';
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 class SearchSide extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {timeoutHandler: false};
+           
+    } 
     changeIndustry = (e) => {
         if (e.target.value!==0){
             this.props.onChangeIndustry(e.target.value)
@@ -20,8 +25,8 @@ class SearchSide extends Component {
     }
 
     ChangeSlider = (values) =>{
-        if (this.props.searchOptions['min-salary'] !== values[0]) this.props.onSetSearchOptions({'min-salary': values[0]})
-        else if (this.props.searchOptions['max-salary'] !== values[1]) this.props.onSetSearchOptions({'max-salary': values[1]})
+        if (this.props.searchOptions['min-salary'] !== values[0]) this.props.onSetSearchOptions({'min-salary': values[0] === 0 ? -1 : values[0]})
+        else if (this.props.searchOptions['max-salary'] !== values[1]) this.props.onSetSearchOptions({'max-salary': values[1] === 0 ? -1 : values[1]})
     }
 
     gradeChange = (e) =>{
@@ -49,13 +54,11 @@ class SearchSide extends Component {
     }
     
     componentDidUpdate(){
-        let updateOptions
-
         console.log('updated')
-        clearTimeout(updateOptions);
-        updateOptions = setTimeout(()=>{
+        clearTimeout(this.state.timeoutHandler);
+        this.state.timeoutHandler = setTimeout(()=>{
             this.getSearchValues(true)
-        }, 2000)
+        }, 1000)
         
     }
 
@@ -66,9 +69,9 @@ class SearchSide extends Component {
                     <div className="search-side__block search-side__salary">
                         <h3>Зарплата</h3>
                         <p className="search-side__salary-placeholder">
-                            <span>минимальная: {this.props.searchOptions['min-salary']} руб.</span><span>максимальная: {this.props.searchOptions['max-salary']} руб.</span>
+                            <span>минимальная: {this.props.searchOptions['min-salary'] === -1 ? 0 : this.props.searchOptions['min-salary']} руб.</span><span>максимальная: {this.props.searchOptions['max-salary']} руб.</span>
                         </p>
-                        <Range min={0} max={500000} defaultValue={[0, 400000]} onChange={this.ChangeSlider.bind(this)} />
+                        <Range min={-1} max={500000} defaultValue={[-1, 400000]} onChange={this.ChangeSlider.bind(this)} />
                     </div>
 
                     <div className="search-side__block search-side__grade">
@@ -161,7 +164,7 @@ class SearchSide extends Component {
                         <div className="selectbox-block">
                             <select id="searchSideIndustry" name="searchSideIndustry" onChange={this.changeIndustry.bind(this)}>
                                 {industriesData.map((item)=>{
-                                    return <option key={item.id} value={item.id}>{item.name}</option>
+                                    return <option key={item.id} value={item.name}>{item.name}</option>
                                 })}
                             </select>
                             

@@ -39,7 +39,7 @@
 }
 
 .resume__header__name{
-    width: 76%;
+    width: 65%;
     overflow: hidden;
     text-overflow: ellipsis;
 }

@@ -3,7 +3,7 @@
     "vacancy_name": "",
     "industry": "",
     "grade": "",
-    "salary": 0,
+    "salary": null,
     "work_type": [],
     "tags": [],
     "about": "",
