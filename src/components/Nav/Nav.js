@@ -8,6 +8,7 @@ import logo from '../../img/logo.svg'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
 import bell from '../../img/bell.svg'
+import fileUploader from '../../actions/fileUploader'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
 import {Link} from 'react-router-dom'
@@ -49,6 +50,14 @@ class Nav extends Component {
     }
   }
 
+  getAvatarFromFirebase = () =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
+    const storageRef = fileUploader.storage().ref()
+    const fileRef = storageRef.child('user-avatar' + this.props.userState.id)
+    fileRef.getDownloadURL()
+    .then((response) => this.props.onSetUserMiniAvatar(response))
+    .catch(err => this.props.onSetUserMiniAvatar('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'))
+  }
+
   optionsPopupToggle = () => {
     this.dropdownToggle()
 
@@ -74,6 +83,9 @@ class Nav extends Component {
 
   componentDidMount = () => {
     this.props.onVerifyToken()
+    if (this.props.logged){
+      this.getAvatarFromFirebase()
+    }
   }
   
   render(){
@@ -206,6 +218,9 @@ const mapStateToProps = (state, ownProps) =>{
 
 const mapDispatchToProps = (dispatch) =>{
   return{
+    onSetUserMiniAvatar: (photo) => {
+      dispatch({type : 'SET_USER_MINI_AVATAR', payload:photo})
+    },
     onSearchActivate: () => {
       dispatch({type : 'SEARCH_ACTIVATE', payload:null})
     },
@@ -237,6 +252,7 @@ const mapDispatchToProps = (dispatch) =>{
       .then((data)=>{
         if(data.data !== 403){
           dispatch({type : 'USER_LOGIN', payload:null})
+
         }
       })
       

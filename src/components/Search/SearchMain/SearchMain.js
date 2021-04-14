@@ -10,6 +10,7 @@ import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues, parseOptions, searchTypeToUserType} from '../../../scripts/commonScripts'
 import { InView } from "react-intersection-observer";
 import { Link } from 'react-router-dom'
+import Loader from '../../Loader/Loader'
 
 
 class SearchMain extends Component {
@@ -54,6 +55,7 @@ class SearchMain extends Component {
     getSearchValues = (nullify) => {
         if (nullify) this.props.onNullifyValues()
         if (this.props.searchState.searchLoading === false){
+            this.props.onSearchLoaderActivate()
             
             this.props.onGetSearchResponse(parseOptions(this.props.searchOptions), this.props.searchOptions.searchType, this.props.searchState.next, this.getAvatarFromFirebase)
             
@@ -63,11 +65,6 @@ class SearchMain extends Component {
     openResponsePopup = (index) => {
         this.props.onOpenResponsePopup(index)
     }
-
-    componentDidMount(){
-        this.getSearchValues(true)
-    }
-
 
     getAvatarFromFirebase = (id, pk) =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
         const storageRef = fileUploader.storage().ref()
@@ -81,7 +78,8 @@ class SearchMain extends Component {
         return (
             <section className="search-main">
                 <div className="search-main__controls">
-                    <form className="search-main__controls-form rounded" onSubmit={this.searchBtnClick.bind(this)}>
+                    <form className="search-main__controls-form rounded" > 
+                    {/* onSubmit={this.searchBtnClick.bind(this)} */}
                         {/* <div className="search-input rounded">
                             <input type="text" id="queryInput" name="queryInput" placeholder="Поиск..." />
                             <button type="submit" className="sup-btn">Найти</button>
@@ -104,7 +102,7 @@ class SearchMain extends Component {
                     </form>
                 </div>
                 <ul className="search-main__search-items-list">
-                    {this.props.searchValues.map((item, index) => {
+                    {this.props.searchState.searchLoading === false ? this.props.searchValues.map((item, index) => {
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
                                 <section className="resume-main">
@@ -141,7 +139,6 @@ class SearchMain extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    {console.log(this.props.searchOptions.searchType, this.props.userState.user_type)}
                                     {this.props.searchOptions.searchType === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
@@ -163,10 +160,11 @@ class SearchMain extends Component {
                                 </section>
                             </li>
                         )
-                    })}
+                    }):''}
+                    <Loader active={this.props.searchLoading}></Loader>
                 </ul>
                 <InView as="div" onChange={(inView, entry) => {
-                    if (inView) this.getSearchValues(false)}}>
+                    if (inView) this.getSearchValues(false, true)}}>
                 </InView>
 
             </section>
@@ -181,6 +179,7 @@ const mapStateToProps = (state) =>{
         searchOptions:state.search.searchOptions,
         searchValues:state.search.searchValues,
         userState:state.user.user,
+        searchLoading:state.search.searchLoading
     }
   }
   
@@ -200,6 +199,9 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onOpenResponsePopup: (index) => {
             dispatch({type : 'OPEN_RESPONSE_POPUP', payload:index})
+        },
+        onSearchLoaderActivate: () => {
+            dispatch(searchLoaderActivate())
         },
         onGetSearchResponse:(options, searchType, next, getAvatarFromFirebase)=>{
             dispatch(searchLoaderActivate())

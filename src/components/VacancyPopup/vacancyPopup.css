@@ -6,6 +6,11 @@
     list-style: inside;
 }
 
+.vacancy-info{
+    width: 700px !important;
+    min-width: 700px !important;
+}
+
 .resume .close-popup-btn{
     right: 5px;
     top: 0;

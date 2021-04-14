@@ -56,7 +56,10 @@ class SearchSide extends Component {
     componentDidUpdate(){
         console.log('updated')
         clearTimeout(this.state.timeoutHandler);
+        this.props.onSearchLoaderActivate()
+
         this.state.timeoutHandler = setTimeout(()=>{
+            console.log('asasfasfas')
             this.getSearchValues(true)
         }, 1000)
         
@@ -195,21 +198,19 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch({type : 'SEARCH_SET_OPTIONS', payload:options})
         },
         onGetSearchResponse:(options, searchType, getAvatarFromFirebase)=>{
-            if (!dispatch(getSearchLoadingState())){
-                dispatch(searchLoaderActivate())
-                const next = dispatch(getSearchNext())
-                dispatch(getSearchQueries(options, searchType, next))
-                .then((data)=>{
-                    if (data.data !== null && data.data !== 404){
-                        dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
-                        dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                        data.data.results.map((item) => {
-                            if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
-                        })
-                    }
-                })
-                .then(response => dispatch(searchLoaderDeactivate()))
-            }
+            dispatch(searchLoaderActivate())
+            const next = dispatch(getSearchNext())
+            dispatch(getSearchQueries(options, searchType, next))
+            .then((data)=>{
+                if (data.data !== null && data.data !== 404){
+                    dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
+                    dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
+                    data.data.results.map((item) => {
+                        if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
+                    })
+                }
+            })
+            .then(response => dispatch(searchLoaderDeactivate()))
         },
         onSetValuePhoto: (photo, id) => {
             console.log('photo')
@@ -229,6 +230,9 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onChangeIndustry: (value) => {
             dispatch({type : 'SEARCH_OPTIONS_CHANGE_INDUSTRY', payload:value})
+        },
+        onSearchLoaderActivate: () => {
+            dispatch(searchLoaderActivate())
         },
     }
   }

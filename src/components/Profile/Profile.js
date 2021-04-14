@@ -100,7 +100,7 @@ class Profile extends Component {
             this.props.onGetLoggedUserFetch(this.props.userFetchId,this.props.onHasProfile, this.initPlaceholder, this.props.history)
         }
         else{
-            this.props.onGetUserFetch(this.props.userFetchId, this.props.history)
+            this.props.onGetUserFetch(this.props.userFetchId, this.props.history, this.props.onHasProfile)
         }        
         this.props.onGetResumes(this.props.userFetchId)
     }
@@ -142,7 +142,7 @@ const mapDispatchToProps = (dispatch) =>{
         onInitializeProfileData: (data)=>{
             dispatch({type : 'POPUP_REDACT_INITIALIZE_PROFILE', payload:data}) 
         },
-        onHasProfile: (data)=>{
+        onHasProfile: ()=>{
             dispatch({type : 'USER_HAS_PROFILE', payload:null}) 
         },
         onGetLoggedUserFetch: (userId, onHasProfile, initPlaceholder, history)=> {
@@ -160,11 +160,14 @@ const mapDispatchToProps = (dispatch) =>{
                 else history.push('/landing')           
             })
         },
-        onGetUserFetch: (userId, history)=> {
+        onGetUserFetch: (userId, history, onHasProfile)=> {
             dispatch(getUserData(userId))
             .then((data)=>{
                 if (data.userData !== null && data.userData!=='404'){
-                    console.log(data.userData)
+                    if (data.userData.profile_link !== "empty"){
+                        onHasProfile()
+                        console.log('profile')
+                    }
                 }
                 else history.push('/landing')           
             })

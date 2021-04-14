@@ -1,0 +1,21 @@
+.resumes-list-el.popup-wrapper{
+    border: 2px solid #000;
+}
+
+.vacancy-info{
+    width: 700px !important;
+    min-width: 700px !important;
+}
+
+.vacancy__about__body-list__points-list{
+    list-style: inside;
+}
+
+.resume .close-popup-btn{
+    right: 5px;
+    top: 0;
+}
+
+.resume.popup-wrapper{
+    background-color: #EFF5FF;
+}

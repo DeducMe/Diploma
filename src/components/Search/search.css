@@ -15,6 +15,10 @@
     position: relative;
 }
 
+.search-main__search-items-list .resume__main-info{
+    width: 100%;
+}
+
 .response-form-popup{
     position: absolute;
     right: -385px;

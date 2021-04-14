@@ -15,7 +15,7 @@ const initialState = {
         wrongEmail:'muted',
         wrongEmailError: '',
         wrongPassword:'muted',
-        loaderActive:false
+        loginPopupLoaderActive:false
     }
 };
   
@@ -117,14 +117,14 @@ export default function navState(state = initialState, action){
             ...state
         }
     }
-    else if(action.type === 'ACTIVATE_LOADER'){
-        state.popup.loaderActive = true;
+    else if(action.type === 'LOGIN_ACTIVATE_LOADER'){
+        state.popup.loginPopupLoaderActive = true;
         return{
             ...state
         }
     }
-    else if(action.type === 'DEACTIVATE_LOADER'){
-        state.popup.loaderActive = false;
+    else if(action.type === 'LOGIN_DEACTIVATE_LOADER'){
+        state.popup.loginPopupLoaderActive = false;
         return{
             ...state
         }

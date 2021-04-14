@@ -7,6 +7,7 @@ import {getWorkTypeValues, getGradeValues} from '../../../scripts/commonScripts'
 import plusIcon from '../../../img/plusIcon.svg'
 import VacancyRedactPopup from './VacancyRedactPopup/VacancyRedactPopup'
 import editIcon from '../../../img/edit.svg'
+import VacancyPopup from '../../VacancyPopup/VacancyPopup'
 
 class Vacancy extends Component {
     addVacancy = (e) => {
@@ -92,6 +93,8 @@ class Vacancy extends Component {
                         </button>
                     </div>)
                 :('')}
+                {this.props.vacancyData.openedVacancyId !== -1 ? <VacancyPopup id={this.props.responseState.openedVacancyId}></VacancyPopup> : ''}
+
             </div>
         )
     }

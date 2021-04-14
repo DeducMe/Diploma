@@ -26,6 +26,7 @@ class Popup extends Component {
   }
 
   popupClose(){
+    console.log('s')
     this.props.onResetValidation()
     
     this.props.onPopupClose();
@@ -59,21 +60,24 @@ class Popup extends Component {
       this.props.history.push("/company/" + userId);
 
     }
+    this.popupClose();
+
     this.props.onDeactivateLoader()
   }
 
   loginUser(login, password){
+    this.props.onActivateLoader()
 
     this.props.onLoginUserCheck({
       "email": login,
       "password": password
     }, this.redirectUser, this.fetchError) // server response here
-    this.props.onActivateLoader()
   }
 
   registrateUser(data){
-    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
     this.props.onActivateLoader()
+
+    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
   }
 
   validateEmail(email){
@@ -117,7 +121,6 @@ class Popup extends Component {
       else{
         if (this.props.popupState.type === 'login'){
           this.loginUser(login, password)
-          this.popupClose()
 
         }
         else if (this.props.popupState.type === 'registration'){
@@ -125,7 +128,6 @@ class Popup extends Component {
 
           this.registrationJsonCreate(login, password, username, this.props.popupState.subject)
           .then(data => this.registrateUser(data))
-          this.popupClose()
 
         }
       }
@@ -137,7 +139,6 @@ class Popup extends Component {
       this.popupClose()
     }
   }
-
   
   getAvatarFromFirebase = () =>{   //пришлось делать кучу изменений состояний, потому что один flutter разработчик решил, что он не будет сохранять url. 
     const storageRef = fileUploader.storage().ref()
@@ -251,8 +252,8 @@ class Popup extends Component {
               <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
             </svg></span><span>Запомните меня!</span></label>
           </div>
-
           <Loader active={this.props.loaderActive}></Loader>
+
 
           <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
 
@@ -275,7 +276,7 @@ const mapStateToProps = (state, ownProps) =>{
     wrongPassword:state.nav.popup.wrongPassword,
     popupActive: state.nav.popup.state,
     popupState: state.nav.popup,
-    loaderActive: state.nav.popup.loaderActive,
+    loaderActive: state.nav.popup.loginPopupLoaderActive,
     wrongEmailError:state.nav.popup.wrongEmailError,
     wrongPasswordError:state.nav.popup.wrongPasswordError,
     userState:state.user.user
@@ -312,6 +313,7 @@ const mapDispatchToProps = (dispatch) =>{
 
     onLoginUserCheck: (data, redirectUser, fetchError) =>{
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
+
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
@@ -321,6 +323,7 @@ const mapDispatchToProps = (dispatch) =>{
         else{
           fetchError('wrong-data')
         }
+
       })
     },
     onRegistrationUserFetch: (data, redirectUser, fetchError, onLoginUserCheck) => {
@@ -335,15 +338,16 @@ const mapDispatchToProps = (dispatch) =>{
         else{
           fetchError('email-occupied')
         }
+
       })
       
     },
     
     onActivateLoader: ()=>{
-      dispatch({type : 'ACTIVATE_LOADER', payload:null})
+      dispatch({type : 'LOGIN_ACTIVATE_LOADER', payload:null})
     },
     onDeactivateLoader: ()=>{
-      dispatch({type : 'DEACTIVATE_LOADER', payload:null})
+      dispatch({type : 'LOGIN_DEACTIVATE_LOADER', payload:null})
     }
   }
 }

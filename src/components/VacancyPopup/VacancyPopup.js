@@ -33,7 +33,7 @@ class VacancyPopup extends Component {
                             </div>
                         </div>
 
-                        <div className="resume__main-info rounded">
+                        <div className="resume__main-info bottom-rounded full-width">
                             <p className="resume__industry f-pre">{this.props.openedVacancy.industry}</p>
 
                             <p className="resume__work-type">{this.props.openedVacancy.work_type.map((el)=>getWorkTypeValues(el)).join(', ')}</p>

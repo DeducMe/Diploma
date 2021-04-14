@@ -2,7 +2,8 @@
 const initialState = {
     cvs:[],
     placeholder:[],
-    newCv:{}
+    newCv:{},
+    openedResumeId:-1
 };
 export default function profileState(state = initialState, action){
     if (action.type === 'GET_USER_RESUMES_FETCH_SUCCES'){
@@ -180,6 +181,18 @@ export default function profileState(state = initialState, action){
         }
         return {
           ...state
+        };
+    }
+    else if (action.type === 'OPEN_RESUME_POPUP'){
+        state.openedResumeId = action.payload;
+        return {
+        ...state
+        };
+    }
+    else if (action.type === 'CLOSE_RESUME_POPUP'){
+        state.openedResumeId = -1;
+        return {
+        ...state
         };
     }
     return state

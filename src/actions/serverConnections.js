@@ -82,6 +82,12 @@ function getVacancyFetchSucces(data){
     }
 }
 
+function getResumeFetchSucces(data){
+    return{
+        type:'GET_RESUME_FETCH_SUCCES',
+        data
+    }
+}
 
 function addVacancyFetchSucces(){
     return{
@@ -630,8 +636,6 @@ export const changeAnswer = (id, responseType, type) => (dispatch) => {
     })
 }
 
-
-
 export const getVacancy = (vacancyId) => (dispatch) =>{
     return fetch(url + '/vacancy/'+vacancyId,{
         method: 'GET',
@@ -644,5 +648,20 @@ export const getVacancy = (vacancyId) => (dispatch) =>{
     .then(data => {
         console.log(data)
         return dispatch(getVacancyFetchSucces(data))
+    })
+}
+
+export const getResume = (resumeId) => (dispatch) =>{
+    return fetch(url + '/cv/' + resumeId,{
+        method: 'GET',
+    })  
+    .then(response => {
+        if (response.status !== 404)
+        return response.json()
+        else return response.status
+    })
+    .then(data => {
+        console.log(data)
+        return dispatch(getResumeFetchSucces(data))
     })
 }

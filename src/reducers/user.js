@@ -50,6 +50,8 @@ export default function userState(state = initialState, action){
     }
     else if (action.type === 'FETCH_ERROR'){
       state.error = true;
+      state.waitingFetch = false;
+
       return {
         ...state
       };
@@ -61,6 +63,7 @@ export default function userState(state = initialState, action){
       };
     }
     else if(action.type === '404_ERROR'){
+
       return {
         ...state
       };

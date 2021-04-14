@@ -6,6 +6,7 @@ import {getWorkTypeValues, getGradeValues} from '../../../scripts/commonScripts'
 import plusIcon from '../../../img/plusIcon.svg'
 import ResumeRedactPopup from './ResumeRedactPopup/ResumeRedactPopup'
 import editIcon from '../../../img/edit.svg'
+import ResumePopup from '../../ResumePopup/ResumePopup'
 
 class Resumes extends Component {
     addResume = (e) => {
@@ -31,6 +32,10 @@ class Resumes extends Component {
         this.props.onPopupRedactResumeActivate(index)
     }
 
+    openResumeInfo = (id) =>{
+        this.props.onOpenResumeInfo(id)
+    }
+
     render() { 
         return (
             <div className="resumes-block">
@@ -42,9 +47,9 @@ class Resumes extends Component {
                             <li key={index} className="resume resumes-list-el rounded">
                                 {el.state==='active' ? (<ResumeRedactPopup index={index}></ResumeRedactPopup>) : ('')}
                                 <section className={"resume-main " + (el.state === 'active' ? ('muted'):(''))}>
-                                    <div className={"resume__header white top-rounded " + this.props.cvData.cvs[index].bg_header_color}>
+                                    <div className={"resume__header white top-rounded " + el.bg_header_color}>
                                         <div className="resume__header-top">
-                                            <h2 className="resume__header__name bold f-large">{el.vacancy_name}</h2>
+                                            <h2 className="resume__header__name bold f-large" onClick={this.openResumeInfo.bind(this, el.id)}>{el.vacancy_name}</h2>
                                             <p>
                                                 {el.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
                                                 <span className="resume__header__salary bold f-medium">{el.salary} руб.</span>}
@@ -104,6 +109,8 @@ class Resumes extends Component {
                         </button>
                     </div>)
                 :('')}
+                {this.props.cvData.openedResumeId !== -1 ? <ResumePopup id={this.props.cvData.openedResumeId}></ResumePopup> : ''}
+
             </div>
         )
     }
@@ -115,7 +122,7 @@ const mapStateToProps = (state) =>{
         userData: state.userData,
         cvData: state.cvs,
     }
-  }
+}
   
 const mapDispatchToProps = (dispatch) =>{
     return{
@@ -125,8 +132,11 @@ const mapDispatchToProps = (dispatch) =>{
         onPopupNewResumeActivate: (newCvData) => {
             dispatch({type : 'POPUP_NEW_RESUME_ACTIVATE', payload:newCvData})
         },
+        onOpenResumeInfo: (id) =>{
+            dispatch({type : 'OPEN_RESUME_POPUP', payload:id})
+        }
 
     }
-    }
+}
   
 export default connect(mapStateToProps, mapDispatchToProps)(Resumes);

@@ -3,6 +3,7 @@ const initialState = {
     vacancies:[],
     placeholder:[],
     newVacancy:{},
+    openedVacancyId:-1,
     buf:{
         bufPoints:[]
     }
@@ -293,6 +294,18 @@ export default function profileState(state = initialState, action){
         return {
             ...state
         }
+    }
+    else if (action.type === 'OPEN_VACANCY_POPUP'){
+        state.openedVacancyId = action.payload;
+        return {
+        ...state
+        };
+    }
+    else if (action.type === 'CLOSE_VACANCY_POPUP'){
+        state.openedVacancyId = -1;
+        return {
+        ...state
+        };
     }
     
     return state

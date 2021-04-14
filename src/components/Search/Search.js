@@ -32,7 +32,10 @@ class Search extends Component {
     render() {
         return (
             <div className="container">
-                <h2 className="search-query-header">По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchState.searchCount} {this.checkSearchType()}</h2>
+                {this.props.searchState.searchLoading === false ?
+                    <h2 className="search-query-header">По запросу "{this.props.searchOptions.phrase}" найдено {this.props.searchState.searchCount} {this.checkSearchType()}</h2>
+                :
+                    <h2 className="search-query-header">Идет загрузка...</h2>}
 
                 <div className="search-page">
                     <SearchSide></SearchSide>
