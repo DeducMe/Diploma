@@ -236,7 +236,7 @@ export const addResume = (data) => (dispatch) => {
     })  
     .then(response => response.json())
     .then(data => {
-        console.log(data)
+        console.log(    data)
         if (data !== '404')
         return dispatch(addResumeFetchSucces(data.new_cv_id))
         else return dispatch(notFoundError(data))
@@ -246,7 +246,11 @@ export const addResume = (data) => (dispatch) => {
 export const deleteResume = (id) => (dispatch) => {
     return fetch(url + '/cv/' + id,{
         method: 'DELETE',  
-
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
         
     })
     .then(response => response.json())
@@ -494,6 +498,11 @@ export const addVacancy = (data) => (dispatch) => {
 export const deleteVacancy = (id) => (dispatch) => {
     return fetch(url + '/vacancy/' + id,{
         method: 'DELETE',  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
     })
     .then(response => response.json())
     .then(data => {
