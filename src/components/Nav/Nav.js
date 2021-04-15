@@ -250,7 +250,7 @@ const mapDispatchToProps = (dispatch) =>{
       .then((data)=>{
         if(data.data !== 403){
           dispatch({type : 'USER_LOGIN', payload:null})
-          getAvatarFromFirebase()
+          setTimeout(()=>{getAvatarFromFirebase()},0)
         }
       })
       

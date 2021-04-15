@@ -559,11 +559,11 @@ export const getSearchQueries = (options, searchType, next) => (dispatch) => {
 
 export const getUserResponses = (userType, next, userId) => (dispatch) => {
     let fetchUrl = url + '/'+ (userType === 'employer' ? 'cv' : 'vacancy') +'/response/' + userType + '/' + userId
-    console.log(fetchUrl, next)
     if (next !== null){
         if (next !== 'initial'){
             fetchUrl = next
         }
+        console.log(fetchUrl)
         return fetch(fetchUrl,{
             method: 'GET',
         })  
@@ -583,11 +583,12 @@ export const getUserResponses = (userType, next, userId) => (dispatch) => {
 
 export const getUserAnswers = (userType, next, userId) => (dispatch) => {
     let fetchUrl = url + '/' + (userType === 'employer' ? 'vacancy' : 'cv') +'/response/' + userType + '/' + userId
-    console.log(fetchUrl, next)
     if (next !== null){
         if (next !== 'initial'){
             fetchUrl = next
         }
+        console.log(fetchUrl)
+
         return fetch(fetchUrl,{
             method: 'GET',
         })  

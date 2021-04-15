@@ -13,7 +13,6 @@ app.listen(PORT, ()=>{
 })
 
 app.use(cors(), function (req, res, next) {
-    console.log('a')
     res.set("Access-Control-Allow-Origin", "*");
     res.set("Access-Control-Allow-Methods", "GET");
     res.set("Access-Control-Allow-Headers", "Content-Type");

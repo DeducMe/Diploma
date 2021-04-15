@@ -64,7 +64,8 @@ class Responses extends Component {
         this.props.onNullifyValues()
         this.props.onNullifyAnswers()
         console.log(this.props.userState.id)
-        this.getResults()
+        setTimeout(()=>{this.getResults()}, 0)
+        
     }
 
     getAnswer(item){
