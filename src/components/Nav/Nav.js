@@ -78,12 +78,14 @@ class Nav extends Component {
   }
 
   getUserProfileLink = () =>  {
-    return "/"+(this.props.userState.user.user_type === 'employee' ? 'profile' : 'company')+"/"+this.props.userState.user.id
+    return "/"+(this.props.userState.user_type === 'employee' ? 'profile' : 'company')+"/"+this.props.userState.id
   }
 
   componentDidMount = () => {
-    this.props.history.push('/landing')
-    this.props.onVerifyToken(this.getAvatarFromFirebase)
+    this.props.onVerifyToken()
+    if (this.props.logged){
+      this.getAvatarFromFirebase()
+    }
   }
   
   render(){
@@ -113,17 +115,17 @@ class Nav extends Component {
             <div className="nav__right-side">
               {/* <button  className="icon-anim nav-el">
                 <img src={bell} alt="notifications"/>
-              </button>
+              </button> */}
 
               <button  className="icon-anim nav-el">
                 <img src={star} alt="favourites"/>
-              </button> */}
+              </button>
               <div className="nav__profile-data nav-el">
                 <div className="nav__profile-data__main link-anim" onClick={this.dropdownToggle}>
                   <Link to={this.getUserProfileLink()} className="f-medium semi flex">
                     <img className="nav__profile-data__avatar" src={this.checkOnEmpty(this.props.navState.avatar, placeholderAvatar)} alt="аватар"/>
                   </Link>
-                  <button className="nav__profile-data__options-btn">{this.props.userState.user.name}</button>
+                  <button className="nav__profile-data__options-btn">{this.props.userState.name}</button>
                 </div>
                 
                 <div className={"nav__profile-data__dropdown bottom-rounded " + this.props.navState.dropDownState}>
@@ -207,7 +209,7 @@ const mapStateToProps = (state, ownProps) =>{
   return {
     navState: state.nav,
     logged:state.user.logged,
-    userState:state.user,
+    userState:state.user.user,
     userData:state.userData,
     location:ownProps.ownProps.location.pathname,
     history:ownProps.ownProps.history
@@ -245,12 +247,11 @@ const mapDispatchToProps = (dispatch) =>{
     onDropDownDeactivate: () => {
       dispatch({type : 'DROPDOWN_DEACTIVATE', payload:null})
     },
-    onVerifyToken: (getAvatarFromFirebase)=>{
+    onVerifyToken: ()=>{
       dispatch(verify())
       .then((data)=>{
         if(data.data !== 403){
           dispatch({type : 'USER_LOGIN', payload:null})
-          setTimeout(()=>{getAvatarFromFirebase()},0)
         }
       })
       
