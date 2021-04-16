@@ -1,3 +1,15 @@
+export const favouritesLoaderActivate = () => (dispatch) => {
+    return dispatch({
+        type:'FAVOURITES_START_LOADING'
+    })
+}
+
+export const favouritesLoaderDeactivate = () => (dispatch) => {
+    return dispatch({
+        type:'FAVOURITES_STOP_LOADING'
+    })
+}
+
 export const searchLoaderActivate = () => (dispatch) => {
     return dispatch({
         type:'SEARCH_START_LOADING'

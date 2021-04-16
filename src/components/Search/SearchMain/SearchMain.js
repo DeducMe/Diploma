@@ -61,6 +61,10 @@ class SearchMain extends Component {
             
         }
     }
+
+    addToFavourites = (index) => {
+        this.props.onAddToFavourites(index)
+    }
     
     openResponsePopup = (index) => {
         this.props.onOpenResponsePopup(index)
@@ -142,18 +146,31 @@ class SearchMain extends Component {
                                     {this.props.searchOptions.searchType === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
-                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                {
+                                                    item.got_responsed === true ? <p className="green">Вы уже откликнулись!</p>
+                                                    :<p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                }
+                                                
                                                 {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                            <p className="underline-link">Добавить в избранное</p>
+                                            {
+                                                item.favorite === true ? <p className="green">Добавлено в избранное!</p>
+                                                : <p className="underline-link" onClick={this.addToFavourites.bind(this, item.pk)}>Добавить в избранное</p>
+                                            }
                                         </div>
                                     : this.props.searchOptions.searchType === 'cv' && this.props.userState.user_type === 'employer' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
-                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
+                                                {
+                                                    item.got_responsed === true ? <p className="green">Вы уже пригласили!</p>
+                                                    :<p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                }
                                                 {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                             <p className="underline-link">Добавить в избранное</p>
+                                            {
+                                                item.favorite === true ? <p className="green">Добавлено в избранное!</p>
+                                                : <p className="underline-link" onClick={this.addToFavourites.bind(this, item.pk)}>Добавить в избранное</p>
+                                            }
                                         </div>
                                     : ''
                                     }
@@ -199,6 +216,9 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onOpenResponsePopup: (index) => {
             dispatch({type : 'OPEN_RESPONSE_POPUP', payload:index})
+        },
+        onAddToFavourites:(index) => {
+            dispatch({type : 'ADD_TO_FAVOURITES', payload:index})
         },
         onSearchLoaderActivate: () => {
             dispatch(searchLoaderActivate())

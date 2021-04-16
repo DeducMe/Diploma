@@ -2,6 +2,7 @@ const initialState = {
     searchActive: '',
     position: '',
     dropDownState: '',
+    favouritesOpen:false,
     transparency:'',
     optionsPopup:{
         optionsPopupState: '',
@@ -44,7 +45,18 @@ export default function navState(state = initialState, action){
             ...state
         };
     }
-    
+    else if (action.type === 'OPEN_FAVOURITES_POPUP'){
+        state.favouritesOpen = true;
+        return {
+            ...state
+        };
+    }
+    else if (action.type === 'CLOSE_FAVOURITES_POPUP'){
+        state.favouritesOpen = false;
+        return {
+            ...state
+        };
+    }
     else if (action.type === 'POPUP_ACTIVATE'){
         state.popup.state = 'active';
         state.popup.type = action.payload;

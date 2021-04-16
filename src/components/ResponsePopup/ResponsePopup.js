@@ -48,7 +48,7 @@ class ResponsePopup extends Component {
             return
         }
         const data = this.getResponseData(e.target.responseMessageInput.value)
-        this.props.onMakeResponse(userTypeToSearchType(invertUserType(this.props.userState.user_type)), data)
+        this.props.onMakeResponse(userTypeToSearchType(invertUserType(this.props.userState.user_type)), data, this.props.item.pk)
 
         this.props.onCloseResponsePopup()
     }
@@ -89,8 +89,9 @@ const mapStateToProps = (state, ownProps) =>{
   
 const mapDispatchToProps = (dispatch) =>{
     return{
-        onMakeResponse:(type, data)=>{
+        onMakeResponse:(type, data, pk)=>{
             dispatch(createResponse(type, data))
+            dispatch({type : 'UPDATE_SEND_RESPONSE', payload:pk})
         },
         onCloseResponsePopup: () => {
             dispatch({type : 'CLOSE_RESPONSE_POPUP', payload:null})

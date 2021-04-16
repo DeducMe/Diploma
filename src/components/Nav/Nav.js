@@ -14,6 +14,7 @@ import './nav.css'
 import {Link} from 'react-router-dom'
 import {logout, verify} from '../../actions/serverConnections'
 import placeholderAvatar from '../../img/placeholder-avatar.jpg'
+import FavouritesPopup from './FavouritesPopup/FavouritesPopup';
 
 class Nav extends Component {
   searchToggle = () => {
@@ -81,6 +82,10 @@ class Nav extends Component {
     return "/"+(this.props.userState.user_type === 'employee' ? 'profile' : 'company')+"/"+this.props.userState.id
   }
 
+  openFavourites = () =>{
+    this.props.onOpenFavouritesPopup()
+  }
+
   componentDidMount = () => {
     this.props.onVerifyToken()
     if (this.props.logged){
@@ -91,7 +96,6 @@ class Nav extends Component {
   render(){
 
     if (this.props.logged){
-
         return (
     <div className={"nav-block " + this.props.navState.position + " " + this.props.navState.transparency}>
       <div className="nav-bar">
@@ -117,7 +121,7 @@ class Nav extends Component {
                 <img src={bell} alt="notifications"/>
               </button> */}
 
-              <button  className="icon-anim nav-el">
+              <button  className="icon-anim nav-el" onClick={this.openFavourites}>
                 <img src={star} alt="favourites"/>
               </button>
               <div className="nav__profile-data nav-el">
@@ -156,6 +160,7 @@ class Nav extends Component {
         </div>  
       : ''}
       {this.props.navState.optionsPopup.optionsPopupState === 'active'?(<OptionsPopup history={this.props.history}></OptionsPopup>):('')}
+      {this.props.navState.favouritesOpen ? <FavouritesPopup></FavouritesPopup> :''}
     </div>
     )
       }
@@ -234,6 +239,9 @@ const mapDispatchToProps = (dispatch) =>{
     onRegistrationPopupActivate: (history) => {
       history.push('/landing')
       dispatch({type : 'POPUP_ACTIVATE', payload:'registration'})
+    },
+    onOpenFavouritesPopup: () => {
+      dispatch({type : 'OPEN_FAVOURITES_POPUP', payload:null})
     },
     onOptionsPopupActivate: () => {
       dispatch({type : 'OPTIONS_POPUP_ACTIVATE', payload:null})

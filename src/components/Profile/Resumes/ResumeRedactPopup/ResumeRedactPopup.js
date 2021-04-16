@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { addResume, redactResume, getUserResumes, deleteResume } from '../../../../actions/serverConnections'
 import closeIcon from '../../../../img/close.svg'
 import deleteIcon from '../../../../img/trash.svg'
-import {checkStringInput, checkIntInput} from '../../../../scripts/commonScripts.js'
+import {checkStringInput, checkIntInput, getWorkTypeValues} from '../../../../scripts/commonScripts.js'
 import industries from '../../../../jsonFiles/industries.json'
 
 
@@ -174,10 +174,10 @@ class ResumeRedactPopup extends Component {
                         <p className="input-label">Типы работ:</p>
 
                         <ul className="resume__work-type-list">
-                            {this.props.resumeWorkType.map((tag, index)=>{
+                            {this.props.resumeWorkType.map((item, index)=>{
                                 return (
                                     <li key={index} className="list-input-field__el-block" data-key={index}>
-                                        <span>{tag}</span>
+                                        <span>{getWorkTypeValues(item)}</span>
                                         <button className="el-block__delete-el" onClick={this.workTypeDelete}>x</button>
                                     </li>
                                 )

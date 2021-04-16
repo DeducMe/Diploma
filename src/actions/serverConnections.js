@@ -137,6 +137,20 @@ function deleteResumeFetchSucces() {
     }
 }
 
+function getFavouritesFetchSucces(data){
+    return{
+        type:'GET_FAVOURITES_QUERY_FETCH_SUCCES',
+        data
+    }
+}
+
+function getFavouritesNone(data){
+    return{
+        type:'GET_FAVOURITES_QUERY_NONE',
+        data
+    }
+}
+
 function getSearchFetchSucces(data){
     return{
         type:'GET_SEARCH_QUERY_FETCH_SUCCES',
@@ -555,6 +569,30 @@ export const getSearchQueries = (options, searchType, next) => (dispatch) => {
         })
     }
     else return new Promise(function(resolve){resolve(dispatch(getSearchNone(null)))})
+}
+
+export const getFavouritesQuery = (searchType, next) => (dispatch) => {
+    let fetchUrl = url + '/favorites/'+ searchType
+    console.log(fetchUrl)
+    if (next !== null){
+        if (next !== 'initial'){
+            fetchUrl = next
+        }
+        return fetch(fetchUrl,{
+            method: 'GET',
+        })  
+        .then(response => {
+            if (response.status !== 404)
+            return response.json()
+            else return response.status
+        })
+        .then(data => {
+            console.log(data)
+            if (data !== '404')
+            return dispatch(getFavouritesFetchSucces(data))
+        })
+    }
+    else return new Promise(function(resolve){resolve(dispatch(getFavouritesNone(null)))})
 }
 
 export const getUserResponses = (userType, next, userId) => (dispatch) => {

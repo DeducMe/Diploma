@@ -42,7 +42,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_SORT_VALUES'){
+    else if (action.type === 'SEARCH_SORT_VALUES'){
         state.searchValues = action.payload;
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
 
@@ -50,7 +50,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_UPDATE_VALUES_PHOTO'){
+    else if (action.type === 'SEARCH_UPDATE_VALUES_PHOTO'){
         let value = state.searchValues.find(x => x.pk === action.payload.id)
         if (value !== undefined) value.photo_url = action.payload.photo
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
@@ -59,45 +59,60 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'CLOSE_RESPONSE_POPUP'){
+    else if (action.type === 'CLOSE_RESPONSE_POPUP'){
         state.openedResponseId = -1;
 
         return {
             ...state
         };
     }
-    if (action.type === 'OPEN_RESPONSE_POPUP'){
+    else if (action.type === 'OPEN_RESPONSE_POPUP'){
         state.openedResponseId = action.payload;
 
         return {
             ...state
         };
     }
-    if (action.type === 'CHANGE_SEARCH_QUERY'){
+    else if (action.type === 'UPDATE_SEND_RESPONSE'){
+        state.searchValues.find(x => x.pk === action.payload).got_responsed = true
+        state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+        return {
+            ...state
+        };
+    }
+    
+    else if (action.type === 'ADD_TO_FAVOURITES'){
+        state.searchValues.find(x => x.pk === action.payload).favorite = true
+        state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+        return {
+            ...state
+        };
+    }
+    else if (action.type === 'CHANGE_SEARCH_QUERY'){
         state.searchOptions.phrase = action.payload;
         return {
             ...state
         };
     }
-    if (action.type === 'CHANGE_SEARCH_TYPE'){
+    else if (action.type === 'CHANGE_SEARCH_TYPE'){
         state.searchOptions.searchType = action.payload;
         return {
             ...state
         };
     }
-    if (action.type === 'SEARCH_START_LOADING'){
+    else if (action.type === 'SEARCH_START_LOADING'){
         state.searchLoading = true;
         return {
             ...state
         };
     }
-    if (action.type === 'SEARCH_STOP_LOADING'){
+    else if (action.type === 'SEARCH_STOP_LOADING'){
         state.searchLoading = false;
         return {
             ...state
         };
     }
-    if (action.type === 'SEARCH_NULLIFY_VALUES'){
+    else if (action.type === 'SEARCH_NULLIFY_VALUES'){
         state.searchValues = []
         state.next = 'initial'
         state.searchCount = 0
@@ -105,14 +120,14 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_SET_OPTIONS'){
+    else if (action.type === 'SEARCH_SET_OPTIONS'){
         state.searchOptions = {...state.searchOptions, ...action.payload}
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
         return {
             ...state
         };
     }
-    if (action.type === 'SEARCH_NULLIFY_OPTIONS'){
+    else if (action.type === 'SEARCH_NULLIFY_OPTIONS'){
         state.searchOptions = {
                 searchType:'vacancy',
                 phrase:'',
@@ -128,7 +143,7 @@ export default function userState(state = initialState, action){
         };
     }
     
-    if (action.type === 'SEARCH_OPTIONS_ADD_GRADE'){
+    else if (action.type === 'SEARCH_OPTIONS_ADD_GRADE'){
         console.log(state.searchOptions.grades.includes(action.payload))
         if (!state.searchOptions.grades.includes(action.payload)) state.searchOptions.grades.push(action.payload)
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
@@ -137,7 +152,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_OPTIONS_DELETE_GRADE'){
+    else if (action.type === 'SEARCH_OPTIONS_DELETE_GRADE'){
         if (state.searchOptions.grades.includes(action.payload)) state.searchOptions.grades.splice(state.searchOptions.grades.indexOf(action.payload), 1)
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
 
@@ -145,7 +160,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_OPTIONS_ADD_WORK_TYPE'){
+    else if (action.type === 'SEARCH_OPTIONS_ADD_WORK_TYPE'){
         if (!state.searchOptions['work-type'].includes(action.payload)) state.searchOptions['work-type'].push(action.payload)
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
 
@@ -153,7 +168,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_OPTIONS_DELETE_WORK_TYPE'){
+    else if (action.type === 'SEARCH_OPTIONS_DELETE_WORK_TYPE'){
         if (state.searchOptions['work-type'].includes(action.payload)) state.searchOptions['work-type'].splice(state.searchOptions['work-type'].indexOf(action.payload), 1)
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
 
@@ -161,7 +176,7 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    if (action.type === 'SEARCH_OPTIONS_CHANGE_INDUSTRY'){
+    else if (action.type === 'SEARCH_OPTIONS_CHANGE_INDUSTRY'){
         state.searchOptions.industry = action.payload
         state.searchOptions = Object.assign({}, state.searchOptions, {...state.searchOptions});
 
@@ -171,14 +186,14 @@ export default function userState(state = initialState, action){
         };
     }
     
-    if (action.type === 'GET_SEARCH_QUERY_FETCH_SUCCES'){
+    else if (action.type === 'GET_SEARCH_QUERY_FETCH_SUCCES'){
         state.next = action.data.next
         return {
             ...state
         };
     }
     
-    if (action.type === 'SEARCH_UPDATE_RESULTS_COUNT'){
+    else if (action.type === 'SEARCH_UPDATE_RESULTS_COUNT'){
         state.searchCount = action.payload
         return {
             ...state

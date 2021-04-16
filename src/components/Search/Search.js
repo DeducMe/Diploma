@@ -11,8 +11,6 @@ import {getSearchQueries} from '../../actions/serverConnections'
 
 
 class Search extends Component {
-    
-
     parseOptions(options){
         return Object
         .keys(options)
@@ -48,29 +46,14 @@ class Search extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cropperMaxWidth:state.profile.buf.cropper.maxWidth,
-        searchValues:state.search.searchValues,
         searchOptions:state.search.searchOptions,
         searchState:state.search,
-
-
     }
 }
 
 const mapDispatchToProps = (dispatch) =>{
     return{
-        onNullifyValues: () => {
-            dispatch({type : 'SEARCH_NULLIFY_VALUES', payload:null})
-        },
-        onGetSearchQueries: (options, searchType) => {
-            dispatch(getSearchQueries(options, searchType))
-            .then((data)=>{
-                if (data.data !== null && data.data !== 404){
-                    dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
-                    dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                }
-            })
-        }        
+ 
     }
 }
 
