@@ -87,9 +87,9 @@ class Nav extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onVerifyToken()
+    this.props.onVerifyToken(this.getAvatarFromFirebase)
     if (this.props.logged){
-      this.getAvatarFromFirebase()
+      
     }
   }
   
@@ -255,12 +255,15 @@ const mapDispatchToProps = (dispatch) =>{
     onDropDownDeactivate: () => {
       dispatch({type : 'DROPDOWN_DEACTIVATE', payload:null})
     },
-    onVerifyToken: ()=>{
+    onVerifyToken: (getAvatarFromFirebase)=>{
       dispatch(verify())
       .then((data)=>{
         if(data.data !== 403){
           dispatch({type : 'USER_LOGIN', payload:null})
         }
+      })
+      .then((response) => {
+        getAvatarFromFirebase()
       })
       
     },

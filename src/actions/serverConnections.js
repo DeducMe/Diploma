@@ -571,6 +571,26 @@ export const getSearchQueries = (options, searchType, next) => (dispatch) => {
     else return new Promise(function(resolve){resolve(dispatch(getSearchNone(null)))})
 }
 
+export const addFavourite = (type, id) => (dispatch) => {
+    return fetch(url + '/favorites/'+ type + '/',{
+        method: 'POST',
+        body: JSON.stringify({'item_id':id}),  
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+        
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(onCreateResponse())
+        else return dispatch(notFoundError(data))
+    })
+}
+
 export const getFavouritesQuery = (searchType, next) => (dispatch) => {
     let fetchUrl = url + '/favorites/'+ searchType
     console.log(fetchUrl)

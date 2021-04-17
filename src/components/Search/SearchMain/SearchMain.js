@@ -1,7 +1,7 @@
 import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {getSearchQueries} from '../../../actions/serverConnections'
+import {getSearchQueries, addFavourite} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
 import ResponsePopup from '../../ResponsePopup/ResponsePopup'
@@ -63,7 +63,7 @@ class SearchMain extends Component {
     }
 
     addToFavourites = (index) => {
-        this.props.onAddToFavourites(index)
+        this.props.onAddToFavourites(index, this.props.searchOptions.searchType)
     }
     
     openResponsePopup = (index) => {
@@ -217,8 +217,9 @@ const mapDispatchToProps = (dispatch) =>{
         onOpenResponsePopup: (index) => {
             dispatch({type : 'OPEN_RESPONSE_POPUP', payload:index})
         },
-        onAddToFavourites:(index) => {
-            dispatch({type : 'ADD_TO_FAVOURITES', payload:index})
+        onAddToFavourites:(pk, type) => {
+            dispatch(addFavourite(type, pk))
+            dispatch({type : 'ADD_TO_FAVOURITES', payload:pk})
         },
         onSearchLoaderActivate: () => {
             dispatch(searchLoaderActivate())
