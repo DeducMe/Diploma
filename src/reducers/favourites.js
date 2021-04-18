@@ -1,5 +1,6 @@
 const initialState = {
     favouritesLoading:false,
+    error:false,
     next:'initial',
     favouritesCount: 0,
     favouritesValues:[],
@@ -31,8 +32,12 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
-    
-
+    else if (action.type === 'FAVOURITES_VALUES_ERROR'){
+        state.error = true;
+        return {
+            ...state
+        };
+    }
     else if (action.type === 'FAVOURITES_START_LOADING'){
         state.favouritesLoading = true;
         return {

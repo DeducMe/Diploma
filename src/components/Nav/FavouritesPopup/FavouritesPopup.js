@@ -50,68 +50,71 @@ class FavouritesPopup extends Component {
             <div className="blur-box active" onClick={this.checkZoneClick.bind(this)} id="favouritesBlurBox">
                 <div className="popup-wrapper rounded">
                     <h2 className="popup-header">Избранное</h2>
-                        <ul className="favourites-main__favourites-items-list">
-                        {console.log(this.props.favouritesValues)}
-                        {this.props.favouritesState.favouritesLoading === false ? this.props.favouritesValues.map((item, index) => {
-                            return(
-                                <li key={index} className="resume resumes-list-el rounded">
-                                    <section className="resume-main">
-                                        <div className={"resume__header white top-rounded " + item.bg_header_color }>
-                                            <div className="resume__header-top">
-                                                <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
-                                                <p>
-                                                    {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
-                                                    <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
-                                                </p>
-                                            </div>
-                                            <div className="resume__header-bottom">
-                                                <p className="resume__header__grade">{getGradeValues(item.grade)}</p>
-                                                <p className="resume__publication-date sup">{item.pub_date.slice(0, 10)}</p>
-                                            </div>
-                                            
+                    <ul className="favourites-main__favourites-items-list">
+                    {this.props.favouritesState.favouritesLoading === false ?
+                    this.props.favouritesValues.length !== 0 ? 
+                    this.props.favouritesValues.map((item, index) => {
+                        return(
+                            <li key={index} className="resume resumes-list-el rounded">
+                                <section className="resume-main">
+                                    <div className={"resume__header white top-rounded " + item.bg_header_color }>
+                                        <div className="resume__header-top">
+                                            <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
+                                            <p>
+                                                {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
+                                                <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
+                                            </p>
                                         </div>
-                
-                                        <div className="resume__main-info bottom-rounded flex">
-                                            <div className="resume__main-info__text">
-                                                <p className="resume__industry f-pre">{item.industry}</p>
-                
-                                                <p className="resume__work-type">{item.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
+                                        <div className="resume__header-bottom">
+                                            <p className="resume__header__grade">{getGradeValues(item.grade)}</p>
+                                            <p className="resume__publication-date sup">{item.pub_date.slice(0, 10)}</p>
+                                        </div>
+                                        
+                                    </div>
+            
+                                    <div className="resume__main-info bottom-rounded flex">
+                                        <div className="resume__main-info__text">
+                                            <p className="resume__industry f-pre">{item.industry}</p>
+            
+                                            <p className="resume__work-type">{item.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
 
-                                                <p className="resume__about">{item.about || item.leading}</p>
-                                            </div>
-                                            
-                
-                                            {/* <ul className="resume__tags-list">
-                                                {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
-                                            </ul> */}
-                                            <Link className="resume__main-info__avatar-name-block" to={"/"+userTypeToSearchType(invertUserType(this.props.userState.user_type))+"/" + item.owner_id}>
-                                                <img className="avatar-name-block__small-avatar" src={item.photo_url} alt="аватар"/>
-                                                <p>{item.owner}</p>
-                                            </Link>
+                                            <p className="resume__about">{item.about || item.leading}</p>
                                         </div>
-                                        {this.props.favouritesOptions.favouritesType === 'vacancy' && this.props.userState.user_type === 'employee' ?
-                                            <div className="vacancy-control-block">
-                                                <div className="vacancy-control-block__response-block">
-                                                    <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
-                                                    {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
-                                                </div>
-                                                <p className="underline-link">Добавить в избранное</p>
+                                        
+            
+                                        {/* <ul className="resume__tags-list">
+                                            {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
+                                        </ul> */}
+                                        <Link className="resume__main-info__avatar-name-block" to={"/"+userTypeToSearchType(invertUserType(this.props.userState.user_type))+"/" + item.owner_id}>
+                                            <img className="avatar-name-block__small-avatar" src={item.photo_url} alt="аватар"/>
+                                            <p>{item.owner}</p>
+                                        </Link>
+                                    </div>
+                                    {this.props.favouritesOptions.favouritesType === 'vacancy' && this.props.userState.user_type === 'employee' ?
+                                        <div className="vacancy-control-block">
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                        : this.props.favouritesOptions.favouritesType === 'cv' && this.props.userState.user_type === 'employer' ?
-                                            <div className="vacancy-control-block">
-                                                <div className="vacancy-control-block__response-block">
-                                                    <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
-                                                    {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
-                                                </div>
-                                                <p className="underline-link">Добавить в избранное</p>
+                                            <p className="underline-link">Добавить в избранное</p>
+                                        </div>
+                                    : this.props.favouritesOptions.favouritesType === 'cv' && this.props.userState.user_type === 'employer' ?
+                                        <div className="vacancy-control-block">
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
+                                                {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                        : ''
-                                        }
-                                    </section>
-                                </li>
-                            )
-                        }):''}
-                        <Loader active={this.props.favouritesLoading}></Loader>
+                                            <p className="underline-link">Добавить в избранное</p>
+                                        </div>
+                                    : ''
+                                    }
+                                </section>
+                            </li>
+                        )
+                    })
+                    : this.props.favouritesState.error ? <div className="error-block rounded">На сервере технические шоколадки :(</div> 
+                    : <div>У вас нет избранных вакансий :(</div>
+                        :<Loader active={this.props.favouritesLoading}></Loader>}
                     </ul>
                 </div>
 
@@ -152,12 +155,14 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch(favouritesLoaderActivate())
             dispatch(getFavouritesQuery(searchType, next))
             .then((data)=>{
-                if (data.data !== null && data.data !== 404){
+                console.log(data)
+                if (data.data !== null){
                     dispatch({type : 'FAVOURITES_UPDATE_VALUES', payload:data.data.results}) 
                     data.data.results.map((item) => {
                         if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
                     })
                 }
+                else dispatch({type : 'FAVOURITES_VALUES_ERROR', payload:null}) 
             })
             .then(response => dispatch(favouritesLoaderDeactivate()))
         },

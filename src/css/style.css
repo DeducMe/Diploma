@@ -239,7 +239,7 @@ input[type='submit']{
 
 .blur-box.active{
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     left: 0;
 
@@ -319,6 +319,13 @@ input[type='submit']{
 
 .full-width{
     width: 100% !important;
+}
+
+.error-block{
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #666666;
+    padding: 20px;
 }
 
 @keyframes appear-opacity{

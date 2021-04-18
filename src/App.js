@@ -3,6 +3,8 @@ import Nav from './components/Nav/Nav'
 import './css/global.css'
 import './css/style.css'
 import './css/normalize.css'
+import './css/vacancy.css'
+
 import './fonts/Nunito/Nunito.css'
 import { connect } from 'react-redux'
 

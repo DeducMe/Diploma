@@ -142,25 +142,4 @@
     height: 20px !important;
 }
 
-.resume__main-info__text{
-    width: 80%;
-    margin-right: 10%;
-}
 
-.resume__main-info__avatar-name-block{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    width: 10%;
-}
-
-
-.avatar-name-block__small-avatar{
-    width: 60px;
-    height: 60px;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-}

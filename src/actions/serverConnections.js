@@ -1,5 +1,12 @@
 const url = 'http://job-flow.ru/api'  //http://localhost:3000
 
+function fetchError(){
+    return{
+        type:'FETCH_ERROR',
+        data:null
+    }
+}
+
 function getUserDataFetchSucces(userData){
     return{
         type:'GET_USER_DATA_FETCH_SUCCES',
@@ -602,14 +609,14 @@ export const getFavouritesQuery = (searchType, next) => (dispatch) => {
             method: 'GET',
         })  
         .then(response => {
-            if (response.status !== 404)
+            if (response.status === 200)
             return response.json()
-            else return response.status
+            else return null
         })
         .then(data => {
             console.log(data)
-            if (data !== '404')
-            return dispatch(getFavouritesFetchSucces(data))
+            if (data !== null) return dispatch(getFavouritesFetchSucces(data))
+            else return dispatch(fetchError())
         })
     }
     else return new Promise(function(resolve){resolve(dispatch(getFavouritesNone(null)))})
