@@ -155,7 +155,7 @@ input[type='submit']{
 }
 
 .no-fix-blur-box.active{
-    z-index: 2;
+    z-index: 3;
     top: 0;
     left: 0;
 
@@ -239,7 +239,7 @@ input[type='submit']{
 
 .blur-box.active{
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     top: 0;
     left: 0;
 
@@ -268,7 +268,7 @@ input[type='submit']{
 
 .map-popup{
     position: absolute;
-    z-index: 2;
+    z-index: 3;
     top: 45px;
     right: -250px;
 
@@ -353,4 +353,21 @@ input[type='submit']{
     100%{
         transform: rotate(360deg);
     }
+}
+
+/* Smartphones */
+@media (max-width : 768px) {
+    
+}
+
+/* Tablets */
+@media (max-width : 1024px) {
+    .container{
+        max-width: 1024px;
+        padding: 0 20px;
+    }
+}
+
+/* Large screens */
+@media (min-width : 1824px) {
 }

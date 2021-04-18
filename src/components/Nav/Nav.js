@@ -17,6 +17,12 @@ import placeholderAvatar from '../../img/placeholder-avatar.jpg'
 import FavouritesPopup from './FavouritesPopup/FavouritesPopup';
 
 class Nav extends Component {
+  constructor(props) {
+    super(props);
+    // Не вызывайте здесь this.setState()!
+    this.state = { mobileNavOpened: false };
+  }
+  
   searchToggle = () => {
     if (this.props.navState.searchActive){
       this.props.onSearchDeactivate();
@@ -92,6 +98,13 @@ class Nav extends Component {
       
     }
   }
+
+  toggleMobileNav = () =>{
+    if (this.state.mobileNavOpened)
+      this.setState({mobileNavOpened:false})
+    else
+      this.setState({mobileNavOpened:true})
+  }
   
   render(){
 
@@ -101,6 +114,7 @@ class Nav extends Component {
       <div className="nav-bar">
         <div className="container">
           <nav className="nav">
+            
             <div className="nav__left-side">
               <Link to="/landing" className="nav-el" >
                 <img src={logo} alt="logo"/>
@@ -108,7 +122,6 @@ class Nav extends Component {
 
               {/* <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link> */}
 
-              <Link to="/responses" className="f-medium semi link-anim nav-el">Отклики</Link>
 
               <button  className={"nav-el nav__search " + this.props.navState.searchActive} onClick={this.searchToggle}>
                 <span className="f-medium semi">Поиск</span> 
@@ -117,6 +130,7 @@ class Nav extends Component {
             </div>
 
             <div className="nav__right-side">
+
               {/* <button  className="icon-anim nav-el">
                 <img src={bell} alt="notifications"/>
               </button> */}
@@ -146,6 +160,37 @@ class Nav extends Component {
                   </ul>
                 </div>
               </div>
+            </div>
+            <div className="nav__right-side-mobile">
+                <div className="nav__profile-data nav-el">
+                  <div className="nav__profile-data__main link-anim" onClick={this.dropdownToggle}>
+                    <Link to={this.getUserProfileLink()} className="f-medium semi flex">
+                      <img className="nav__profile-data__avatar" src={this.checkOnEmpty(this.props.navState.avatar, placeholderAvatar)} alt="аватар"/>
+                    </Link>
+                    <button className="nav__profile-data__options-btn">{this.props.userState.name}</button>
+                  </div>
+                  
+                  <div className={"nav__profile-data__dropdown bottom-rounded " + this.props.navState.dropDownState}>
+                    <ul className="dropdown__list">
+                      <li className="dropdown__list-el" onClick={this.dropdownToggle}>
+                        <Link to={this.getUserProfileLink()} className="semi">Моя страница</Link>
+                      </li>
+                      <li className="dropdown__list-el" onClick={this.optionsPopupToggle}>
+                        <button className="semi">Настройки</button>
+                      </li>
+                      <li className="dropdown__list-el" onClick={this.dropdownToggle}>
+                        <button className="semi" onClick={this.openFavourites}>Избранное</button>
+                      </li>
+                      <li className="dropdown__list-el" onClick={this.dropdownToggle}>
+                        <Link to="/responses" className="semi">Отклики</Link>
+                      </li>
+                      
+                      <li className="dropdown__list-el" onClick={this.logoutHandleFormSubmit}>
+                        <button className="semi">Выход</button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
             </div>
           </nav>     
         </div> 
@@ -183,10 +228,21 @@ class Nav extends Component {
             </div>
 
             <div className="nav__right-side">
-              <button className="f-medium highlighted-btn semi nav-el" onClick={this.registartionPopupOpen}>Начать карьеру</button>
-
               <button className="f-medium semi link-anim nav-el" onClick={this.loginPopupOpen}>Войти</button>
+
+              <button className="f-medium highlighted-btn semi nav-el" onClick={this.registartionPopupOpen}>Начать карьеру</button>
             </div>    
+          
+            <div className="nav__right-side-mobile">
+              <button className="menu-btn" onClick={this.toggleMobileNav}>
+                <div className="menu-btn__burger"></div>
+              </button>
+                <div className={"mobile-nav " + (this.state.mobileNavOpened ? "opened" : "")}>
+                  <button className="f-medium highlighted-btn semi nav-el" onClick={this.registartionPopupOpen} onClick={() => { this.registartionPopupOpen(); this.toggleMobileNav();}}>Начать карьеру</button>
+
+                  <button className="f-medium semi link-anim nav-el" onClick={this.loginPopupOpen}>Войти</button>
+                </div>
+              </div>
           </nav>     
         </div>  
       </div>
@@ -199,8 +255,6 @@ class Nav extends Component {
         </div>
       </div>
       :''}
-      
-      
       <Popup history={this.props.history}></Popup>
 
     </div>

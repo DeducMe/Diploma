@@ -20,6 +20,15 @@ class Popup extends Component {
     console.log(this.props.popupState.submitValue)
   }
 
+  checkUserType(){
+    if (this.props.popupState.subject === 'employee'){
+      return 'соискатель';
+    }
+    else{
+      return 'работодатель';
+    }
+  }
+
   handleCloseBtnClick(e){
     e.preventDefault()
     this.popupClose()
@@ -246,6 +255,7 @@ class Popup extends Component {
           </div>
 
           <div className="checkbox">
+            <p>Вы будете зарегистрированы как {this.checkUserType()}</p>
             <input className="inp-cbx" id="morning" type="checkbox"/>
             <label className="cbx" htmlFor="morning"><span>
             <svg width="12px" height="10px">

@@ -45,6 +45,10 @@ html{
     max-height: 100vh;
 }
 
+body, html {
+    overflow-x: hidden;
+}
+
 body{
     background-color: #EFF5FF;
     
@@ -89,4 +93,22 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     box-shadow: 0 0 0 30px white inset !important;
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+/* Smartphones */
+@media (max-width : 768px) {
+    *{
+        font-size: 10px;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px) {
+    *{
+        font-size: 12px;
+    }
+}
+
+/* Large screens */
+@media (min-width : 1824px) {
 }

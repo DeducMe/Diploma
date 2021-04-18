@@ -1,20 +1,18 @@
 
 
 .popup-wrapper{
-    border: 2px solid #000;
     position: fixed;
     top: 50%;
     left: 50%;
 
     width: 40%;
-    min-width: 340px;
+    min-width: 265px;
     max-width: 500px;
-
     padding: 20px;
-    
 
     transform: translate(-50%,-50%);
 
+    border: 2px solid #000;
     background: white;
 }
 
@@ -23,34 +21,40 @@
 }
 
 .close-popup-btn{
-    position: absolute;
-    height: 30px;
+    font-size: 30px;
     line-height: 30px;
+
+    position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 30px;
+
+    height: 30px;
 }
 
 .form-submit-btn{
-    
     display: block;
+
     margin: 30px auto;
     padding: 10px 20px;
+
     cursor: pointer;
-    border: 3px solid #000;
     transition: .5s;
+
+    border: 3px solid #000;
 }
 
 .form-submit-btn:hover{
-    background-color: #000;
-    color: #fff;
     transition: .5s;
+
+    color: #fff;
+    background-color: #000;
 }
 
 /*    Слайдер    */
 
 .togglebox{
     position: relative;
+
     padding: 10px 0;
 }
 
@@ -107,9 +111,9 @@ label.capsule{
 
 #hidcheck:checked ~ .capsule .text-signs #on:before{
     content: 'Работодатель';
-;
 
     color: #fff;
+    ;
 }
 
 #hidcheck:not(:checked) ~ .capsule .text-signs #on{
@@ -124,9 +128,9 @@ label.capsule{
 
 #hidcheck:not(:checked) ~ .capsule .text-signs #on:after{
     content: 'Соискатель';
-;
 
     color: #fff;
+    ;
 }
 
 @keyframes toggle-on{
@@ -299,10 +303,10 @@ label.capsule{
     width: 100%;
     height: 100%;
     padding: 20px;
+
     border-radius: .5rem;
     outline: none;
     background: none;
-    
 }
 
 
@@ -346,6 +350,7 @@ label.capsule{
 
 .underline-anim:focus-within::after{
     width: 100%;
+
     background-color: #000;
 }
 
@@ -354,34 +359,42 @@ label.capsule{
 }
 
 .popup__checkbox-input{
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    height: 21px;
-    outline: none;
-    display: inline-block;
-    vertical-align: top;
     position: relative;
+
+    display: inline-block;
+
+    height: 21px;
     margin: 0;
+
     cursor: pointer;
+    vertical-align: top;
+
+    outline: none;
+
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
 }
 
 .popup__checkbox-input::after{
-    content: '';
-    display: block;
-    left: 0;
-    top: 0;
     position: absolute;
+    top: 0;
+    left: 0;
+
+    display: block;
+
+    content: '';
 }
 
 .input-field.wrong-active .popup__text-label{
-    color: #ff0000;
     animation: wrong ease .3s;
+
+    color: #f00;
 }
 
 @keyframes wrong{
-    0% { 
-        margin-left: 0px;
+    0%{
+        margin-left: 0;
     }
 
     25%{
@@ -393,98 +406,124 @@ label.capsule{
         margin-left: -3px;
     }
 
-    100% { 
-        margin-left: 0px;
+    100%{
+        margin-left: 0;
     }
-    
 }
 
 .password-input-hint{
-    height: 0;
-    opacity: 0;
-    color: #ff0000;
     font-size: 14px;
     line-height: 1.4;
-    transition: .5s;
-    cursor: default;
+
     display: flex;
+
+    height: 0;
+
+    cursor: default;
+    transition: .5s;
+
+    opacity: 0;
+    color: #f00;
 }
 
 .email-input-hint{
-    height: 0;
-    opacity: 0;
-    margin-top: -10px;
-    color: #ff0000;
     font-size: 14px;
     line-height: 1.4;
-    transition: .5s;
-    cursor: default;
+
     display: flex;
+
+    height: 0;
+    margin-top: -10px;
+
+    cursor: default;
+    transition: .5s;
+
+    opacity: 0;
+    color: #f00;
 }
 
 .email-input-hint.active{
-    cursor: text;
     height: 30px;
-    opacity: 1;
+
+    cursor: text;
     transition: .5s;
+
+    opacity: 1;
 }
 
 .password-input-hint.active{
-    cursor: text;
     height: 60px;
-    opacity: 1;
+
+    cursor: text;
     transition: .5s;
+
+    opacity: 1;
 }
 
 /*    ****Инпуты****    */
 
 .checkbox{
     width: 200px;
-    transition: .5s;
     padding: 8px 5px 5px 10px;
+
+    transition: .5s;
+
     border-radius: 8px;
 }
 
 .checkbox:hover{
-    background-color: #e2edff;
     transition: .5s;
+
+    background-color: #e2edff;
 }
 
-* {
+*{
     box-sizing: border-box;
-  }
-  .cbx {
-    -webkit-user-select: none;
-    user-select: none;
-    cursor: pointer;
-    padding: 6px 8px;
-    border-radius: 6px;
+}
+.cbx{
     overflow: hidden;
-    transition: all 0.2s ease;
-  }
-  .cbx:not(:last-child) {
-    margin-right: 6px;
-  }
 
-  .cbx span {
+    padding: 6px 8px;
+
+    cursor: pointer;
+    -webkit-user-select: none;
+            user-select: none;
+    transition: all .2s ease;
+
+    border-radius: 6px;
+}
+.cbx:not(:last-child){
+    margin-right: 6px;
+}
+
+.cbx span{
     float: left;
-    vertical-align: middle;
+
     transform: translate3d(0, 0, 0);
-  }
-  .cbx span:first-child {
+    vertical-align: middle;
+}
+.cbx span:first-child{
     position: relative;
+
     width: 18px;
     height: 18px;
-    border-radius: 4px;
+
+    transition: all .2s ease;
     transform: scale(1);
+
     border: 1px solid #cccfdb;
-    transition: all 0.2s ease;
-    box-shadow: 0 1px 1px rgba(0,16,75,0.05);
-  }
-  .cbx span:first-child svg {
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,16,75,.05);
+}
+.cbx span:first-child svg{
     position: absolute;
     top: 3px;
     left: 2px;
+
+    transition: all .3s ease;
+    transition-delay: .1s;
+    transform: translate3d(0, 0, 0);
+
     fill: none;
     stroke: #fff;
     stroke-width: 2;
@@ -492,63 +531,64 @@ label.capsule{
     stroke-linejoin: round;
     stroke-dasharray: 16px;
     stroke-dashoffset: 16px;
-    transition: all 0.3s ease;
-    transition-delay: 0.1s;
-    transform: translate3d(0, 0, 0);
-  }
-  .cbx span:last-child {
-    padding-left: 8px;
+}
+.cbx span:last-child{
     line-height: 18px;
-  }
-  .cbx:hover span:first-child {
+
+    padding-left: 8px;
+}
+.cbx:hover span:first-child{
     border-color: #07f;
-  }
-  .inp-cbx {
+}
+.inp-cbx{
     position: absolute;
+
     visibility: hidden;
-  }
-  .inp-cbx:checked + .cbx span:first-child {
-    background: #07f;
+}
+.inp-cbx:checked + .cbx span:first-child{
+    animation: wave .4s ease;
+
     border-color: #07f;
-    animation: wave 0.4s ease;
-  }
-  .inp-cbx:checked + .cbx span:first-child svg {
+    background: #07f;
+}
+.inp-cbx:checked + .cbx span:first-child svg{
     stroke-dashoffset: 0;
-  }
-  
-  .inline-svg {
+}
+
+.inline-svg{
     position: absolute;
+
     width: 0;
     height: 0;
-    pointer-events: none;
-    user-select: none;
-  }
-  @media screen and (max-width: 640px) {
 
-    .cbx {
-      width: 100%;
-      margin-bottom: 4px;
-      display: inline-block;
+    user-select: none;
+    pointer-events: none;
+}
+@media screen and (max-width: 640px){
+    .cbx{
+        display: inline-block;
+
+        width: 100%;
+        margin-bottom: 4px;
     }
-  }
-  @-moz-keyframes wave {
-    50% {
-      transform: scale(0.9);
+}
+@-moz-keyframes wave{
+    50%{
+        transform: scale(.9);
     }
-  }
-  @-webkit-keyframes wave {
-    50% {
-      transform: scale(0.9);
+}
+@-webkit-keyframes wave{
+    50%{
+        transform: scale(.9);
     }
-  }
-  @-o-keyframes wave {
-    50% {
-      transform: scale(0.9);
+}
+@-o-keyframes wave{
+    50%{
+        transform: scale(.9);
     }
-  }
-  @keyframes wave {
-    50% {
-      transform: scale(0.9);
+}
+@keyframes wave{
+    50%{
+        transform: scale(.9);
     }
-  }
-  
+}
