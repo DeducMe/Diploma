@@ -3,6 +3,11 @@
     margin-top: 30px;
 }
 
+.profile__main{
+    flex: 1;
+
+}
+
 .profile__side{
     margin-left: 40px;
 }
@@ -23,3 +28,22 @@
     width: 70%;
     height: 1.25rem;
 }
+
+
+/* Smartphones */
+@media (max-width : 768px){
+    .profile-wrapper{
+        flex-direction: column;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px){
+}
+
+/* Large screens */
+@media (min-width : 1824px){
+}
+
+
+

@@ -116,20 +116,21 @@ class Nav extends Component {
           <nav className="nav">
             
             <div className="nav__left-side">
-              <Link to="/landing" className="nav-el" >
+              <Link to="/landing" className="nav-el logo" >
                 <img src={logo} alt="logo"/>
               </Link>
 
               {/* <Link to="/content" className="f-medium semi link-anim nav-el">Полезное</Link> */}
 
-
               <button  className={"nav-el nav__search " + this.props.navState.searchActive} onClick={this.searchToggle}>
                 <span className="f-medium semi">Поиск</span> 
                 <img src={arrow} alt="arrow"/>
               </button>
+
             </div>
 
             <div className="nav__right-side">
+              <Link to="/responses" className="nav-el f-medium semi link-anim">Отклики</Link>
 
               {/* <button  className="icon-anim nav-el">
                 <img src={bell} alt="notifications"/>
@@ -195,15 +196,9 @@ class Nav extends Component {
           </nav>     
         </div> 
       </div>
-      {this.props.navState.searchActive ? 
-        <div className="search-panel active appearence-anim">
-          <div className="container">
-            <div className="search-panel__wrapper">
-              <SearchPanel history={this.props.history}></SearchPanel>
-            </div>
-          </div>
-        </div>  
-      : ''}
+
+      <SearchPanel history={this.props.history} active={this.props.navState.searchActive}></SearchPanel>
+  
       {this.props.navState.optionsPopup.optionsPopupState === 'active'?(<OptionsPopup history={this.props.history}></OptionsPopup>):('')}
       {this.props.navState.favouritesOpen ? <FavouritesPopup></FavouritesPopup> :''}
     </div>
@@ -215,7 +210,7 @@ class Nav extends Component {
         <div className="container">
           <nav className="nav">
             <div className="nav__left-side">
-              <Link to="/landing" className="nav-el" >
+              <Link to="/landing" className="nav-el logo" >
                 <img src={logo} alt="logo"/>
               </Link>
 
@@ -225,6 +220,8 @@ class Nav extends Component {
                 <span className="f-medium semi" >Поиск</span> 
                 <img src={arrow} alt=""/>
               </button>
+
+
             </div>
 
             <div className="nav__right-side">
@@ -234,10 +231,10 @@ class Nav extends Component {
             </div>    
           
             <div className="nav__right-side-mobile">
-              <button className="menu-btn" onClick={this.toggleMobileNav}>
+              <button className={"menu-btn " + (this.state.mobileNavOpened ? "open" : "")} onClick={this.toggleMobileNav}>
                 <div className="menu-btn__burger"></div>
               </button>
-                <div className={"mobile-nav " + (this.state.mobileNavOpened ? "opened" : "")}>
+                <div className={"mobile-nav " + (this.state.mobileNavOpened ? "open" : "")}>
                   <button className="f-medium highlighted-btn semi nav-el" onClick={this.registartionPopupOpen} onClick={() => { this.registartionPopupOpen(); this.toggleMobileNav();}}>Начать карьеру</button>
 
                   <button className="f-medium semi link-anim nav-el" onClick={this.loginPopupOpen}>Войти</button>
@@ -246,15 +243,8 @@ class Nav extends Component {
           </nav>     
         </div>  
       </div>
-      {this.props.navState.searchActive ? 
-      <div className="search-panel active appearence-anim">
-        <div className="container">
-          <div className= "search-panel__wrapper">
-            <SearchPanel history={this.props.history}></SearchPanel>
-          </div>
-        </div>
-      </div>
-      :''}
+      
+      <SearchPanel history={this.props.history} active={this.props.navState.searchActive}></SearchPanel>
       <Popup history={this.props.history}></Popup>
 
     </div>

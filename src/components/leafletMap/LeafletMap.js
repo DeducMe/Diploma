@@ -55,20 +55,24 @@ function findStartPosition(data, map, onChangeMapPosition){
     var marker = L.marker([lat, lng]).addTo(map)
     marker.bindPopup(label).openPopup();
     map.setView([lat, lng], 13)
-    const pos = map.getCenter()
-    
 }
 
 
 function LocationMarker() {
     const [position, setPosition] = useState(null)
-
+    var marker = null
     const map = useMapEvents({
       click() {
         map.locate()
       },
       locationfound(e) {
         map.flyTo(e.latlng, map.getZoom())
+        if (marker){
+          map.removeLayer(marker)
+        }
+        marker = L.marker(e.latlng).addTo(map)
+        marker.bindPopup('Вы здесь').openPopup();
+
       },
     })
   

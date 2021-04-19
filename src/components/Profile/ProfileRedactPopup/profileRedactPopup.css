@@ -3,7 +3,9 @@
 .main-placeholder{
     position: relative;
 
-    min-width: 720px;
+    flex: 1;
+
+    max-width: 720px;
     max-width: 720px;
     padding: 10px;
 
@@ -53,27 +55,29 @@
 .profile-redact__form-nav{
     display: flex;
     justify-content: space-between;
+
     width: 100%;
     margin-bottom: 20px;
 }
 
 .popup-nav-btn{
-    padding: 5px 6px;
     margin: 5px 10px;
-    border-bottom: 1px solid #000;
+    padding: 5px 6px;
+
     transition: .5s;
 
+    border-bottom: 1px solid #000;
 }
 
 .popup-nav-btn img{
-    height: 60px;
-
     width: 70%;
+    height: 60px;
 }
 
 .popup-nav-btn.active{
-    background-color: #07006220;
     transition: .5s;
+
+    background-color: #07006220;
 }
 
 .popup__input-block{
@@ -91,11 +95,11 @@
     position: absolute;
     z-index: 1;
     top: 0;
-    margin-top: 30px;
 
     visibility: hidden;
 
     width: 100%;
+    margin-top: 30px;
 
     transition: .5s;
 
@@ -136,7 +140,6 @@
 
 .profile-redact__form{
     max-width: 400px;
-    min-width: 400px;
     padding: 10px 20px;
 }
 
@@ -158,6 +161,7 @@
 
 .popup__date-fields{
     display: flex;
+
     width: 100%;
     margin-top: 20px;
 }
@@ -172,8 +176,9 @@
 }
 
 .popup__select-text-input select{
-    width: 15%;
+    width: 45px;
     height: 40px;
+    margin-right: 10px;
 }
 
 .popup__education-input,
@@ -203,6 +208,7 @@
     display: none;
 }
 .gender-input + div{
+    
     width: 280px;
     margin-top: 10px;
 }
@@ -284,9 +290,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
     height: 180px;
     margin-bottom: 40px;
-    border: 2px dashed black
+
+    border: 2px dashed black;
 }
 
 .file-input{
@@ -295,19 +303,19 @@
 /* Cropper */
 
 .cropper-block{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
 
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
-    min-width: 720px;
     max-width: 720px;
+    height: 100%;
     padding: 10px;
-    border-radius: 16px;
 
+    border-radius: 16px;
     background-size: cover;
 }
 
@@ -320,7 +328,6 @@
     height: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
-
     margin-left: 50px;
 
     border-radius: 50%;
@@ -329,16 +336,17 @@
 }
 
 .cropper__img-preview.personal-background{
-
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
 }
 
 .cropper-controls{
-    flex: 1;
-    padding: 20px;
     display: flex;
+    flex: 1;
     justify-content: center;
+
+    padding: 20px;
+
     background-color: #fff;
 }
 
@@ -361,7 +369,6 @@
 
 .cropper-activate-btn{
     background: transparent;
-
 }
 
 .cropper-upload-btn img,
@@ -375,7 +382,7 @@
 }
 
 .cropper-upload-btn:hover,
-.cropper-close-btn:hover, 
+.cropper-close-btn:hover,
 .cropper-activate-btn:hover{
     transition: .5s;
 
@@ -389,3 +396,40 @@
 }
 
 /* Cropper end */
+
+@media (max-width : 768px) {
+    .popup-nav-btn {
+        padding: 0;
+        width: 65px;
+        height: 65px;
+    }
+    .profile-redact__popup-wrapper{
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .main-placeholder{
+        width: 100%;
+    }
+
+    .popup__date-fields{
+        flex-direction: column;
+    }
+    
+    .popup__date-fields .input-field{
+        width: 100%;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px) {
+    /* .gender-input + div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    } */
+}
+
+/* Large screens */
+@media (min-width : 1824px) {
+}

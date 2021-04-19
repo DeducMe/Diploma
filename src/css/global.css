@@ -45,9 +45,7 @@ html{
     max-height: 100vh;
 }
 
-body, html {
-    overflow-x: hidden;
-}
+
 
 body{
     background-color: #EFF5FF;
@@ -99,6 +97,14 @@ input:-webkit-autofill:active  {
 @media (max-width : 768px) {
     *{
         font-size: 10px;
+    }
+
+    body, html {
+        overflow-x: hidden;
+    }
+
+    body{
+        overflow-y: hidden;
     }
 }
 

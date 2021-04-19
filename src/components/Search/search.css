@@ -1,5 +1,5 @@
 .search-main{
-    width: 900px;
+    max-width: 900px;
 }
 
 .vacancy-control-block{
@@ -40,13 +40,15 @@
     max-height: 200px;
     margin-bottom: 20px;
     padding: 5px;
-    background-color: #fff;
+
     resize: vertical;
+
+    background-color: #fff;
 }
 .response-form-popup input[type='submit']{
     margin-top: 20px;
-    background-color: #fff;
 
+    background-color: #fff;
 }
 
 .response-form-popup .close-popup-btn{
@@ -56,8 +58,10 @@
 
 .search-side{
     position: sticky;
-
-    width: 500px;
+    flex: 1;
+    margin-right: 40px;
+    min-width: 280px;
+    max-width: 500px;
     min-height: 400px;
     padding: 20px;
 
@@ -70,6 +74,7 @@
 
 .search-side__salary-placeholder{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -143,3 +148,30 @@
 }
 
 
+@media (max-width : 768px){
+    .search-page{
+        flex-direction: column;
+    }
+
+    .search-side{
+        width: 100%;
+        padding: 20px 10px;
+
+        align-self: center;
+        margin-right: 0;
+
+    }
+
+    .search-main__controls-form{
+        margin: 20px auto;
+        max-width: 500px;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px){
+}
+
+/* Large screens */
+@media (min-width : 1824px){
+}

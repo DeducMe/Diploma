@@ -1,5 +1,4 @@
 const url = 'http://job-flow.ru/api'  //http://localhost:3000
-// const xCSRF = 'X-CSRFToken': document.cookie.split('=')[1]
 function fetchError(){
     return{
         type:'FETCH_ERROR',
@@ -251,6 +250,7 @@ export const addResume = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -270,6 +270,7 @@ export const deleteResume = (id) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -290,6 +291,7 @@ export const redactResume = (data, cvId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         }
     })  
@@ -309,7 +311,7 @@ export const verify = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            
+            'X-CSRFToken': document.cookie.split('=')[1]
         }
     })
     .then(response => 
@@ -333,6 +335,7 @@ export const loginUser = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         }
     })
@@ -351,6 +354,7 @@ export const registrateNewUser = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         }
     })
@@ -365,6 +369,7 @@ export const logout = () => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         } 
     })
@@ -386,6 +391,7 @@ export const changePassword = (password) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         } 
     })
@@ -404,6 +410,7 @@ export const createNewEmployee = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
     })
@@ -423,6 +430,7 @@ export const updateEmployee = (data, userId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
     })
@@ -443,6 +451,7 @@ export const createNewEmployer = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
     })
@@ -468,6 +477,7 @@ export const updateEmployer = (data, userId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
     })
@@ -502,6 +512,7 @@ export const addVacancy = (data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -522,6 +533,7 @@ export const deleteVacancy = (id) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
     })
@@ -541,6 +553,7 @@ export const redactVacancy = (data, cvId) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -585,6 +598,7 @@ export const addFavourite = (type, id) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -609,7 +623,7 @@ export const getFavouritesQuery = (searchType, next) => (dispatch) => {
             method: 'GET',
         })  
         .then(response => {
-            if (response.status === 200)
+            if (response.status >= 200 && response.status < 300)
             return response.json()
             else return null
         })
@@ -678,6 +692,7 @@ export const createResponse = (type, data) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         
@@ -698,6 +713,7 @@ export const changeAnswer = (id, responseType, type) => (dispatch) => {
         headers : { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
             
         },  
         

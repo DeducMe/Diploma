@@ -198,7 +198,7 @@ class VacancyRedactPopup extends Component {
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
-                            <select required className="white resume__header__grade-input" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)} value={this.props.vacancyPlaceholder.grade}>
+                            <select required className="white resume__header__grade-input bg-transparent" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)} value={this.props.vacancyPlaceholder.grade}>
                                 <option value="internship">Стажер</option>
                                 <option value="junior">Начинающий специалист</option>
                                 <option value="middle">Специалист</option>

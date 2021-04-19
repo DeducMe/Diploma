@@ -40,16 +40,16 @@ export const parseOptions = (options) => {
 }
 
 export const checkStringInput = (str, max, min, re = /./) => {
-    if (str.length === 0){
-        return mistakes[0]
-    }
+    console.log(str,max,min,re)
+
     if (str.length > max){
         return mistakes[1]
     }
     if (str.length < min){
         return mistakes[2]
     }
-    if (re.test(String(str).toLowerCase())){
+    if (!re.test(String(str).toLowerCase())){
+        console.log(str)
         return mistakes[3]
     }
     return mistakes[0]

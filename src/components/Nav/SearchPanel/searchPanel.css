@@ -17,6 +17,7 @@
 
 .search-form{
     height: 100%;
+    max-width: 600px;
     display: flex;
     align-items: center;
 }
@@ -58,4 +59,32 @@
     border-radius: 10px;
     margin-left: -20px;
     box-shadow: none;
+}
+
+/* Smartphones */
+@media (max-width : 768px){
+    .search-form{
+        margin: 0 auto;
+        flex-direction: column;
+        padding-bottom: 20px;
+    }
+
+    .search-form input,
+    .search-form select{
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20px;
+    }
+
+    .search-form__dropdown-menu{
+        margin-left: 0;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px){
+}
+
+/* Large screens */
+@media (min-width : 1824px){
 }
