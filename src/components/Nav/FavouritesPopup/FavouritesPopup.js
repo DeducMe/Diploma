@@ -29,7 +29,7 @@ class FavouritesPopup extends Component {
         if (this.props.favouritesState.favouritesLoading === false){
             this.props.onFavouritesLoaderActivate()
             
-            this.props.onGetFavouritesResponse(userTypeToSearchType(this.props.userState.user_type), this.props.favouritesState.next, this.getAvatarFromFirebase)
+            this.props.onGetFavouritesResponse(userTypeToSearchType(invertUserType(this.props.userState.user_type)), this.props.favouritesState.next, this.getAvatarFromFirebase)
         }
     }
 
