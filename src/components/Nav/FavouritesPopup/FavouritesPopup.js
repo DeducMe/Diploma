@@ -53,19 +53,18 @@ class FavouritesPopup extends Component {
                     <ul className="favourites-main__favourites-items-list">
                     {this.props.favouritesState.favouritesLoading === false ?
                     this.props.favouritesValues.length !== 0 ? 
-                    this.props.favouritesValues.map((item, index) => {
-                        item = item[item.item_type]
+                    this.props.favouritesValues.map((el, index) => {
+                        const item = el[el.item_type]
+                        
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
                                 {console.log(item)}
-                                <section className="resume-main">
+                                <section className="resume-main rounded border">
                                     <div className={"resume__header white top-rounded " + item.bg_header_color }>
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
-                                            <p>
-                                                {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
-                                                <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
-                                            </p>
+                                            {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
+                                            <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{getGradeValues(item.grade)}</p>
@@ -92,7 +91,24 @@ class FavouritesPopup extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    
+                                    {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
+                                        <div className="vacancy-control-block">
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
+                                                {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
+                                            </div>
+                                            <p className="underline-link">Добавить в избранное</p>
+                                        </div>
+                                    : el.item_type === 'cv' && this.props.userState.user_type === 'employer' ?
+                                        <div className="vacancy-control-block">
+                                            <div className="vacancy-control-block__response-block">
+                                                <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
+                                                {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
+                                            </div>
+                                            <p className="underline-link">Добавить в избранное</p>
+                                        </div>
+                                    : ''
+                                    }
                                 </section>
                             </li>
                         )

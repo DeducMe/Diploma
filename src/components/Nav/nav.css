@@ -236,6 +236,10 @@ nav .nav-el:not(:first-child){
     display: none;
 }
 
+#favouritesBlurBox .popup-wrapper{
+    width: 60%;
+}
+
 /* Smartphones */
 @media (max-width : 768px){
     .nav .nav__right-side{

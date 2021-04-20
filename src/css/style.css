@@ -249,6 +249,10 @@ input[type='submit']{
     padding: 10px;
 }
 
+.border{
+    border: 1px solid #1e1f26;
+}
+
 .input-list{
     position: relative;
 
