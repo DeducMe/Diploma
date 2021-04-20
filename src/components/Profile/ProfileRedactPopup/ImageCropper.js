@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Cropper from "react-cropper";
+import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
+import personalBackground from'../../../img/personal-background.png'
 import firebase from "firebase";
 import fileUploader from '../../../actions/fileUploader';
 import "cropperjs/dist/cropper.css";
@@ -17,6 +19,15 @@ class ImageCropper extends Component {
                 this.props.onActivateCropper(file, maxWidth, maxHeight, imageType)
             }
         }, 0)
+    }
+
+    checkOnEmpty(el, returnValue){
+        console.log(el)
+        if (el !== "" && el){
+            return el
+        }
+
+        return returnValue
     }
 
     loadImageToFirebase = (image, imageType) =>{
@@ -78,43 +89,58 @@ class ImageCropper extends Component {
 
 
         return this.props.cropperActive && this.props.cropperFile ? (
-            <div className="cropper-block">
-                <div
-                    className={"cropper__img-preview " + this.props.cropperData.imageType}
-                    style={{ width: this.props.cropperMaxWidth, height: this.props.cropperMaxHeight, overflow:"hidden"}}
-                />
+            <div className="blur-box active" >
+                <div className="popup-wrapper rounded cropper">
+                    <div className="cropper-block">
+                        {this.props.cropperData.imageType === 'avatar' ?
+                        <div className="cropper-placeholder">
+                            {console.log(this.props.ownProps.background)}
+                            <div className="top-rounded main-placeholder__personal" style={{backgroundImage: `url(${this.checkOnEmpty(this.props.personalBackground, personalBackground)})`}}>
+                                <div className="cropper__img-preview avatar"></div>
+                            </div>
+                        </div>
+                        :
+                        <div className="cropper-placeholder" >
+                            <div className="top-rounded cropper__img-preview personal-background" style={{width:'720px', height: '160px', overflow:'hidden'}}>
 
-                <Cropper
-                style={{ width: "100%", height: "400px", backgroundColor:"#fff" }}
-                aspectRatio={this.props.cropperMaxWidth / this.props.cropperMaxHeight}
+                            </div>
+                            <img className="main-placeholder__personal__avatar" src={this.props.ownProps.avatar} alt=""/>
 
-                preview=".cropper__img-preview"
-                src={this.props.cropperFile}
-                viewMode={1}
-                dragMode='move'
-                guides={true}
-                minCropBoxHeight={10}
-                minCropBoxWidth={10}
-                background={false}
-                responsive={true}
-                autoCropArea={1}
-                checkOrientation={false} 
-                onInitialized={(instance) => {
-                    this.props.setCropperInstance(instance);
-                }}
-                />
-                
-                <div className="cropper-controls">
-                    <button className="cropper-upload-btn" onClick={this.getCropperData}>
-                        <img src={uploadIcon} alt="uploadIcon"/>
-                    </button>
+                        </div>
+                        }
+                        
 
-                    <button className="cropper-close-btn" onClick={this.deactivateCropper}>
-                        <img src={closeIcon} alt="closeIcon"/>
-                    </button>
+                        <Cropper
+                        style={{ width: "100%", height: "300px", backgroundColor:"#fff" }}
+                        aspectRatio={this.props.cropperMaxWidth / this.props.cropperMaxHeight}
+
+                        preview=".cropper__img-preview"
+                        src={this.props.cropperFile}
+                        viewMode={1}
+                        dragMode='move'
+                        guides={true}
+                        minCropBoxHeight={10}
+                        minCropBoxWidth={10}
+                        background={false}
+                        responsive={true}
+                        autoCropArea={1}
+                        checkOrientation={false} 
+                        onInitialized={(instance) => {
+                            this.props.setCropperInstance(instance);
+                        }}
+                        />
+                        
+                        <div className="cropper-controls">
+                            <button className="cropper-upload-btn" onClick={this.getCropperData}>
+                                <img src={uploadIcon} alt="uploadIcon"/>
+                            </button>
+
+                            <button className="cropper-close-btn" onClick={this.deactivateCropper}>
+                                <img src={closeIcon} alt="closeIcon"/>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-
             </div>
             
         ) : ('')
@@ -122,7 +148,7 @@ class ImageCropper extends Component {
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         cropperMaxWidth:state.profile.buf.cropper.maxWidth,
         cropperMaxHeight:state.profile.buf.cropper.maxHeight,
@@ -130,6 +156,7 @@ const mapStateToProps = (state) => {
         cropperActive:state.profile.buf.cropper.state,
         cropperData:state.profile.buf.cropper,
         userState: state.user,
+        ownProps:ownProps
 
     }
 }

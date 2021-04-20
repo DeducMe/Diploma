@@ -42,6 +42,7 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
     }
 
     const addPhone = (e) => {
+        e.preventDefault()
         state.onPhoneAdd(e.target.phonesInput.value)
     }
     return (
@@ -76,7 +77,7 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
 
                 <form onSubmit={addPhone}>
                     <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={phoneInput} maxLength="12"/>
-                    <button type="submit" className="plus-btn">+</button>
+                    <button type="submit" className="sup-btn-circled">+</button>
                 </form>
             </div>
 

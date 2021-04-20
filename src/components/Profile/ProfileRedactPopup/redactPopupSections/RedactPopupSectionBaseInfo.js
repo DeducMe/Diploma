@@ -51,16 +51,9 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
     }
 
     const languageInput = (e) =>{
-        let value
-        if (e.target.value) {
-            value = e.target.value.split(' ').join('')
-        }
-        else {
-            e.preventDefault()
-            value = e.target.languageInput.value.split(' ').join('')
-        }
-        console.log(value)
-        if (e.keyCode === 9 || e.keyCode === 32 || e.target.value){
+        const value = e.target.value.split(' ').join('')
+
+        if (e.keyCode === 9 || e.keyCode === 32){
             e.preventDefault()
             let newLanguage = {
                 "grade": state.profileState.buf.languageGrade,
@@ -73,6 +66,23 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
             }
         }
     }
+
+    const addLanguage = (e) => {
+        e.preventDefault()
+        
+        const value = e.target.languageInput.value.split(' ').join('')
+        let newLanguage = {
+            "grade": state.profileState.buf.languageGrade,
+            "language": value
+        }
+        console.log(state.profileState.language.filter((el) => el.language === newLanguage.language))
+        if(state.profileState.language.filter((el) => el.language === newLanguage.language).length === 0){
+            state.onLanguageAdd(newLanguage)
+            e.target.languageInput.value = ''
+
+        }
+
+    }
     
     const deletePhone = (e) =>{
         e.preventDefault()
@@ -80,18 +90,23 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
         state.onPhoneDelete(state.profileState.userPhones[e.target.parentElement.dataset.key])
     }
 
-    const phoneInput = (e) =>{
-        let value
-        if (e.target.value) {
-            value = e.target.value.split(' ').join('')
-        }
-        else {
-            e.preventDefault()
-            value = e.target.phonesInput.value.split(' ').join('')
-        }
-        console.log(value)
+    const addPhone = (e) => {
+        e.preventDefault()
+        const value = e.target.phonesInput.value.split(' ').join('')
 
-        if (e.keyCode === 9 || e.keyCode === 32 || !e.target.value){
+        const check = checkStringInput(value, 100, 3, /^([+]?[0-9\s-\(\)]{3,25})*$/i);
+
+        check === "pass" ? 
+        state.onPhoneAdd(value) 
+        : state.onInputMistake(check);
+
+        e.target.phonesInput.value = ''
+    }
+
+    const phoneInput = (e) =>{
+        const value = e.target.value.split(' ').join('')
+
+        if (e.keyCode === 9 || e.keyCode === 32){
             e.preventDefault()
             if(state.profileState.userPhones.length > 2){
                 
@@ -103,7 +118,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                 state.onPhoneAdd(value) 
                 : state.onInputMistake(check);
 
-                value = ''
+                e.target.value = ''
             }
         }
     }
@@ -158,7 +173,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                         </div>
                     )
                 })}
-                <form className="flex" onSubmit={phoneInput}>
+                <form className="flex" onSubmit={addPhone}>
                     <input className="popup__text-input" type="text" id="phonesInput" name="phonesInput" placeholder="Нажмите пробел после введения номера..." onKeyDown={phoneInput} />
                     <button className="sup-btn-circled">+</button>
                 </form>
@@ -176,7 +191,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                         </div>
                     )
                 })}
-                <form className="popup__select-text-input" onSubmit={languageInput}>
+                <form className="popup__select-text-input" onSubmit={addLanguage}>
                     <input className="popup__text-input" type="text" id="languageInput" name="languageInput" placeholder="Нажмите пробел после введения языка..." onKeyDown={languageInput}/>
                     <select name="languageGradeInput" id="languageGradeInput" onChange={languageGradeChange} value={state.profileState.buf.languageGrade}>
                         <option value="A1">A1 - начинающий (Beginner)</option>

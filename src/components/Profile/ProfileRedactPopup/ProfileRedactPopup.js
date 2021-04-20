@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import Loader from '../../Loader/Loader'
 import { connect } from 'react-redux'
-import './profileRedactPopup.css'
 import MainPlaceholder from './MainPlaceholder'
 import {createNewEmployee, createNewEmployer, updateEmployee, getUserData} from '../../../actions/serverConnections'
 import "cropperjs/dist/cropper.css";
@@ -91,9 +90,6 @@ const mapStateToProps = (state) =>{
         userState: state.user,
         placeholderData: state.profile.placeholder,
         loaderActive: state.nav.popup.loaderActive,
-        cropperActive: state.profile.buf.cropper.state,
-        cropperData:state.profile.buf.cropper
-
     }
   }
   

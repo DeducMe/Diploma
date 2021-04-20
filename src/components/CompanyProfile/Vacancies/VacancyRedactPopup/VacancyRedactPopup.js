@@ -13,7 +13,7 @@ import {checkStringInput, checkIntInput, getWorkTypeValues} from '../../../../sc
 
 class VacancyRedactPopup extends Component {
     changeVacancyName = (e) =>{
-        const check = checkStringInput(e.target.value, 35, 0, /^[a-zA-Z]*^$/);
+        const check = checkStringInput(e.target.value, 35, 0);
 
         check === "pass" ? 
         this.props.onVacancyNameChange(e.target.value, this.props.vacancyIndex) : 
@@ -194,7 +194,7 @@ class VacancyRedactPopup extends Component {
                 <div className={"resume__header white top-rounded " + this.props.vacancyPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.vacancyPlaceholder.vacancy_name}/>
-                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.vacancyPlaceholder.salary === 0 || this.props.vacancyPlaceholder.salary === -1 || this.props.vacancyPlaceholder.salary === null ? '' :this.props.vacancyPlaceholder.salary }/><span className="bold f-medium"> руб.</span></p>
+                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-pre white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.vacancyPlaceholder.salary === 0 || this.props.vacancyPlaceholder.salary === -1 || this.props.vacancyPlaceholder.salary === null ? '' :this.props.vacancyPlaceholder.salary }/><span className="bold f-pre"> руб.</span></p>
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
@@ -262,8 +262,9 @@ class VacancyRedactPopup extends Component {
                             <select className="select-input" name="workTypeInput" id="workTypeInput" onChange={this.workTypeInput.bind(this)}>
                                 <option value="part-day">неполный день</option>
                                 <option value="full-day">полный день</option>
-                                <option value="part-time">полная занятность</option>
-                                <option value="full-time">волонтерство</option>
+                                <option value="part-time">частичная занятность</option>
+                                <option value="full-time">полная занятность</option>
+                                <option value="volunteer">волонтерство</option>
                                 <option value="one-time-job">разовое задание</option>
                                 <option value="flexible-schedule">гибкий график</option>
                                 <option value="shift-schedule">сменный график</option>

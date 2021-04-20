@@ -29,16 +29,25 @@
     height: 1.25rem;
 }
 
+.resume__industry{
+    margin-bottom: 20px;
+}
+
 
 /* Smartphones */
 @media (max-width : 768px){
     .profile-wrapper{
         flex-direction: column;
     }
+
+    .profile__side{
+        display: none;
+    }
 }
 
 /* Tablets */
 @media (max-width : 1024px){
+    
 }
 
 /* Large screens */

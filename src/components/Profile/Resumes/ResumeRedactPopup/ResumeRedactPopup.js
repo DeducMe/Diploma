@@ -9,7 +9,7 @@ import industries from '../../../../jsonFiles/industries.json'
 
 class ResumeRedactPopup extends Component {
     changeVacancyName = (e) =>{
-        const check = checkStringInput(e.target.value, 35, 0, /^[a-zA-Z]*^$/);
+        const check = checkStringInput(e.target.value, 35, 0);
 
         check === "pass" ? 
         this.props.onVacancyNameChange(e.target.value, this.props.resumeIndex) : 
@@ -127,17 +127,17 @@ class ResumeRedactPopup extends Component {
                 <div className={"resume__header white top-rounded "+this.props.cvPlaceholder.bg_header_color}>
                     <div className="resume__header-top">
                         <input required type="text" className="resume__header__name bold f-large white" placeholder="Название профессии" onChange={this.changeVacancyName.bind(this)} value={this.props.resumePlaceholder.vacancy_name}/>
-                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-medium white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary === 0 || this.props.resumePlaceholder.salary === -1 || this.props.resumePlaceholder.salary === null ? '' :this.props.resumePlaceholder.salary }/><span className="bold f-medium"> руб.</span></p>
+                        <p className="resume__header__salary"><input required type="number" className="resume__header__salary-input bold f-pre white" placeholder="Желаемая зарплата" onChange={this.changeSalary.bind(this)} value={this.props.resumePlaceholder.salary === 0 || this.props.resumePlaceholder.salary === -1 || this.props.resumePlaceholder.salary === null ? '' :this.props.resumePlaceholder.salary }/><span className="bold f-pre"> руб.</span></p>
                     </div>
                     <div className="resume__header-bottom">
                         <p className="resume__header__grade">
                             <select required className="white resume__header__grade-input bg-transparent" id={"resume-gradeInput-"+this.props.index} name={"resume-gradeInput-"+this.props.index} onChange={this.changeGradeValue.bind(this)} value={this.props.resumePlaceholder.grade}>
-                                <option value="internship">Стажер</option>
-                                <option value="junior">Начинающий специалист</option>
-                                <option value="middle">Специалист</option>
-                                <option value="senior">Главный специалист</option>
-                                <option value="director">Управляющий отдела</option>
-                                <option value="senior-director">Генеральный директор</option>
+                                <option className="bg-light-black" value="internship">Стажер</option>
+                                <option className="bg-light-black" value="junior">Начинающий специалист</option>
+                                <option className="bg-light-black" value="middle">Специалист</option>
+                                <option className="bg-light-black" value="senior">Главный специалист</option>
+                                <option className="bg-light-black" value="director">Управляющий отдела</option>
+                                <option className="bg-light-black" value="senior-director">Генеральный директор</option>
                             </select>
                         </p>
                         <ul className="resume__header-color">
@@ -162,7 +162,7 @@ class ResumeRedactPopup extends Component {
 
                 <div className="resume__main-info rounded">
                     <p className="resume__industry f-pre">
-                        <span>Отрасль: </span>
+                        <span className="semi f-medium">Отрасль: </span>
                         <select required id={"resume-industryInput-"+this.props.index} name={"resume-industryInput-"+this.props.index} onChange={this.changeIndustryValue.bind(this)} value={this.props.resumePlaceholder.industry}>
                             {industries.map((item)=>{
                                 return <option value={item.name}>{item.name}</option>
@@ -171,7 +171,7 @@ class ResumeRedactPopup extends Component {
                     </p>
 
                     <div className="resume__work-type-block input-list">
-                        <p className="input-label">Типы работ:</p>
+                        <p className="input-label semi f-medium">Типы работ:</p>
 
                         <ul className="resume__work-type-list">
                             {this.props.resumeWorkType.map((item, index)=>{
@@ -188,8 +188,9 @@ class ResumeRedactPopup extends Component {
                             <select className="select-input" name="workTypeInput" id="workTypeInput" onChange={this.workTypeInput.bind(this)}>
                                 <option value="part-day">неполный день</option>
                                 <option value="full-day">полный день</option>
-                                <option value="part-time">полная занятность</option>
-                                <option value="full-time">волонтерство</option>
+                                <option value="part-time">частичная занятность</option>
+                                <option value="full-time">полная занятность</option>
+                                <option value="volunteer">волонтерство</option>
                                 <option value="one-time-job">разовое задание</option>
                                 <option value="flexible-schedule">гибкий график</option>
                                 <option value="shift-schedule">сменный график</option>
@@ -199,7 +200,7 @@ class ResumeRedactPopup extends Component {
                         </div>
                     </div>
 
-                    <p className="resume__about"><textarea className="resume__about-input" name="" id="" placeholder="Описание резюме" onChange={this.changeAboutValue.bind(this)} value={this.props.resumePlaceholder.about}></textarea></p>
+                    <p className="resume__about border-black rounded"><textarea className="resume__about-input" name="" id="" placeholder="Описание резюме" onChange={this.changeAboutValue.bind(this)} value={this.props.resumePlaceholder.about}></textarea></p>
 
                     {/* <ul className="resume__portfolio">
                         <li className="resume__portfolio-el">

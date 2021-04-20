@@ -39,7 +39,7 @@ export const parseOptions = (options) => {
     .join('')
 }
 
-export const checkStringInput = (str, max, min, re = /./) => {
+export const checkStringInput = (str, max, min, re = null) => {
     console.log(str,max,min,re)
 
     if (str.length > max){
@@ -48,10 +48,13 @@ export const checkStringInput = (str, max, min, re = /./) => {
     if (str.length < min){
         return mistakes[2]
     }
-    if (!re.test(String(str).toLowerCase())){
-        console.log(str)
-        return mistakes[3]
+    if (re !== null){
+        if (!re.test(String(str).toLowerCase())){
+            console.log(str)
+            return mistakes[3]
+        }
     }
+    
     return mistakes[0]
 }
 

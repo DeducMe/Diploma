@@ -90,7 +90,7 @@ export class MainPlaceholder extends Component {
                     </div>
                 </section>
                 
-                <ImageCropper></ImageCropper>
+                <ImageCropper avatar={this.props.avatarPhoto} background={this.props.personalBackground}></ImageCropper>
 
             </div>
         )

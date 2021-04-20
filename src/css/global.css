@@ -41,12 +41,6 @@ h2{
     outline: none;
 }
 
-html{
-    max-height: 100vh;
-}
-
-
-
 body{
     background-color: #EFF5FF;
     
@@ -100,12 +94,10 @@ input:-webkit-autofill:active  {
     }
 
     body, html {
+        min-height: 100vh;
         overflow-x: hidden;
     }
 
-    body{
-        overflow-y: hidden;
-    }
 }
 
 /* Tablets */
@@ -118,3 +110,10 @@ input:-webkit-autofill:active  {
 /* Large screens */
 @media (min-width : 1824px) {
 }
+
+@media (min-width: 1024px) {
+    html {
+        width:100vw;
+        overflow-x:hidden;
+    }
+  }

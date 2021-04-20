@@ -45,8 +45,11 @@
 }
 
 .resume__header__salary{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
     text-align: right;
-    width: 24%;
+    width: 34%;
 }
 
 .resume__header__grade{
@@ -337,7 +340,8 @@
 
 .resume__header__salary-input{
     text-align: right;
-    width: 110px;
+    margin-right: 10px;
+    width: 100%;
 }
 
 .resume__header__salary-input::-webkit-outer-spin-button,

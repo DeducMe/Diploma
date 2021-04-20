@@ -87,13 +87,16 @@ input[type='submit']{
 }
 
 .sup-btn-circled{
-    align-self: center;
-    min-height: 30px;
-    min-width: 30px;
-    max-height: 30px;
-    max-width: 30px;
     font-size: 20px;
     font-weight: 700;
+
+    align-self: center;
+
+    min-width: 35px;
+    max-width: 35px;
+    min-height: 35px;
+    max-height: 35px;
+
     transition: .3s;
 
     border: 2px solid #000;
@@ -241,11 +244,17 @@ input[type='submit']{
     background-color: #351124;
 }
 
+.border-black{
+    border: 2px solid #1e1f26;
+    padding: 10px;
+}
+
 .input-list{
     position: relative;
 
     display: flex;
     align-items: left;
+    flex-direction: column;
     flex-wrap: wrap;
 }
 
@@ -330,17 +339,17 @@ input[type='submit']{
     height: 0;
 }
 .my-node-enter-active{
-    transition: opacity 200ms;
-
     height: 100px;
+
+    transition: opacity 200ms;
 }
 .my-node-exit{
     height: 100px;
 }
 .my-node-exit-active{
-    transition: opacity 200ms;
-
     height: 0;
+
+    transition: opacity 200ms;
 }
 
 
@@ -349,10 +358,12 @@ input[type='submit']{
 }
 
 .error-block{
+    padding: 20px;
+
     text-align: center;
     vertical-align: middle;
-    border: 1px solid #666666;
-    padding: 20px;
+
+    border: 1px solid #666;
 }
 
 @keyframes appear-opacity{
@@ -383,18 +394,21 @@ input[type='submit']{
 }
 
 /* Smartphones */
-@media (max-width : 768px) {
-    
+@media (max-width : 768px){
 }
 
 /* Tablets */
-@media (max-width : 1024px) {
+@media (max-width : 1024px){
     .container{
         max-width: 1024px;
         padding: 0 10px;
     }
+
+    .no-fix-blur-box{
+        height: auto !important;
+    }
 }
 
 /* Large screens */
-@media (min-width : 1824px) {
+@media (min-width : 1824px){
 }

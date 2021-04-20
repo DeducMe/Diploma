@@ -3,7 +3,9 @@
 .main-placeholder{
     position: relative;
 
-    min-width: 720px;
+    flex: 1;
+
+    max-width: 720px;
     max-width: 720px;
     padding: 10px;
 
@@ -44,32 +46,38 @@
     padding-bottom: 50px;
 }
 
-.cropper__img-preview.personal-background{
+.cropper__img-preview{
     max-width: 700px;
-    min-width: 700px;
-    max-height: 160px;
-    min-height: 160px;
-}
-
-.cropper__img-preview.avatar{
-    max-height: 120px;
-    min-height: 120px;
-    max-width: 120px;
-    min-width: 120px;
 }
 
 /*    Placeholder-end      */
 
 .profile-redact__form-nav{
     display: flex;
+    justify-content: space-between;
 
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .popup-nav-btn{
+    margin: 5px 10px;
     padding: 5px 6px;
 
+    transition: .5s;
+
     border-bottom: 1px solid #000;
+}
+
+.popup-nav-btn img{
+    width: 70%;
+    height: 60px;
+}
+
+.popup-nav-btn.active{
+    transition: .5s;
+
+    background-color: #07006220;
 }
 
 .popup__input-block{
@@ -87,11 +95,11 @@
     position: absolute;
     z-index: 1;
     top: 0;
-    margin-top: 30px;
 
     visibility: hidden;
 
     width: 100%;
+    margin-top: 30px;
 
     transition: .5s;
 
@@ -131,7 +139,7 @@
 }
 
 .profile-redact__form{
-    width: 400px;
+    max-width: 400px;
     padding: 10px 20px;
 }
 
@@ -154,7 +162,12 @@
 .popup__date-fields{
     display: flex;
 
+    width: 100%;
     margin-top: 20px;
+}
+
+.popup__date-fields .input-field{
+    width: 50%;
 }
 
 .popup__select-text-input{
@@ -163,8 +176,9 @@
 }
 
 .popup__select-text-input select{
-    width: 15%;
+    width: 45px;
     height: 40px;
+    margin-right: 10px;
 }
 
 .popup__education-input,
@@ -194,6 +208,7 @@
     display: none;
 }
 .gender-input + div{
+    
     width: 280px;
     margin-top: 10px;
 }
@@ -242,7 +257,7 @@
     align-items: center;
     justify-content: space-between;
 
-    margin: 5px 0 10px 0;
+    margin: 5px 0 10px 10px;
     padding: 5px 10px;
 
     border: 1px solid #000;
@@ -258,29 +273,73 @@
 }
 
 
+
 /* .popup__text-input:not(:focus)::placeholder{
     opacity: 0;
 } */
+.address-input{
+    display: flex;
+    flex-direction: column;
+}
 
+.leaflet-container{
+    margin-bottom: 15px;
+}
+
+.drop-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 180px;
+    margin-bottom: 40px;
+
+    border: 2px dashed black;
+}
+
+.file-input{
+    margin-right: 20px;
+}
 /* Cropper */
 
 .cropper-block{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: absolute;
     top: 0;
     left: 0;
 
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
-    min-width: 720px;
-    max-width: 720px;
+    max-width: 760px;
+    height: 100%;
     padding: 10px;
-    border-radius: 16px;
 
+    border-radius: 16px;
     background-size: cover;
 }
 
+.popup-wrapper.cropper{
+    width: 100%;
+    min-width: none;
+    max-width: 760px;
+}
+
+.cropper__img-preview {
+    overflow: hidden;
+    width: 760px;
+}
+
+.cropper-placeholder{
+    overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+
+}
+
+.cropper-placeholder .main-placeholder__personal__avatar{
+    position: absolute;
+    top: 50px;
+}
 
 .cropper__img-preview.avatar{
     position: relative;
@@ -290,7 +349,6 @@
     height: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
-
     margin-left: 50px;
 
     border-radius: 50%;
@@ -299,21 +357,25 @@
 }
 
 .cropper__img-preview.personal-background{
-
+    width: 760px;
+    height: 160px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
 }
 
 .cropper-controls{
-    flex: 1;
-    padding: 20px;
     display: flex;
+    flex: 1;
     justify-content: center;
+
+    padding: 20px;
+
     background-color: #fff;
 }
 
 .cropper-upload-btn,
-.cropper-close-btn{
+.cropper-close-btn,
+.cropper-activate-btn{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -328,13 +390,23 @@
     background: #000;
 }
 
+.cropper-activate-btn{
+    background: transparent;
+}
+
 .cropper-upload-btn img,
-.cropper-close-btn img{
+.cropper-close-btn img,
+.cropper-activate-btn img{
     width: 40px;
 }
 
+.cropper-activate-btn:hover{
+    background: #fff;
+}
+
 .cropper-upload-btn:hover,
-.cropper-close-btn:hover{
+.cropper-close-btn:hover,
+.cropper-activate-btn:hover{
     transition: .5s;
 
     border: 1px solid #fff;
@@ -347,3 +419,40 @@
 }
 
 /* Cropper end */
+
+@media (max-width : 768px) {
+    .popup-nav-btn {
+        padding: 0;
+        width: 65px;
+        height: 65px;
+    }
+    .profile-redact__popup-wrapper{
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .main-placeholder{
+        width: 100%;
+    }
+
+    .popup__date-fields{
+        flex-direction: column;
+    }
+    
+    .popup__date-fields .input-field{
+        width: 100%;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px) {
+    /* .gender-input + div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    } */
+}
+
+/* Large screens */
+@media (min-width : 1824px) {
+}
