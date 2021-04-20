@@ -91,7 +91,7 @@ class FavouritesPopup extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
+                                    {/* {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
                                                 <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
@@ -108,7 +108,7 @@ class FavouritesPopup extends Component {
                                             <p className="underline-link">Добавить в избранное</p>
                                         </div>
                                     : ''
-                                    }
+                                    } */}
                                 </section>
                             </li>
                         )
