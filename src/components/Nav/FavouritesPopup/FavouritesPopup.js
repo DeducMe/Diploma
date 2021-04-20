@@ -127,7 +127,7 @@ class FavouritesPopup extends Component {
 const mapStateToProps = (state) =>{
     return {
         favouritesState:state.favourites,
-        favouritesValues:state.favourites.favouritesValues,
+        favouritesValues:state.favourites.favouritesValues[state.favourites.favouritesValues.item_type],
         userState:state.user.user,
         favouritesLoading:state.favourites.favouritesLoading
     }
