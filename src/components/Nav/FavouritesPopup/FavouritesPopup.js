@@ -53,9 +53,10 @@ class FavouritesPopup extends Component {
                     <ul className="favourites-main__favourites-items-list">
                     {this.props.favouritesState.favouritesLoading === false ?
                     this.props.favouritesValues.length !== 0 ? 
-                    this.props.favouritesValues.map((item, index) => {
+                    this.props.favouritesValues[this.props.favouritesValues.item_type].map((item, index) => {
                         return(
                             <li key={index} className="resume resumes-list-el rounded">
+                                {console.log(item)}
                                 <section className="resume-main">
                                     <div className={"resume__header white top-rounded " + item.bg_header_color }>
                                         <div className="resume__header-top">
@@ -127,7 +128,7 @@ class FavouritesPopup extends Component {
 const mapStateToProps = (state) =>{
     return {
         favouritesState:state.favourites,
-        favouritesValues:state.favourites.favouritesValues[state.favourites.favouritesValues.item_type],
+        favouritesValues:state.favourites.favouritesValues,
         userState:state.user.user,
         favouritesLoading:state.favourites.favouritesLoading
     }
