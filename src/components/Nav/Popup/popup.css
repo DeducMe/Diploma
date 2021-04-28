@@ -113,7 +113,6 @@ label.capsule{
     content: 'Работодатель';
 
     color: #fff;
-    ;
 }
 
 #hidcheck:not(:checked) ~ .capsule .text-signs #on{
@@ -130,7 +129,6 @@ label.capsule{
     content: 'Соискатель';
 
     color: #fff;
-    ;
 }
 
 @keyframes toggle-on{

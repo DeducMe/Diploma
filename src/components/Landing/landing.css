@@ -51,7 +51,9 @@
 
 /* Smartphones */
 @media (max-width : 768px) {
-    
+    .landing__recomendations{
+        width: 95%;
+    }
 }
 
 /* Tablets */

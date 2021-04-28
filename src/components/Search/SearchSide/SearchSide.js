@@ -19,9 +19,14 @@ class SearchSide extends Component {
            
     } 
     changeIndustry = (e) => {
+        if (e.target.value === 'Не указано'){
+            this.props.onChangeIndustry(null)
+            return
+        }
         if (e.target.value!==0){
             this.props.onChangeIndustry(e.target.value)
         }
+        
     }
 
     ChangeSlider = (values) =>{

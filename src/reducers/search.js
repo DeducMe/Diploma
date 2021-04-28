@@ -88,6 +88,14 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    else if (action.type === 'DELETE_FROM_FAVOURITES'){
+        state.searchValues.find(x => x.pk === action.payload).favorite = false
+        state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
+        return {
+            ...state
+        };
+    }
+    
     else if (action.type === 'CHANGE_SEARCH_QUERY'){
         state.searchOptions.phrase = action.payload;
         return {

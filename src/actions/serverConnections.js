@@ -143,6 +143,18 @@ function deleteResumeFetchSucces() {
     }
 }
 
+function addFavouriteFetchSucces(){
+    return{
+        type:'ADD_FAVOURITE_FETCH_SUCCES',
+    }
+}
+
+function deleteFavouriteFetchSucces(){
+    return{
+        type:'DELETE_FAVOURITE_FETCH_SUCCES',
+    }
+}
+
 function getFavouritesFetchSucces(data){
     return{
         type:'GET_FAVOURITES_QUERY_FETCH_SUCCES',
@@ -607,7 +619,25 @@ export const addFavourite = (type, id) => (dispatch) => {
     .then(data => {
         console.log(data)
         if (data !== '404')
-        return dispatch(onCreateResponse())
+        return dispatch(addFavouriteFetchSucces())
+        else return dispatch(notFoundError(data))
+    })
+}
+
+export const deleteFavourite = (type, id) => (dispatch) => {
+    return fetch(url + '/favorites/'+ type + '/' + id,{
+        method: 'DELETE',
+        headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRFToken': document.cookie.split('=')[1]
+        },  
+    })  
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        if (data !== '404')
+        return dispatch(deleteFavouriteFetchSucces())
         else return dispatch(notFoundError(data))
     })
 }

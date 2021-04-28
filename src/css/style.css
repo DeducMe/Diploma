@@ -8,6 +8,7 @@
     margin: 0 auto;
 }
 
+
 .highlighted-btn{
     padding: 3px 25px;
 
@@ -245,8 +246,9 @@ input[type='submit']{
 }
 
 .border-black{
-    border: 2px solid #1e1f26;
     padding: 10px;
+
+    border: 2px solid #1e1f26;
 }
 
 .border{

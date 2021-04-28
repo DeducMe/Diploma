@@ -48,10 +48,8 @@ class Landing extends Component {
                             <div className={"resume__header white top-rounded " + item.bg_header_color }>
                                 <div className="resume__header-top">
                                     <h2 className="resume__header__name bold text-overflow">{item.vacancy_name}</h2>
-                                    <p>
-                                        {item.salary === -1 ? <span className="resume__header__salary bold text-overflow">Зарплата не указана</span>:
-                                        <span className="resume__header__salary bold text-overflow">{item.salary} руб.</span>}
-                                    </p>
+                                    {item.salary === -1 ? <span className="resume__header__salary bold text-overflow">Зарплата не указана</span>:
+                                    <span className="resume__header__salary bold text-overflow">{item.salary} руб.</span>}
                                 </div>
                                 <div className="resume__header-bottom">
                                     <p className="resume__header__grade">{getGradeValues(item.grade)}</p>

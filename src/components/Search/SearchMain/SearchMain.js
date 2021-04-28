@@ -1,7 +1,7 @@
 import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {getSearchQueries, addFavourite} from '../../../actions/serverConnections'
+import {getSearchQueries, addFavourite, deleteFavourite} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
 import ResponsePopup from '../../ResponsePopup/ResponsePopup'
@@ -65,6 +65,10 @@ class SearchMain extends Component {
     addToFavourites = (index) => {
         this.props.onAddToFavourites(index, this.props.searchOptions.searchType)
     }
+
+    deleteFromFavourites = (index) => {
+        this.props.onDeleteFromFavourites(index, this.props.searchOptions.searchType)
+    }
     
     openResponsePopup = (index) => {
         this.props.onOpenResponsePopup(index)
@@ -113,10 +117,8 @@ class SearchMain extends Component {
                                     <div className={"resume__header white top-rounded " + item.bg_header_color }>
                                         <div className="resume__header-top">
                                             <h2 className="resume__header__name bold f-large">{item.vacancy_name}</h2>
-                                            <p>
-                                                {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
-                                                <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
-                                            </p>
+                                            {item.salary === -1 ? <span className="resume__header__salary bold f-medium">Зарплата не указана</span>:
+                                            <span className="resume__header__salary bold f-medium">{item.salary} руб.</span>}
                                         </div>
                                         <div className="resume__header-bottom">
                                             <p className="resume__header__grade">{getGradeValues(item.grade)}</p>
@@ -154,7 +156,7 @@ class SearchMain extends Component {
                                                 {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
                                             {
-                                                item.favorite === true ? <p className="green">Добавлено в избранное!</p>
+                                                item.favorite === true ? <p className="green underline-link" onClick={this.deleteFromFavourites.bind(this, item.pk)}>Добавлено в избранное!</p>
                                                 : <p className="underline-link" onClick={this.addToFavourites.bind(this, item.pk)}>Добавить в избранное</p>
                                             }
                                         </div>
@@ -162,7 +164,7 @@ class SearchMain extends Component {
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
                                                 {
-                                                    item.got_responsed === true ? <p className="green">Вы уже пригласили!</p>
+                                                    item.got_responsed === true ? <p className="green underline-link" onClick={this.deleteFromFavourites.bind(this, item.pk)}>Вы уже пригласили!</p>
                                                     :<p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
                                                 }
                                                 {this.props.searchState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
@@ -220,6 +222,10 @@ const mapDispatchToProps = (dispatch) =>{
         onAddToFavourites:(pk, type) => {
             dispatch(addFavourite(type, pk))
             dispatch({type : 'ADD_TO_FAVOURITES', payload:pk})
+        },
+        onDeleteFromFavourites:(pk, type) => {
+            dispatch(deleteFavourite(type, pk))
+            dispatch({type : 'DELETE_FROM_FAVOURITES', payload:pk})
         },
         onSearchLoaderActivate: () => {
             dispatch(searchLoaderActivate())

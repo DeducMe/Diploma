@@ -4,6 +4,7 @@ const initialState = {
     next:'initial',
     favouritesCount: 0,
     favouritesValues:[],
+    openedResponseId:-1
 };
   
   
@@ -63,5 +64,12 @@ export default function userState(state = initialState, action){
             ...state
         };
     }
+    else if (action.type === 'FAVOURITES_OPEN_RESPONSE_POPUP'){
+        state.openedResponseId = action.payload
+        return {
+            ...state
+        };
+    }
+    
     return state;
 }

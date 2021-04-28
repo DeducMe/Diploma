@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {getFavouritesQuery} from '../../../actions/serverConnections'
+import {getFavouritesQuery,addFavourite, deleteFavourite} from '../../../actions/serverConnections'
 import fileUploader from '../../../actions/fileUploader'
 import {userTypeToSearchType} from '../../../scripts/commonScripts'
 import { connect } from 'react-redux'
@@ -91,13 +91,16 @@ class FavouritesPopup extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    {/* {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
+                                    {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
                                                 <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
                                                 {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                            <p className="underline-link">Добавить в избранное</p>
+                                            {
+                                                item.favorite === true ? <p className="green underline-link" onClick={this.deleteFromFavourites.bind(this, item.pk)}>Добавлено в избранное!</p>
+                                                : <p className="underline-link" onClick={this.addToFavourites.bind(this, item.pk)}>Добавить в избранное</p>
+                                            }
                                         </div>
                                     : el.item_type === 'cv' && this.props.userState.user_type === 'employer' ?
                                         <div className="vacancy-control-block">
@@ -105,10 +108,13 @@ class FavouritesPopup extends Component {
                                                 <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Пригласить</p>
                                                 {this.props.favouritesState.openedResponseId === index ? <ResponsePopup item={item} onClick={this.openResponsePopup}></ResponsePopup> : ''}
                                             </div>
-                                            <p className="underline-link">Добавить в избранное</p>
+                                            {
+                                                item.favorite === true ? <p className="green">Добавлено в избранное!</p>
+                                                : <p className="underline-link" onClick={this.addToFavourites.bind(this, item.pk)}>Добавить в избранное</p>
+                                            }
                                         </div>
                                     : ''
-                                    } */}
+                                    }
                                 </section>
                             </li>
                         )
@@ -145,9 +151,16 @@ const mapDispatchToProps = (dispatch) =>{
         onSortValues: (values) => {
             dispatch({type : 'FAVOURITES_SORT_VALUES', payload:values})
         },
-
+        onAddToFavourites:(pk, type) => {
+            dispatch(addFavourite(type, pk))
+            dispatch({type : 'ADD_TO_FAVOURITES', payload:pk})
+        },
+        onDeleteFromFavourites:(pk, type) => {
+            dispatch(deleteFavourite(type, pk))
+            dispatch({type : 'DELETE_FROM_FAVOURITES', payload:pk})
+        },
         onOpenResponsePopup: (index) => {
-            dispatch({type : 'OPEN_RESPONSE_POPUP', payload:index})
+            dispatch({type : 'FAVOURITES_OPEN_RESPONSE_POPUP', payload:index})
         },
         onFavouritesLoaderActivate: () => {
             dispatch(favouritesLoaderActivate())

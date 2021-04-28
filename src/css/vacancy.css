@@ -323,7 +323,7 @@
 
     visibility: hidden;
 
-    width: 700px;
+    max-width: 700px;
     height: 100%;
 
     opacity: 0;
@@ -379,4 +379,43 @@
     border-radius: 50%;
 
     object-fit: cover;
+}
+
+
+
+/* Smartphones */
+@media (max-width : 768px){
+    .form-submit-btn{
+        white-space: break-spaces;
+        margin: 10px 0;
+    }
+}
+
+/* Tablets */
+@media (max-width : 1024px){
+    .resume-redact-btn,
+    .resume-delete-btn,
+    .resume-close-btn{
+        right: 20px;
+
+        width: 35px;
+        height: 35px;
+    }
+    
+    .resume-delete-btn{
+        top: 150px;
+    }
+
+    .resume-delete-btn img{
+        width: 25px;
+    }
+    
+    .resume-redact-btn img,
+    .resume-close-btn img{
+        width: 20px;
+    }
+}
+
+/* Large screens */
+@media (min-width : 1824px){
 }
