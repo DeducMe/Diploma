@@ -21,7 +21,6 @@ class SearchPanel extends Component {
                             <select className="search-form__dropdown-menu f-medium semi" id="searchPanelSearchType" name="searchPanelSearchType">
                                 <option value="vacancy">Вакансии</option>
                                 <option value="cv">Резюме</option>
-                                <option value="employers">Компании</option>
                             </select>
                             
                             <input className="search-form__submit highlighted" type="submit" value="Поиск"/>

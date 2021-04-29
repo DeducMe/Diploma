@@ -316,8 +316,7 @@ export const redactResume = (data, cvId) => (dispatch) => {
     })
 }
 
-export const verify = (data) => (dispatch) => {
-    console.log(JSON.stringify(data))
+export const verify = () => (dispatch) => {
     return fetch(url + '/auth/user/',{
         method: 'GET',  
         headers : { 

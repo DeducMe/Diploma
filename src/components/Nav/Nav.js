@@ -220,8 +220,6 @@ class Nav extends Component {
                 <span className="f-medium semi" >Поиск</span> 
                 <img src={arrow} alt=""/>
               </button>
-
-
             </div>
 
             <div className="nav__right-side">

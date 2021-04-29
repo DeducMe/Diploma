@@ -9,8 +9,6 @@ import './css/normalize.css'
 import './fonts/Nunito/Nunito.css'
 import { connect } from 'react-redux'
 
-
-
 class App extends Component {
   runOnScroll = () => {
     if (this.props.location === '/landing'){
@@ -24,7 +22,7 @@ class App extends Component {
   }
 
   checkLocation(){
-    if (this.props.location === '/landing'){
+    if (this.props.location === '/landing' || this.props.location === '/'){
       window.addEventListener("scroll", this.runOnScroll, false)
 
       this.props.onNavBgChangeToTransparent()

@@ -65,7 +65,6 @@ class Responses extends Component {
         this.props.onNullifyAnswers()
         console.log(this.props.userState.id)
         setTimeout(()=>{this.getResults()}, 0)
-        
     }
 
     getAnswer(item){
@@ -84,7 +83,6 @@ class Responses extends Component {
                     </div>
                     {this.props.responseState.responseValues.length !== 0 || this.props.responseState.responseAnswers.length !== 0 ? 
                         <ul className="responses__list rounded">
-                            {console.log(this.getInvites())}
                         {this.getInvites().map((item, index)=> 
                             <li key={index} className="responses__list-el rounded">
                             <div className="responses__list-el__header">
