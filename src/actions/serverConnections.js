@@ -327,6 +327,7 @@ export const verify = () => (dispatch) => {
     })
     .then(response => 
         {
+            console.log(response.status)
             if (response.status !== 403)
             return response.json()
             else return response.status;
