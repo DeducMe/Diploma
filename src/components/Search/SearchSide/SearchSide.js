@@ -5,10 +5,9 @@ import 'rc-slider/assets/index.css';
 import {getSearchQueries} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 import fileUploader from '../../../actions/fileUploader';
-import {getSearchNext, getSearchLoadingState} from '../../../actions/asyncDispatch';
+import {getSearchNext} from '../../../actions/asyncDispatch';
 import {parseOptions} from '../../../scripts/commonScripts'
 import industriesData from '../../../jsonFiles/industries.json'
-import { NavItem } from 'react-materialize';
 
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
@@ -59,15 +58,12 @@ class SearchSide extends Component {
     }
     
     componentDidUpdate(){
-        console.log('updated')
         clearTimeout(this.state.timeoutHandler);
         this.props.onSearchLoaderActivate()
 
         this.state.timeoutHandler = setTimeout(()=>{
-            console.log('asasfasfas')
             this.getSearchValues(true)
         }, 1000)
-        
     }
 
     render() {
@@ -210,7 +206,7 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
                     })
                 }
@@ -218,7 +214,6 @@ const mapDispatchToProps = (dispatch) =>{
             .then(response => dispatch(searchLoaderDeactivate()))
         },
         onSetValuePhoto: (photo, id) => {
-            console.log('photo')
             dispatch({type : 'SEARCH_UPDATE_VALUES_PHOTO', payload:{photo:photo, id:id}})
         },
         onAddGrade: (value) => {

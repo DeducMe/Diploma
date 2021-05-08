@@ -10,7 +10,7 @@ const initialState = {
   
 export default function userState(state = initialState, action){
     if (action.type === 'FAVOURITES_UPDATE_VALUES'){
-        action.payload.map((item)=>{state.favouritesValues.push(item)});
+        action.payload.forEach((item)=>{state.favouritesValues.push(item)});
         state.favouritesValues = Object.assign([], state.favouritesValues, [...state.favouritesValues]);
 
         return {

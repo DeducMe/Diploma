@@ -105,18 +105,12 @@ const mapDispatchToProps = (dispatch) =>{
         onDescriptionChange: (text)=>{
             dispatch({type : 'POPUP_EMPLOYER_REDACT_DESCRIPTION_CHANGE', payload:text})
         },
-        onAddressChange: (text)=>{
-            dispatch({type : 'POPUP_EMPLOYER_REDACT_ADDRESS_CHANGE', payload:text})
-        },        
         onPhoneAdd: (phone)=>{
             dispatch({type : 'POPUP_EMPLOYER_REDACT_ADD_PHONE', payload:phone})
         },
         onPhoneDelete: (phoneId)=>{
             dispatch({type : 'POPUP_EMPLOYER_REDACT_DELETE_PHONE', payload:phoneId})
         },
-        onAddressChange: (text)=>{
-            dispatch({type : 'POPUP_EMPLOYER_REDACT_ADDRESS_NAME_CHANGE', payload:text})
-        }, 
         onSaveNewAddress:(address)=>{
             dispatch({type : 'POPUP_EMPLOYER_REDACT_ADDRESS_CHANGE', payload:address})
         },

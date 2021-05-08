@@ -1,11 +1,9 @@
-import e from 'cors'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {getSearchQueries, addFavourite, deleteFavourite} from '../../../actions/serverConnections'
 import {searchLoaderDeactivate, searchLoaderActivate} from '../../../actions/asyncDispatch'
 
 import ResponsePopup from '../../ResponsePopup/ResponsePopup'
-import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import fileUploader from '../../../actions/fileUploader';
 import {getGradeValues, getWorkTypeValues, parseOptions, searchTypeToUserType} from '../../../scripts/commonScripts'
 import { InView } from "react-intersection-observer";
@@ -41,6 +39,8 @@ class SearchMain extends Component {
 
             case 'dateDesc':
                 this.sortByValue(values, 'pub-date', 'desc')
+                break;
+            default:
                 break;
         }
         this.props.onSortValues(values)
@@ -131,7 +131,7 @@ class SearchMain extends Component {
                                         <div className="resume__main-info__text">
                                             <p className="resume__industry f-pre">{item.industry}</p>
             
-                                            <p className="resume__work-type">{item.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
+                                            <p className="resume__work-type">{item.work_type.forEach((item)=>getWorkTypeValues(item)).join(', ')}</p>
 
                                             <p className="resume__about">{item.about || item.leading}</p>
                                         </div>
@@ -238,7 +238,7 @@ const mapDispatchToProps = (dispatch) =>{
                     dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
                     dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
                     })
                 }

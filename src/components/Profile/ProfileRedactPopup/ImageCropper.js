@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Cropper from "react-cropper";
-import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import personalBackground from'../../../img/personal-background.png'
-import firebase from "firebase";
 import fileUploader from '../../../actions/fileUploader';
 import "cropperjs/dist/cropper.css";
 import closeIcon from '../../../img/close.svg';

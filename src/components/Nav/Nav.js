@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 import Popup from './Popup/Popup'
@@ -7,7 +7,6 @@ import OptionsPopup from './OptionsPopup/OptionsPopup'
 import logo from '../../img/logo.svg'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
-import bell from '../../img/bell.svg'
 import fileUploader from '../../actions/fileUploader'
 import SearchPanel from './SearchPanel/SearchPanel'
 import './nav.css'
@@ -307,12 +306,10 @@ const mapDispatchToProps = (dispatch) =>{
       .then((response) => {
         getAvatarFromFirebase()
       })
-      
     },
     onLogout: ()=>{
       dispatch(logout())
       dispatch({type : 'USER_LOGOUT', payload:null})
-
     },
   }
 }

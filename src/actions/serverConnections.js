@@ -41,13 +41,6 @@ function loginUserFetchSucces(data){
     }
 }
 
-function verifyUserFetchSucces(data){
-    return{
-        type:'VERIFY_USER_FETCH_SUCCES',
-        data
-    }
-}
-
 function changePasswordUserFetchSucces(data){
     return{
         type:'CHANGE_PASSWORD_USER_FETCH_SUCCES',

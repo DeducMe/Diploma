@@ -125,7 +125,7 @@ const mapDispatchToProps = (dispatch) =>{
                     dispatch({type : 'SEARCH_UPDATE_OPTIONS', payload:data.data.next})
                     dispatch({type : 'SEARCH_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'SEARCH_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
                     })
                 }

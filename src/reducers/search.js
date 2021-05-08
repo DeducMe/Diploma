@@ -35,7 +35,7 @@ const initialState = {
   
 export default function userState(state = initialState, action){
     if (action.type === 'SEARCH_UPDATE_VALUES'){
-        action.payload.map((item)=>{state.searchValues.push(item)});
+        action.payload.forEach((item)=>{state.searchValues.push(item)});
         state.searchValues = Object.assign([], state.searchValues, [...state.searchValues]);
 
         return {

@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
-import Loader from '../../Loader/Loader'
 import { connect } from 'react-redux'
 import MainPlaceholder from './MainPlaceholder'
 import {updateEmployer, createNewEmployer, getEmployer} from '../../../actions/serverConnections'
 import "cropperjs/dist/cropper.css";
-import fileUploader from '../../../actions/fileUploader'
 import RedactPopupSectionBaseInfo from './redactPopupSections/RedactPopupSectionBaseInfo'
 import RedactPopupSectionImages from './redactPopupSections/RedactPopupSectionImages'
 

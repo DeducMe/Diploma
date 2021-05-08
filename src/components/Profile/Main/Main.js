@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import plusIcon from '../../../img/plusIcon.svg'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import './main.css'
-import photoRedactIcon from '../../../img/photovector.svg'
 import personalBackground from'../../../img/personal-background.png'
 import LeafletMap from '../../leafletMap/LeafletMap'
 

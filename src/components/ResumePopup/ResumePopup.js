@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component } from 'react'
 import {getResume} from '../../actions/serverConnections'
 import {getGradeValues, getWorkTypeValues} from '../../scripts/commonScripts'
 import { connect } from 'react-redux'

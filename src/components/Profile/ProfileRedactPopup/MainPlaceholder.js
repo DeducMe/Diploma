@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import personalBackground from'../../../img/personal-background.png'
 import ImageCropper from "./ImageCropper";
-
-import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 

@@ -7,7 +7,6 @@ import {userTypeToUrlUserType, getNormalUserType, userTypeToSearchType, simplify
 import fileUploader from '../../actions/fileUploader';
 import { Link } from 'react-router-dom'
 import './responses.css'
-import dropdownArrow from '../../img/right-arrow.svg'
 import ResponsePopup from './ResponsePopup'
 import { InView } from "react-intersection-observer";
 
@@ -216,7 +215,7 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'RESPONSE_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'RESPONSE_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         getAvatarFromFirebase(userId, item.id)
                     })
                 }
@@ -231,7 +230,7 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'ANSWERS_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'RESPONSE_UPDATE_ANSWERS', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         getAvatarFromFirebase(userId, item.id)
                     })
                 }
@@ -248,7 +247,6 @@ const mapDispatchToProps = (dispatch) =>{
             dispatch({type : 'RESPONSE_NULLIFY_ANSWERS', payload:null})
         },
         onOpenResponsePopup: (index, state) => {
-            console.log(index)
             dispatch({type : 'RESPONSE_OPEN_RESPONSE_POPUP', payload:{index:index, state:state}})
         },
         onOpenVacancyInfo: (id) =>{

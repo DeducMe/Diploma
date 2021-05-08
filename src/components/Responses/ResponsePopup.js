@@ -112,7 +112,7 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'RESPONSE_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'RESPONSE_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         getAvatarFromFirebase(userId, item.id, userType)
                     })
                 }
@@ -127,7 +127,7 @@ const mapDispatchToProps = (dispatch) =>{
                 if (data.data !== null && data.data !== 404){
                     dispatch({type : 'ANSWERS_UPDATE_RESULTS_COUNT', payload:data.data.count})
                     dispatch({type : 'RESPONSE_UPDATE_ANSWERS', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         getAvatarFromFirebase(userId, item.id, userType)
                     })
                 }

@@ -6,9 +6,7 @@ import { connect } from 'react-redux'
 import {favouritesLoaderDeactivate, favouritesLoaderActivate} from '../../../actions/asyncDispatch'
 
 import ResponsePopup from '../../ResponsePopup/ResponsePopup'
-import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
 import {getGradeValues, getWorkTypeValues, invertUserType} from '../../../scripts/commonScripts'
-import { InView } from "react-intersection-observer";
 import { Link } from 'react-router-dom'
 import Loader from '../../Loader/Loader'
 
@@ -172,7 +170,7 @@ const mapDispatchToProps = (dispatch) =>{
                 console.log(data)
                 if (data.data !== null){
                     dispatch({type : 'FAVOURITES_UPDATE_VALUES', payload:data.data.results}) 
-                    data.data.results.map((item) => {
+                    data.data.results.forEach((item) => {
                         if (item.photo_url === "") getAvatarFromFirebase(item.owner_id, item.pk)
                     })
                 }

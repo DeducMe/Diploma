@@ -4,11 +4,7 @@ import { connect } from 'react-redux'
 import SearchSide from './SearchSide/SearchSide.js'
 import SearchMain from './SearchMain/SearchMain.js'
 
-
 import './search.css'
-
-import {getSearchQueries} from '../../actions/serverConnections'
-
 
 class Search extends Component {
     parseOptions(options){

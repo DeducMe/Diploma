@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from 'react-redux'
-
-import { useState } from 'react';
 import '../../css/leaflet.css'
 import '../../css/geosearch.css'
 import L from "leaflet";
-import { MapContainer , TileLayer, useMapEvents, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer , TileLayer, useMapEvents, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import leafletKnn from 'leaflet-knn'
 import {testCities} from './testCities'
@@ -21,7 +19,7 @@ function DisplayPosition({onChangeMapPosition}) {
     
     const onMove = () => {
         const pos = map.getCenter()
-        var gj = L.geoJson(testCities);
+        let gj = L.geoJson(testCities);
 
         const name = searchControl.searchElement.input.value === '' ? leafletKnn(gj).nearestLayer([pos.lng, pos.lat],1)[0].layer.feature.properties.name : searchControl.searchElement.input.value
         onChangeMapPosition({
@@ -40,27 +38,26 @@ function DisplayPosition({onChangeMapPosition}) {
       return () => {
         map.off('move', onMove)
       }
-    }, [map, onMove])
+    }, [map])
 
     return null
   }
   
 
-function findStartPosition(data, map, onChangeMapPosition){
+function findStartPosition(data, map){
     // provider.search({ query: "99 Southwark St, London SE1 0JF, UK" })
     // .then(value => {})
-    var lat = data.lat;
-    var lng = data.lng;
-    var label = data.name;
-    var marker = L.marker([lat, lng]).addTo(map)
+    let lat = data.lat;
+    let lng = data.lng;
+    let label = data.name;
+    let marker = L.marker([lat, lng]).addTo(map)
     marker.bindPopup(label).openPopup();
     map.setView([lat, lng], 13)
 }
 
 
 function LocationMarker() {
-    const [position, setPosition] = useState(null)
-    var marker = null
+    let marker = null
     const map = useMapEvents({
       click() {
         map.locate()
@@ -75,12 +72,6 @@ function LocationMarker() {
 
       },
     })
-  
-    return position === null ? null : (
-      <Marker position={position}>
-        <Popup>Вы здесь</Popup>
-      </Marker>
-    )
 }
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:

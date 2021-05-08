@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addResume} from '../../../actions/serverConnections'
 import {getWorkTypeValues, getGradeValues} from '../../../scripts/commonScripts'
 import plusIcon from '../../../img/plusIcon.svg'
 import ResumeRedactPopup from './ResumeRedactPopup/ResumeRedactPopup'
