@@ -1,4 +1,4 @@
-const url = 'http://job-flow.ru/api'  //http://localhost:3000
+const url = 'https://job-flow.ru/api'  //http://localhost:3000
 function fetchError(){
     return{
         type:'FETCH_ERROR',
