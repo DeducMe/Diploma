@@ -41,7 +41,7 @@ function httpsWorker(glx) {
     // (the ACME and http->https middleware are loaded by glx.httpServer)
     var httpServer = glx.httpServer();
 
-    httpServer.listen(8080, "0.0.0.0", function() {
+    httpServer.listen(3000, "0.0.0.0", function() {
         console.info("Listening on ", httpServer.address());
     });
 }
