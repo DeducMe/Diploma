@@ -3,16 +3,11 @@ var app = express();
 const path = require('path');
 var cors = require('cors');
 
-var http = require('http');
+var https = require('https');
 
-var server = http.createServer(app);
+var server = https.createServer(app);
 
 app.set('port', (4000));
-
-app.use(function(req, res, next) {
-    var reqType = req.headers["x-forwarded-proto"];
-    reqType == 'https' ? next() : res.redirect("https://" + req.headers.host + req.url);
-});
 
 app.options('*', cors());
 app.use(express.static(path.join(__dirname, 'build')));

@@ -10,6 +10,7 @@
     "cors": "^2.8.5",
     "esri-leaflet": "^3.0.1",
     "esri-leaflet-geocoder": "^3.0.0",
+    "express": "^4.17.1",
     "firebase": "^8.2.4",
     "leaflet": "^1.7.1",
     "leaflet-geosearch": "^3.2.1",
@@ -36,7 +37,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
