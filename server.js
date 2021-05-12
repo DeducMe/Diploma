@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 const path = require('path');
+var cors = require('cors');
+
 var http = require('http');
 
 var server = http.createServer(app);
@@ -15,6 +17,6 @@ app.use(function(req, res, next) {
 app.options('*', cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.listen(PORT, ()=>{
+app.listen(4000, ()=>{
     console.log('started')
 })
