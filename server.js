@@ -12,8 +12,6 @@ app.get('*', cors(), (req, res) => {
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));                               
 });
 
-
-
 require("greenlock-express")
     .init({
         packageRoot: __dirname,
@@ -31,10 +29,10 @@ function httpsWorker(glx) {
     //
     // Get the raw https server:
     var httpsServer = glx.httpsServer(null, function(req, res) {
-        res.end("Hello, Encrypted World!");
+        res.send("Hello, Encrypted World!");
     });
 
-    httpsServer.listen(8443, "0.0.0.0", function() {
+    httpsServer.listen(3000, "0.0.0.0", function() {
         console.info("Listening on ", httpsServer.address());
     });
 
