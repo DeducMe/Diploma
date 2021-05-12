@@ -5,40 +5,25 @@ var cors = require('cors');
 var http = require('http');
 var https = require('https');
 const fs = require('fs');
-
-const port = 4000;
-
-var key = fs.readFileSync('./rootCA.key');
-var cert = fs.readFileSync('./rootCA.crt');
-var options = {
-  key: key,
-  cert: cert
-};
-
-var server = https.createServer(options, app);
-
-app.set('port', (port));
+const LEX = require('greenlock-express');
 
 app.options('*', cors());
 app.use(express.static(path.join(__dirname, 'build')));
-
-app.listen(port, ()=>{
-    console.log('started')
-})
 
 app.get('*', cors(), (req, res) => {  
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));                               
 });
 
-var key = fs.readFileSync('./rootCA.key');
-var cert = fs.readFileSync('./rootCA.crt');
-var options = {
-  key: key,
-  cert: cert
-};
+const lex = LEX.create({
+    server: 'staging',
+    email: 'my.email@mailprovider.com',
+    agreeTos: true,
+    configDir: 'cert/',
+    approveDomains: ['job-flow.ru']
+});
 
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(options, app);
+var httpServer = http.createServer(lex.middleware(require('redirect-https')()));
+var httpsServer = https.createServer(lex.httpsOptions, lex.middleware(app));
 
 httpServer.listen(8080);
 httpsServer.listen(8443);
