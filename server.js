@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 const path = require('path');
 var cors = require('cors');
+var http = require('http');
 var https = require('https');
 const fs = require('fs');
 
@@ -29,3 +30,15 @@ app.get('*', cors(), (req, res) => {
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));                               
 });
 
+var key = fs.readFileSync('./rootCA.key');
+var cert = fs.readFileSync('./rootCA.crt');
+var options = {
+  key: key,
+  cert: cert
+};
+
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(options, app);
+
+httpServer.listen(8080);
+httpsServer.listen(8443);
