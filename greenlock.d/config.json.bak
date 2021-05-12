@@ -13,13 +13,5 @@
     "accountKeyType": "EC-P256",
     "serverKeyType": "RSA-2048"
   },
-  "sites": [
-    {
-      "subject": "job-flow.ru",
-      "altnames": [
-        "job-flow.ru"
-      ],
-      "renewAt": 1
-    }
-  ]
+  "sites": []
 }
