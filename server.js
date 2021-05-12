@@ -1,47 +1,34 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 const path = require('path');
 var cors = require('cors');
-var http = require('http');
-var https = require('https');
+const PORT = 4000;
+app.use(cors());
 
 app.options('*', cors());
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.get('*', cors(), (req, res) => {  
-    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));                               
+app.listen(PORT, ()=>{
+    console.log('started')
+})
+
+app.use(cors(), function (req, res, next) {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.set("Access-Control-Allow-Methods", "GET");
+    res.set("Access-Control-Allow-Headers", "Content-Type");
+    res.set("Access-Control-Max-Age", "3600");
+    res.header("Access-Control-Allow-Origin", "http://localhost:4000");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "*, Origin, X-Requested-With, Content-Type, Accept, Authorization, access-control-allow-origin, Access-Control-Allow-Origin");
+    next();
+  
+    // Pass to next layer of middleware
 });
 
-require("greenlock-express")
-    .init({
-        packageRoot: __dirname,
-        configDir: "./greenlock.d",
-
-        maintainerEmail: "jon@example.com",
-        cluster: false
-    })
-    .ready(httpsWorker);
-
-function httpsWorker(glx) {
-    //
-    // HTTPS 1.1 is the default
-    // (HTTP2 would be the default but... https://github.com/expressjs/express/issues/3388)
-    //
-    // Get the raw https server:
-    var httpsServer = glx.httpsServer(null, function(req, res) {
-        res.send("Hello, Encrypted World!");
-    });
-
-    httpsServer.listen(3000, "0.0.0.0", function() {
-        console.info("Listening on ", httpsServer.address());
-    });
-
-    // Note:
-    // You must ALSO listen on port 80 for ACME HTTP-01 Challenges
-    // (the ACME and http->https middleware are loaded by glx.httpServer)
-    var httpServer = glx.httpServer();
-
-    httpServer.listen(3000, "0.0.0.0", function() {
-        console.info("Listening on ", httpServer.address());
-    });
-}
+app.get('*',cors(), (req, res) => {  
+    res.header("Access-Control-Allow-Origin", "http://localhost:4000");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, HEAD, PATCH, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "*, Origin, X-Requested-With, Content-Type, Accept, Authorization, access-control-allow-origin, Access-Control-Allow-Origin");
+  
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));                               
+});
