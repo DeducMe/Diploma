@@ -12,6 +12,7 @@
     "esri-leaflet-geocoder": "^3.0.0",
     "express": "^4.17.1",
     "firebase": "^8.2.4",
+    "fs": "0.0.1-security",
     "leaflet": "^1.7.1",
     "leaflet-geosearch": "^3.2.1",
     "leaflet-knn": "^0.1.0",
@@ -37,7 +38,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
