@@ -61,9 +61,9 @@ class ProfileRedactPopup extends Component {
                     <MainPlaceholder></MainPlaceholder>
                     <div className="profile-redact__form">
                         <div className="profile-redact__form-nav">
-                            {/* <button className={"popup-nav-btn rounded " + (this.props.profileState.popupRedactActiveSection === 'baseInfo' ? 'active' : '')} onClick={this.changeSection.bind(this, 'baseInfo')}>
+                            <button className={"popup-nav-btn rounded " + (this.props.profileState.popupRedactActiveSection === 'baseInfo' ? 'active' : '')} onClick={this.changeSection.bind(this, 'baseInfo')}>
                                 <img src={baseInfoIcon} alt="Базовая информация"/>
-                            </button> */}
+                            </button>
                             <button className={"popup-nav-btn rounded " + (this.props.profileState.popupRedactActiveSection === 'experience' ? 'active' : '')} onClick={this.changeSection.bind(this, 'experience')}>
                                 <img src={experienceIcon} alt="Опыт и образование"/>
                             </button>
@@ -71,7 +71,7 @@ class ProfileRedactPopup extends Component {
                                 <img src={personalizationIcon} alt="Персонализация"/>
                             </button>
                         </div>
-                        {/* {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')} */}
+                        {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
