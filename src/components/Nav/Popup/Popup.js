@@ -323,7 +323,7 @@ const mapDispatchToProps = (dispatch) =>{
 
     onLoginUserCheck: (data, redirectUser, fetchError) =>{
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-
+      
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)

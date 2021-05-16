@@ -18,6 +18,20 @@ class Main extends Component {
         };
     }
 
+    convertIntToDay = (num) =>{
+        const days = [
+            'Понедельник',
+            'Вторник',
+            'Среда',
+            'Четверг',
+            'Пятница',
+            'Суббота',
+            'Воскресенье',
+        ]
+
+        return days[num]
+    }
+
     toggleMapPopup = () =>{
         if (this.state.mapPopupState === ''){
             this.setState({mapPopupState:'active'})
@@ -46,6 +60,7 @@ class Main extends Component {
 
     
     render() {
+        console.log(this.props.userData)
         if (this.props.userState.hasProfile){
             return (
                 <div className="main rounded">
@@ -99,6 +114,11 @@ class Main extends Component {
                             <div className="info__languages">
                                 <p>Владение языками:</p>
                                 {this.props.userData.language.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
+                            </div>):('')}
+                            {this.props.userData.schedule.length !== 0 ? (
+                            <div className="info__languages">
+                                <p>Желательный график:</p>
+                                {this.props.userData.schedule.map((schedule, index) => <a key={index} className="schedule-el">{schedule.start_time + ' - ' + schedule.end_time + '(' + this.convertIntToDay(schedule.day) + ')'}</a> )}
                             </div>):('')}
                             {this.props.userData.education.length!== 0 ?(
                                 <div className="info__education">

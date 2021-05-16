@@ -333,7 +333,7 @@ export const verify = () => (dispatch) => {
 }
 
 export const loginUser = (data) => (dispatch) => {
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify({email:data.email, password:data.password}))
     return fetch(url + '/auth/login/',{
         method: 'POST',  
         body: JSON.stringify(data),  
