@@ -41,11 +41,15 @@ class Profile extends Component {
                 address: this.props.userData.address,
                 userPhones: this.checkIfNotNull(this.props.userData.phone, []),
                 language: this.checkIfNotNull(this.props.userData.language, []),
+                schedule: this.checkIfNotNull(this.props.userData.schedule, []),
                 education: this.checkIfNotNull(this.props.userData.education, []),
                 experience: this.checkIfNotNull(this.props.userData.experience, []),
                 social_links: [],
                 buf:{
                     languageGrade:'A1',
+                    scheduleDay:'0',
+                    scheduleEndTime:'00:00',
+                    scheduleStartTime:'00:00',
                     cropper:{
                       state:false,
                       file:this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
@@ -72,12 +76,15 @@ class Profile extends Component {
                 },
                 address: null,
                 userPhones: [],
-                language:[],
+                schedule:[],
                 education: [],
-                experience: [],
+                experience : [],
                 social_links: [],
                 buf:{
                     languageGrade:'A1',
+                    scheduleDay:'0',
+                    scheduleEndTime:'00:00',
+                    scheduleStartTime:'00:00',
                     cropper:{
                       state:false,
                       file:'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',

@@ -16,11 +16,16 @@ const initialState = {
     address:null,
     userPhones: [],
     language:[],
+    schedule:[],
     education: [],
     experience : [],
     social_links: [],
     buf:{
       languageGrade:'A1',
+      scheduleDay:'0',
+      scheduleEndTime:'00:00',
+      scheduleStartTime:'00:00',
+
       cropper:{
         state:false,
         file:'',
@@ -110,6 +115,40 @@ export default function profileState(state = initialState, action){
     else if (action.type === 'POPUP_REDACT_DELETE_LANGUAGE'){
       state.language.splice(state.language.indexOf(action.payload), 1);
       state.language = Object.assign([], state.language, [...state.language]);
+      return {
+        ...state,
+
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_ADD_SCHEDULE'){
+      state.schedule.push(action.payload);
+      state.schedule = Object.assign([], state.schedule, [...state.schedule]);
+
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_SCHEDULE_DAY_CHANGE'){
+      state.buf.scheduleDay = action.payload;
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_SCHEDULE_START_TIME_CHANGE'){
+      state.buf.scheduleStartTime = action.payload;
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_SCHEDULE_END_TIME_CHANGE'){
+      state.buf.scheduleEndTime = action.payload;
+      return {
+        ...state,
+      };
+    }
+    else if (action.type === 'POPUP_REDACT_DELETE_SCHEDULE'){
+      state.schedule.splice(state.schedule.indexOf(action.payload), 1);
+      state.schedule = Object.assign([], state.schedule, [...state.schedule]);
       return {
         ...state,
 

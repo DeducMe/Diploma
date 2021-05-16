@@ -69,9 +69,10 @@ function LocationMarker() {
         }
         marker = L.marker(e.latlng).addTo(map)
         marker.bindPopup('Вы здесь').openPopup();
-
       },
     })
+    return null
+
 }
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:

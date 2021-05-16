@@ -10,6 +10,20 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
         state.onUsernameChange(input)
     }
 
+    const convertIntToDay = (num) =>{
+        const days = [
+            'Понедельник',
+            'Вторник',
+            'Среда',
+            'Четверг',
+            'Пятница',
+            'Суббота',
+            'Воскресенье',
+        ]
+
+        return days[num]
+    }
+
     const changeUserDescriptionValue = (e) => {
         state.onDescriptionChange(e.target.value)
     }
@@ -83,6 +97,39 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
         }
 
     }
+
+    const deleteSchedule = (e) =>{
+        e.preventDefault()
+        console.log(e.target.parentElement.dataset.key)
+        state.onScheduleDelete(state.profileState.schedule[e.target.parentElement.dataset.key])
+    }
+
+    const scheduleDayChange = (e) =>{
+        state.onScheduleDayChange(e.target.value)
+    }
+
+    const scheduleEndTimeChange = (e) =>{
+        state.onScheduleEndTimeChange(e.target.value)
+    }
+
+    const scheduleStartTimeChange = (e) =>{
+        state.onScheduleStartTimeChange(e.target.value)
+    }
+
+    const addSchedule = (e) => {
+        e.preventDefault()
+        
+        let newSchedule = {
+            "start_time": state.profileState.buf.scheduleStartTime,
+            "end_time": state.profileState.buf.scheduleStartTime,
+            "day": parseInt(state.profileState.buf.scheduleDay)
+        }
+        console.log(state.profileState.schedule.filter((el) => el.day === newSchedule.day))
+        if(state.profileState.schedule.filter((el) => el.day === newSchedule.day).length === 0){
+            state.onScheduleAdd(newSchedule)
+        }
+    }
+    
     
     const deletePhone = (e) =>{
         e.preventDefault()
@@ -204,6 +251,132 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                     <button className="sup-btn-circled">+</button>
                 </form>
             </div>
+
+            <div className="list-input-field popup__input-block">
+                <p>Желательный график работы</p>
+
+                {state.profileState.schedule.map((el, index)=>{
+                    return (
+                        <div key={index} className="list-input-field__el-block" data-key={index}>
+                            <span>{el.start_time + ' - ' + el.end_time + '(' + convertIntToDay(el.day) + ')'}</span>
+                            <button className="el-block__delete-el" onClick={deleteSchedule}>x</button>
+                        </div>
+                    )
+                })}
+
+                <form className="popup__select-text-input" onSubmit={addSchedule}>
+                    <select name="scheduleStartTimeInput" id="scheduleStartTimeInput" onChange={scheduleStartTimeChange} value={state.profileState.buf.scheduleStartTime}>
+                        <option value="00:00">00:00</option>
+                        <option value="00:30">00:30</option>
+                        <option value="01:00">01:00</option>
+                        <option value="01:30">01:30</option>
+                        <option value="02:00">02:00</option>
+                        <option value="02:30">02:30</option>
+                        <option value="03:00">03:00</option>
+                        <option value="03:30">03:30</option>
+                        <option value="04:00">04:00</option>
+                        <option value="04:30">04:30</option>
+                        <option value="05:00">05:00</option>
+                        <option value="05:30">05:30</option>
+                        <option value="06:00">06:00</option>
+                        <option value="06:30">06:30</option>
+                        <option value="07:00">07:00</option>
+                        <option value="07:30">07:30</option>
+                        <option value="08:00">08:00</option>
+                        <option value="08:30">08:30</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                        <option value="22:30">22:30</option>
+                        <option value="23:00">23:00</option>
+                        <option value="23:30">23:30</option>
+                    </select>
+                    <select name="scheduleEndTimeInput" id="scheduleEndTimeInput" onChange={scheduleEndTimeChange} value={state.profileState.buf.scheduleEndTime}>
+                        <option value="00:00">00:00</option>
+                        <option value="00:30">00:30</option>
+                        <option value="01:00">01:00</option>
+                        <option value="01:30">01:30</option>
+                        <option value="02:00">02:00</option>
+                        <option value="02:30">02:30</option>
+                        <option value="03:00">03:00</option>
+                        <option value="03:30">03:30</option>
+                        <option value="04:00">04:00</option>
+                        <option value="04:30">04:30</option>
+                        <option value="05:00">05:00</option>
+                        <option value="05:30">05:30</option>
+                        <option value="06:00">06:00</option>
+                        <option value="06:30">06:30</option>
+                        <option value="07:00">07:00</option>
+                        <option value="07:30">07:30</option>
+                        <option value="08:00">08:00</option>
+                        <option value="08:30">08:30</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:00">15:00</option>
+                        <option value="15:30">15:30</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
+                        <option value="22:00">22:00</option>
+                        <option value="22:30">22:30</option>
+                        <option value="23:00">23:00</option>
+                        <option value="23:30">23:30</option>
+                    </select>
+                    <select name="scheduleDayInput" id="scheduleDayInput" onChange={scheduleDayChange} value={state.profileState.buf.scheduleDay}>
+                        <option value="0">Понедельник</option>
+                        <option value="1">Вторник</option>
+                        <option value="2">Среда</option>
+                        <option value="3">Четверг</option>
+                        <option value="4">Пятница</option>
+                        <option value="5">Суббота</option>
+                        <option value="6">Воскресенье</option>
+                    </select>
+                    <button className="sup-btn-circled">+</button>
+                </form>
+            </div>
         </section>
     )
 }
@@ -253,6 +426,21 @@ const mapDispatchToProps = (dispatch) =>{
         },
         onLanguageDelete: (languageId)=>{
             dispatch({type : 'POPUP_REDACT_DELETE_LANGUAGE', payload:languageId})
+        },
+        onScheduleAdd: (schedule)=>{
+            dispatch({type : 'POPUP_REDACT_ADD_SCHEDULE', payload:schedule})
+        },
+        onScheduleDayChange: (day)=>{
+            dispatch({type : 'POPUP_REDACT_SCHEDULE_DAY_CHANGE', payload:day})
+        },
+        onScheduleStartTimeChange: (time)=>{
+            dispatch({type : 'POPUP_REDACT_SCHEDULE_START_TIME_CHANGE', payload:time})
+        },
+        onScheduleEndTimeChange: (time)=>{
+            dispatch({type : 'POPUP_REDACT_SCHEDULE_END_TIME_CHANGE', payload:time})
+        },
+        onScheduleDelete: (scheduleId)=>{
+            dispatch({type : 'POPUP_REDACT_DELETE_SCHEDULE', payload:scheduleId})
         },
         onPhoneAdd: (phone)=>{
             dispatch({type : 'POPUP_REDACT_ADD_PHONE', payload:phone})

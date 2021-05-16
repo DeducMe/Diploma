@@ -32,6 +32,7 @@ class ProfileRedactPopup extends Component {
             "address": this.props.profileState.address,
             "phone": this.props.profileState.userPhones,
             "about": this.props.placeholderData.description,
+            "schedule": this.props.profileState.schedule,
             "social_links": [],
             "education": this.props.profileState.education,
             "experience": this.props.profileState.experience,
