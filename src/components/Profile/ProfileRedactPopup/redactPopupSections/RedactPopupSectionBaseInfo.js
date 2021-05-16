@@ -171,7 +171,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
     }
     return (
         <section className="popup-redact-section">
-            <div className="popup__input-block">
+            {/* <div className="popup__input-block">
                 <div className="input-field underline-anim">
                     <input className="popup__text-input" id="nameInput" name="nameInput" type="text" placeholder=" " onChange={changeUserNameValue} value={placeholderData.userName}/>
                     <label className="popup__text-label" htmlFor="nameInput">Имя/никнейм</label>
@@ -203,7 +203,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                     <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
                 </div>
                 <div className="address-input">
-                    {/* <LeafletMap address={state.profileState.address}></LeafletMap> */}
+                    <LeafletMap address={state.profileState.address}></LeafletMap>
                     <button className="highlighted sup-btn" onClick={saveNewAddress}>Сохранить</button>
                 </div>
                 
@@ -376,7 +376,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                     </select>
                     <button className="sup-btn-circled">+</button>
                 </form>
-            </div>
+            </div> */}
         </section>
     )
 }
