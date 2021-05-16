@@ -203,7 +203,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
                     <label className="popup__text-label" htmlFor="czInput">Гражданство</label>
                 </div>
                 <div className="address-input">
-                    <LeafletMap address={state.profileState.address}></LeafletMap>
+                    {/* <LeafletMap address={state.profileState.address}></LeafletMap> */}
                     <button className="highlighted sup-btn" onClick={saveNewAddress}>Сохранить</button>
                 </div>
                 
