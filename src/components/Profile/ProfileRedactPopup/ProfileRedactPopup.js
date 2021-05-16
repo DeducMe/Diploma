@@ -5,6 +5,8 @@ import {createNewEmployee, updateEmployee, getUserData} from '../../../actions/s
 import "cropperjs/dist/cropper.css";
 
 import RedactPopupSectionBaseInfo from './redactPopupSections/RedactPopupSectionBaseInfo'
+import Test from './redactPopupSections/Test'
+
 import RedactPopupSectionExperience from './redactPopupSections/RedactPopupSectionExperience'
 import RedactPopupSectionImages from './redactPopupSections/RedactPopupSectionImages'
 
@@ -71,7 +73,7 @@ class ProfileRedactPopup extends Component {
                                 <img src={personalizationIcon} alt="Персонализация"/>
                             </button>
                         </div>
-                        {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<RedactPopupSectionBaseInfo></RedactPopupSectionBaseInfo>) : ('')}
+                        {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<Test></Test>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
