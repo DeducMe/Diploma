@@ -40,7 +40,7 @@ function DisplayPosition({onChangeMapPosition}) {
       }
     }, [map])
 
-    return null
+    return ''
   }
   
 
@@ -71,7 +71,7 @@ function LocationMarker() {
         marker.bindPopup('Вы здесь').openPopup();
       },
     })
-    return null
+    return ''
 
 }
 L.Icon.Default.mergeOptions({
