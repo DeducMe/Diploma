@@ -73,7 +73,7 @@ class ProfileRedactPopup extends Component {
                                 <img src={personalizationIcon} alt="Персонализация"/>
                             </button>
                         </div>
-                        {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<Test></Test>) : ('')}
+                        {/* {this.props.profileState.popupRedactActiveSection === 'baseInfo' ? (<Test></Test>) : ('')} */}
                         {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
