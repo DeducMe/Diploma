@@ -121,7 +121,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
         
         let newSchedule = {
             "start_time": state.profileState.buf.scheduleStartTime,
-            "end_time": state.profileState.buf.scheduleStartTime,
+            "end_time": state.profileState.buf.scheduleEndTime,
             "day": parseInt(state.profileState.buf.scheduleDay)
         }
         console.log(state.profileState.schedule.filter((el) => el.day === newSchedule.day))

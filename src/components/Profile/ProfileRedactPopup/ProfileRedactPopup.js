@@ -75,7 +75,7 @@ class ProfileRedactPopup extends Component {
                         {this.props.profileState.popupRedactActiveSection === 'experience' ? (<RedactPopupSectionExperience></RedactPopupSectionExperience>) : ('')}
                         {this.props.profileState.popupRedactActiveSection === 'images' ? (<RedactPopupSectionImages></RedactPopupSectionImages>) : ('')}
 
-                        <button className="form-submit-btn f-large rounded bold" onClick={this.saveRedactProfileFormChanges}>Сохранить изменения</button>
+                        <button className="form-su]bmit-btn f-large rounded bold" onClick={this.saveRedactProfileFormChanges}>Сохранить изменения</button>
                         <button className="profile-redact__close-popup-btn" onClick={this.popupClose.bind(this)} tabIndex="-1">x</button>
                     </div>
                 </div>
