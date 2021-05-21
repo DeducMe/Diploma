@@ -145,7 +145,7 @@ export const getWorkTypeValues = (workType) => {
             return 'удаленная работа'
       
         default:
-            break
+            return
     }
 }
 

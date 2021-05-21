@@ -389,6 +389,18 @@
         white-space: break-spaces;
         margin: 10px 0;
     }
+
+    .resume__header-color-el{
+        margin-left: 5px;
+        width: 20px;
+        height: 20px;
+        border-width: 1px;
+    }
+
+    .resume__header-color-el.selected,
+    .resume__header-color-el:hover{
+        border-width: 1px;
+    }
 }
 
 /* Tablets */
