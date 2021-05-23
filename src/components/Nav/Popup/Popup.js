@@ -5,6 +5,7 @@ import './popup.css'
 import {registrateNewUser, loginUser} from '../../../actions/serverConnections.js'
 import Loader from '../../Loader/Loader'
 import fileUploader from '../../../actions/fileUploader';
+import ReCAPTCHA from "react-google-recaptcha";
 
 
 class Popup extends Component {
@@ -27,6 +28,11 @@ class Popup extends Component {
     else{
       return 'работодатель';
     }
+  }
+
+ 
+  recaptchaCheck(value) {
+    console.log("Captcha value:", value);
   }
 
   handleCloseBtnClick(e){
@@ -237,9 +243,12 @@ class Popup extends Component {
             <label className="popup__text-label" htmlFor="nameInput">Имя</label>
           </div>
 
+          <ReCAPTCHA
+            sitekey="6LcEwOYaAAAAAJwcQq13zkbJrEZtHkNX-2Z3dDBN"
+            onChange={this.recaptchaCheck}
+          />
+
           <p className={"password-input-hint " + this.props.wrongPassword}>{this.props.wrongPasswordError}</p>
-
-
 
           <div className="togglebox" >
             <span>Я - </span>
