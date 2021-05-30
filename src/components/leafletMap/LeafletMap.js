@@ -20,7 +20,6 @@ function DisplayPosition({onChangeMapPosition}) {
     const onMove = () => {
         const pos = map.getCenter()
         let gj = L.geoJson(testCities);
-
         const name = searchControl.searchElement.input.value === '' ? leafletKnn(gj).nearestLayer([pos.lng, pos.lat],1)[0].layer.feature.properties.name : searchControl.searchElement.input.value
         onChangeMapPosition({
             name: name,
@@ -88,7 +87,8 @@ function MapComp ({address, onChangeMapPosition}) {
         map.addControl(searchControl);
     }
 
-    const center = (address !== undefined && address !== null) ? [address.lat, address.lng] : [0, 0];
+    const center = (address && address!=='') ? [address.lat, address.lng] : [0, 0];
+    console.log(center)
     return (
         <MapContainer 
             style={{ height: "30vh" }}
@@ -96,7 +96,7 @@ function MapComp ({address, onChangeMapPosition}) {
             zoom="10"
             whenCreated={map=>{
                 initMap(map)
-                if (address !== undefined && address !== null) findStartPosition(address, map, onChangeMapPosition)
+                if (address && address!=='') findStartPosition(address, map, onChangeMapPosition)
             }}
         >
             <TileLayer
@@ -106,7 +106,6 @@ function MapComp ({address, onChangeMapPosition}) {
             <LocationMarker></LocationMarker>
             <DisplayPosition onChangeMapPosition={onChangeMapPosition}></DisplayPosition>
         </MapContainer >
-    
     );
   
 }

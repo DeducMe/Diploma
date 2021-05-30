@@ -83,7 +83,7 @@ class Main extends Component {
                         <p className="info__description">{this.props.userData.about}</p>
 
                         <div className="info__common-info">
-                            <p className="info__common-info__birthday">{this.props.userData.birthday}</p>
+                            <p className="info__common-info__birthday">{this.props.userData.birthday?.substring(0, 10)}</p>
                             <p className={"info__common-info__gender " + this.props.userData.gender}></p>
                             {this.props.userData.address ?
                                 <div className="address__popup-block">
@@ -130,7 +130,7 @@ class Main extends Component {
                                                 <div className="education-place">
                                                     <p className="education-place__institution">{el.university},</p>
                                                     <p className="education-place__grade">&nbsp;{el.type}</p>     
-                                                    <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
                                                 </div>
                                             </div>
                                         )
@@ -147,7 +147,7 @@ class Main extends Component {
                                                 <div className="education-place">
                                                     <p className="education-place__institution">{el.company},</p>
                                                     <p className="education-place__grade">&nbsp;{el.type},</p>     
-                                                    <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
                                                 </div>
                                             </div>
                                         )

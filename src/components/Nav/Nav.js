@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Popup from './Popup/Popup'
 import OptionsPopup from './OptionsPopup/OptionsPopup'
 
-import logo from '../../img/logo.svg'
+import logo from '../../img/logo_transparent_bg.png'
 import arrow from '../../img/arrow.svg'
 import star from '../../img/star.svg'
 import fileUploader from '../../actions/fileUploader'

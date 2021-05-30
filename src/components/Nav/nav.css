@@ -10,6 +10,14 @@
     background-color: transparent;
 }
 
+.logo{
+    width: 60px;
+}
+
+.logo > img{
+    width: 100%;
+}
+
 .nav-block{
     z-index: 3;
 

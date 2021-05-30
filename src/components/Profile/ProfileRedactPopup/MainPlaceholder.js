@@ -31,7 +31,7 @@ export class MainPlaceholder extends Component {
                         <p className="info__description">{this.props.userDescription}</p>
                         <div className="info__common-info">
                             
-                            <p className={'info__common-info__birthday ' + this.props.userBirthday}>{this.props.userBirthday}</p>
+                            <p className={'info__common-info__birthday ' + this.props.userBirthday?.substring(0, 10)}>{this.props.userBirthday?.substring(0, 10)}</p>
                             <p className={'info__common-info__gender ' + this.props.userGender}></p>
                             <div className="info__common-info__living">
                                 <p className="living__cz">{this.props.userCz}</p>
@@ -61,7 +61,7 @@ export class MainPlaceholder extends Component {
                                             <div className="education-place">
                                                 <p className="education-place__institution">{el.university},</p>
                                                 <p className="education-place__grade">&nbsp;{el.type}</p>     
-                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
                                             </div>
                                         </div>
                                     )
@@ -79,7 +79,7 @@ export class MainPlaceholder extends Component {
                                             <div className="education-place">
                                                 <p className="education-place__institution">{el.company},</p>
                                                 <p className="education-place__grade">&nbsp;{el.type},</p>     
-                                                <p className="education-place__longing">{el.start_year + ' - ' + el.end_year}</p>
+                                                <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
                                             </div>
                                         </div>
                                     )

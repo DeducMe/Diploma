@@ -136,7 +136,6 @@ class SearchMain extends Component {
                                             <p className="resume__about">{item.about || item.leading}</p>
                                         </div>
                                         
-            
                                         {/* <ul className="resume__tags-list">
                                             {item.tags.map((tag, index)=><li key={index} className="resume__tags-list-el">{tag}</li>)}
                                         </ul> */}
