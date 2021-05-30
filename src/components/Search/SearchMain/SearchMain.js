@@ -130,8 +130,8 @@ class SearchMain extends Component {
                                     <div className="resume__main-info bottom-rounded flex">
                                         <div className="resume__main-info__text">
                                             <p className="resume__industry f-pre">{item.industry}</p>
-                                            
-                                            <p className="resume__work-type">{item.work_type.map((item)=>getWorkTypeValues(item)).join(', ')}</p>
+            
+                                            <p className="resume__work-type">{item.work_type.forEach((item)=>getWorkTypeValues(item))?.join(', ')}</p>
 
                                             <p className="resume__about">{item.about || item.leading}</p>
                                         </div>

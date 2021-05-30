@@ -39,6 +39,10 @@ class FavouritesPopup extends Component {
         .catch(err => this.props.onSetValuePhoto('https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54', pk))
     }
 
+    openResponsePopup(index){
+        this.props.onOpenResponsePopup(index)
+    }
+
     componentDidMount(){
         this.getFavouritesValues(true)
     }
@@ -89,7 +93,7 @@ class FavouritesPopup extends Component {
                                             <p>{item.owner}</p>
                                         </Link>
                                     </div>
-                                    {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
+                                    {/* {el.item_type === 'vacancy' && this.props.userState.user_type === 'employee' ?
                                         <div className="vacancy-control-block">
                                             <div className="vacancy-control-block__response-block">
                                                 <p className="underline-link" onClick={this.openResponsePopup.bind(this, index)}>Откликнуться</p>
@@ -112,7 +116,7 @@ class FavouritesPopup extends Component {
                                             }
                                         </div>
                                     : ''
-                                    }
+                                    } */}
                                 </section>
                             </li>
                         )
