@@ -246,6 +246,7 @@ class Popup extends Component {
           <ReCAPTCHA
             sitekey="6LcEwOYaAAAAAJwcQq13zkbJrEZtHkNX-2Z3dDBN"
             onChange={this.recaptchaCheck}
+            size = "compact"
           />
 
           <p className={"password-input-hint " + this.props.wrongPassword}>{this.props.wrongPasswordError}</p>
