@@ -66,7 +66,7 @@ const RedactPopupSectionBaseInfo = (state, profileState, placeholderData) => {
 
             <div className="list-input-field popup__input-block">
                 <p>Телефоны</p>
-                {state.placeholderData.phone.map((phone, index)=>{
+                {state.placeholderData.phone?.map((phone, index)=>{
                     return (
                         <div key={index} className="list-input-field__el-block" data-key={index}>
                             <span>{phone}</span>

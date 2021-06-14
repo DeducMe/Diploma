@@ -6,9 +6,16 @@ import {registrateNewUser, loginUser} from '../../../actions/serverConnections.j
 import Loader from '../../Loader/Loader'
 import fileUploader from '../../../actions/fileUploader';
 import ReCAPTCHA from "react-google-recaptcha";
+import e from 'cors'
 
 
 class Popup extends Component {
+
+  constructor(props) {
+    super(props);
+    // Не вызывайте здесь this.setState()!
+    this.state = { captchaDone:false };
+  }
   
   changeSubject(){
     console.log(this.props.popupState.subject)
@@ -32,7 +39,7 @@ class Popup extends Component {
 
  
   recaptchaCheck(value) {
-    console.log("Captcha value:", value);
+    if (value) this.setState({captchaDone:true})
   }
 
   handleCloseBtnClick(e){
@@ -59,6 +66,9 @@ class Popup extends Component {
     }
     else if(type === 'email-occupied'){
       this.props.onWrongEmailInput('*Такой э-мэйл уже занят')
+    }
+    else if(type === 'wrong-captcha'){
+      this.props.onCaptchaNotPassed('*Проверка каптчи не пройдена')
     }
     this.props.onDeactivateLoader()
 
@@ -91,8 +101,9 @@ class Popup extends Component {
 
   registrateUser(data){
     this.props.onActivateLoader()
-
-    this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
+    if (!this.state.captchaDone)
+      this.props.onRegistrationUserFetch(data, this.redirectUser, this.fetchError, this.props.onLoginUserCheck)
+    else this.fetchError('wrong-captcha')
   }
 
   validateEmail(email){
@@ -201,19 +212,10 @@ class Popup extends Component {
           </div>
 
           <p className={"password-input-hint " + this.props.wrongPassword}>{this.props.wrongPasswordError}</p>
-          
-          <div className="checkbox">
-            <input className="inp-cbx" id="morning" type="checkbox"/>
-            <label className="cbx" htmlFor="morning"><span>
-            <svg width="12px" height="10px">
-              <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-            </svg></span><span>Запомните меня!</span></label>
-          </div>
+
           <Loader active={this.props.loaderActive}></Loader>
           <input className="form-submit-btn f-large rounded" type="submit" value="Войти!"/>
           <button className="close-popup-btn" onClick={this.handleCloseBtnClick.bind(this)} tabIndex="-1">x</button>
-
-          
         </form>
       </div>
     </div>
@@ -263,17 +265,9 @@ class Popup extends Component {
               </label>
             </div>
           </div>
+          <p>Вы будете зарегистрированы как {this.checkUserType()}</p>
 
-          <div className="checkbox">
-            <p>Вы будете зарегистрированы как {this.checkUserType()}</p>
-            <input className="inp-cbx" id="morning" type="checkbox"/>
-            <label className="cbx" htmlFor="morning"><span>
-            <svg width="12px" height="10px">
-              <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-            </svg></span><span>Запомните меня!</span></label>
-          </div>
           <Loader active={this.props.loaderActive}></Loader>
-
 
           <input className="form-submit-btn f-large rounded" type="submit" value={this.props.submitValue}/>
 
@@ -294,13 +288,14 @@ const mapStateToProps = (state, ownProps) =>{
     submitValue: state.nav.popup.submitValue,
     wrongEmail:state.nav.popup.wrongEmail,
     wrongPassword:state.nav.popup.wrongPassword,
+    wrongCaptcha:state.nav.popup.wrongCaptcha,
     popupActive: state.nav.popup.state,
     popupState: state.nav.popup,
     loaderActive: state.nav.popup.loginPopupLoaderActive,
     wrongEmailError:state.nav.popup.wrongEmailError,
     wrongPasswordError:state.nav.popup.wrongPasswordError,
+    wrongCaptchaError:state.nav.popup.wrongCaptchaError,
     userState:state.user.user
-
   }
 }
 
@@ -324,16 +319,17 @@ const mapDispatchToProps = (dispatch) =>{
     onWrongPasswordInput: (errorMsg) => {
       dispatch({type : 'WRONG_PASSWORD_INPUT', payload:errorMsg})
     },
+    onCaptchaNotPassed: (errorMsg) => {
+      dispatch({type : 'WRONG_CAPTCHA_INPUT', payload:errorMsg})
+    },
     onResetValidation: ()=>{
       dispatch({type : 'RESET_VALIDATION', payload:null})
     },
     onLoginUser: () => {
       dispatch({type : 'USER_LOGIN', payload:null})
     },
-
     onLoginUserCheck: (data, redirectUser, fetchError) =>{
       dispatch({type : 'WAITING_FOR_FETCH', payload:null})
-      
       dispatch(loginUser(data))
       .then(data => {
         console.log(data)
@@ -358,9 +354,7 @@ const mapDispatchToProps = (dispatch) =>{
         else{
           fetchError('email-occupied')
         }
-
       })
-      
     },
     
     onActivateLoader: ()=>{

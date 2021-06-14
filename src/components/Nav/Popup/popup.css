@@ -590,3 +590,10 @@ label.capsule{
         transform: scale(.9);
     }
 }
+
+@media (max-width : 768px){
+    .popup-wrapper{
+        width: 100%;
+    }
+
+}

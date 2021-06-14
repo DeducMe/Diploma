@@ -230,7 +230,7 @@ const RedactPopupSectionBaseInfo = (state, placeholderData, LeafletMapData, prof
             <div className="list-input-field popup__input-block">
                 <p>Владение языками</p>
 
-                {state.profileState.language.map((el, index)=>{
+                {state.profileState.language?.map((el, index)=>{
                     return (
                         <div key={index} className="list-input-field__el-block" data-key={index}>
                             <span>{el.language + ' - ' + el.grade}</span>

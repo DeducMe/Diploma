@@ -39,7 +39,7 @@ export class MainPlaceholder extends Component {
                         <div className="info__contacts">
                             <p>Контакты:</p>
                             <div className="info__contacts__phones">
-                                {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                                {this.props.userPhones?.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                             </div>
                         </div>):('')}
                 </section>

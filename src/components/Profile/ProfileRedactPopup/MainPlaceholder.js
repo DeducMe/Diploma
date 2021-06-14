@@ -42,18 +42,18 @@ export class MainPlaceholder extends Component {
                         
                         <div className="info__contacts__phones">
                             <p>Контакты:</p>
-                            {this.props.userPhones.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
+                            {this.props.userPhones?.map((phone, index) => <a key={index} className="contacts__phones-el" href={"tel:"+phone}>{phone}</a> )}
                         </div>
 
                         <div className="info__languages">
                             <p>Владение языками:</p>
-                            {this.props.userLanguages.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
+                            {this.props.userLanguages?.map((language, index) => <a key={index} className="languages-el">{language.language + ' - ' + language.grade}</a> )}
                         </div>
                         
                         {this.props.userEducation.length!== 0 ?(
                             <div className="info__education">
                                 <h3 className="education-head bold headed">Образование:</h3>
-                                {this.props.userEducation.map((el, index)=>{
+                                {this.props.userEducation?.map((el, index)=>{
                                     console.log('education', el)
                                     return (
                                         <div className="education-block" key={index}>

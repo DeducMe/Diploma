@@ -15,6 +15,8 @@ const initialState = {
         submitValue:'Начать карьеру!',
         wrongEmail:'muted',
         wrongEmailError: '',
+        wrongCaptcha:'muted',
+        wrongCaptchaError: '',
         wrongPassword:'muted',
         loginPopupLoaderActive:false
     }
@@ -107,7 +109,14 @@ export default function navState(state = initialState, action){
             ...state
         }
     }
-    
+    else if (action.type === 'WRONG_CAPTCHA_INPUT'){
+        state.popup.wrongCaptcha = 'active';
+        state.popup.wrongCaptchaError = action.payload
+
+        return{
+            ...state
+        }
+    }    
     else if(action.type === 'WRONG_EMAIL_INPUT'){
         state.popup.wrongEmail = 'active';
         state.popup.wrongEmailError = action.payload
