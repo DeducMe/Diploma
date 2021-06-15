@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import getEducationValues from '../../../scripts/commonScripts'
-import getGradeValues from '../../../scripts/commonScripts'
+import {getEducationValues} from '../../../scripts/commonScripts'
+import {getGradeValues} from '../../../scripts/commonScripts'
 
 import plusIcon from '../../../img/plusIcon.svg'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
