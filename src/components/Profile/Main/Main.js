@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import getEducationValues from '../../../scripts/commonScripts'
+import getGradeValues from '../../../scripts/commonScripts'
 
 import plusIcon from '../../../img/plusIcon.svg'
 import placeholderAvatar from '../../../img/placeholder-avatar.jpg'
@@ -129,7 +131,7 @@ class Main extends Component {
                                                 <p className="education-name highlighted">{el.profession}</p>
                                                 <div className="education-place">
                                                     <p className="education-place__institution">{el.university},</p>
-                                                    <p className="education-place__grade">&nbsp;{el.type}</p>     
+                                                    <p className="education-place__grade">&nbsp;{getEducationValues(el.type)}</p>     
                                                     <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
                                                 </div>
                                             </div>
@@ -146,8 +148,8 @@ class Main extends Component {
                                                 <p className="education-name highlighted">{el.position}</p>
                                                 <div className="education-place">
                                                     <p className="education-place__institution">{el.company},</p>
-                                                    <p className="education-place__grade">&nbsp;{el.type},</p>     
-                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
+                                                    <p className="education-place__grade">&nbsp;{getGradeValues(el.type)},</p>     
+                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year !== '' ? el.end_year.substring(0, 10) : 'по настоящее время'}</p>
                                                 </div>
                                             </div>
                                         )

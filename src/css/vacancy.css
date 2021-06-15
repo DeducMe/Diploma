@@ -131,8 +131,13 @@
     color: #254e8f;
 }
 
+#favouritesBlurBox .popup-wrapper{
+    width: 80%;
+    max-width: 800px;
+}
+
 .resume-main .resume__main-info{
-    width: 85%;
+    width: 100%;
 }
 
 .resume-main.muted .resume__main-info{

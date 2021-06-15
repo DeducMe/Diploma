@@ -23,80 +23,83 @@ class Profile extends Component {
 
     initPlaceholder = () => {
         console.log(this.props.userState.hasProfile)
-        if (this.props.userState.hasProfile)
-        this.props.onInitializeProfileData({
-                state: this.props.profileState.state,
-                popupRedactActiveSection: this.props.profileState.popupRedactActiveSection,
+        setTimeout(()=>{
+            if (this.props.userState.hasProfile)
+            this.props.onInitializeProfileData({
+                    state: this.props.profileState.state,
+                    popupRedactActiveSection: this.props.profileState.popupRedactActiveSection,
+                        placeholder: {
+                        userName: this.props.userData.name,
+                        description: this.checkIfNotNull(this.props.userData.about, ''),
+                        avatar: '',
+                        gender: this.checkIfNotNull(this.props.userData.gender, ''),
+                        birthday: this.checkIfNotNull(this.props.userData.birthday, ''),
+                        citizenship: this.checkIfNotNull(this.props.userData.citizenship, ''),
+                        profile_link: '',
+                        photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
+                        profile_background: this.checkIfNotNull(this.props.userData.profile_background, '')
+                    },
+                    address: this.props.userData.address,
+                    userPhones: this.checkIfNotNull(this.props.userData.phone, []),
+                    language: this.checkIfNotNull(this.props.userData.language, []),
+                    schedule: this.checkIfNotNull(this.props.userData.schedule, []),
+                    education: this.checkIfNotNull(this.props.userData.education, []),
+                    experience: this.checkIfNotNull(this.props.userData.experience, []),
+                    social_links: [],
+                    buf:{
+                        languageGrade:'A1',
+                        scheduleDay:'0',
+                        scheduleEndTime:'00:00',
+                        scheduleStartTime:'00:00',
+                        cropper:{
+                          state:false,
+                          file:this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
+                          maxWidth:120,
+                          maxHeight:120
+                        }
+                    }
+                }
+            )
+            else 
+            this.props.onInitializeProfileData({
+                    state: this.props.profileState.state,
+                    popupRedactActiveSection:'baseInfo',
                     placeholder: {
-                    userName: this.props.userData.name,
-                    description: this.checkIfNotNull(this.props.userData.about, ''),
-                    avatar: '',
-                    gender: this.checkIfNotNull(this.props.userData.gender, ''),
-                    birthday: this.checkIfNotNull(this.props.userData.birthday, ''),
-                    citizenship: this.checkIfNotNull(this.props.userData.citizenship, ''),
-                    profile_link: '',
-                    photo_url: this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
-                    profile_background: this.checkIfNotNull(this.props.userData.profile_background, '')
-                },
-                address: this.props.userData.address,
-                userPhones: this.checkIfNotNull(this.props.userData.phone, []),
-                language: this.checkIfNotNull(this.props.userData.language, []),
-                schedule: this.checkIfNotNull(this.props.userData.schedule, []),
-                education: this.checkIfNotNull(this.props.userData.education, []),
-                experience: this.checkIfNotNull(this.props.userData.experience, []),
-                social_links: [],
-                buf:{
-                    languageGrade:'A1',
-                    scheduleDay:'0',
-                    scheduleEndTime:'00:00',
-                    scheduleStartTime:'00:00',
-                    cropper:{
-                      state:false,
-                      file:this.checkIfNotNull(this.props.userData.photo_url, 'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54'),
-                      maxWidth:120,
-                      maxHeight:120
+                        userName: this.props.userData.name,
+                        description: '',
+                        avatar: '',
+                        gender: '',
+                        birthday: '',
+                        citizenship:'',
+                        profile_link: '',
+                        photo_url: '',
+                        profile_background: ''
+                    },
+                    address: null,
+                    userPhones: [],
+                    schedule:[],
+                    education: [],
+                    experience : [],
+                    social_links: [],
+                    buf:{
+                        languageGrade:'A1',
+                        scheduleDay:'0',
+                        scheduleEndTime:'00:00',
+                        scheduleStartTime:'00:00',
+                        cropper:{
+                          state:false,
+                          file:'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',
+                          maxWidth:0,
+                          maxHeight:0,
+                          imageType:''
+    
+                        }
                     }
+    
                 }
-            }
-        )
-        else 
-        this.props.onInitializeProfileData({
-                state: this.props.profileState.state,
-                popupRedactActiveSection:'baseInfo',
-                placeholder: {
-                    userName: this.props.userData.name,
-                    description: '',
-                    avatar: '',
-                    gender: '',
-                    birthday: '',
-                    citizenship:'',
-                    profile_link: '',
-                    photo_url: '',
-                    profile_background: ''
-                },
-                address: null,
-                userPhones: [],
-                schedule:[],
-                education: [],
-                experience : [],
-                social_links: [],
-                buf:{
-                    languageGrade:'A1',
-                    scheduleDay:'0',
-                    scheduleEndTime:'00:00',
-                    scheduleStartTime:'00:00',
-                    cropper:{
-                      state:false,
-                      file:'https://firebasestorage.googleapis.com/v0/b/diploma-55e3f.appspot.com/o/placeholder-avatar.jpg?alt=media&token=5058f243-49e5-4df4-8686-899c6ce12c54',
-                      maxWidth:0,
-                      maxHeight:0,
-                      imageType:''
-
-                    }
-                }
-
-            }
-        )
+            )
+        }, 100)
+        
 
     }
 
