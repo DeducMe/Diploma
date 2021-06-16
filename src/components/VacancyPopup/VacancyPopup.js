@@ -19,7 +19,7 @@ class VacancyPopup extends Component {
         if (Object.keys(this.props.openedVacancy).length !== 0)
         return (
             <div className="blur-box active" onClick={this.popupClose.bind(this)}>
-                <div className="resume resumes-list-el popup-wrapper rounded">
+                <div id="vacancyPopup" className="resume resumes-list-el popup-wrapper rounded">
                     <section className="resume-main">
                         <div className={"resume__header white top-rounded " + this.props.openedVacancy.bg_header_color}>
                             <div className="resume__header-top">
