@@ -24,7 +24,7 @@ class VacancyPopup extends Component {
                         <div className={"resume__header white top-rounded " + this.props.openedVacancy.bg_header_color}>
                             <div className="resume__header-top">
                                 <h2 className="resume__header__name bold f-large">{this.props.openedVacancy.vacancy_name}</h2>
-                                <p><span className="resume__header__salary bold f-medium">{this.props.openedVacancy.salary}</span><span className="bold f-medium"> руб.</span></p>
+                                <p className="resume__header__salary"><span className=" bold f-medium">{this.props.openedVacancy.salary}</span><span className="bold f-medium"> руб.</span></p>
                             </div>
                             <div className="resume__header-bottom">
                                 <p className="resume__header__grade">{getGradeValues(this.props.openedVacancy.grade)}</p>

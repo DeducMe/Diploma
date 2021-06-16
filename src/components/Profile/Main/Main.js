@@ -132,7 +132,7 @@ class Main extends Component {
                                                 <div className="education-place">
                                                     <p className="education-place__institution">{el.university},</p>
                                                     <p className="education-place__grade">&nbsp;{getEducationValues(el.type)}</p>     
-                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + el.end_year.substring(0, 10)}</p>
+                                                    <p className="education-place__longing">{el.start_year.substring(0, 10) + ' - ' + (el.end_year !== '' ? el.end_year.substring(0, 10) : 'по настоящее время')}</p>
                                                 </div>
                                             </div>
                                         )
